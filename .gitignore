@@ -305,3 +305,4 @@ TSWLatexianTemp*
 *.DS_Store
 .venv/*
 .venv/pyvenv.cfg
+image_capture/amostras/*
