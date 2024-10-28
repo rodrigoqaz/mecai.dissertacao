@@ -1,0 +1,95 @@
+%% USPSC-Introducao.tex
+
+% ----------------------------------------------------------
+% Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
+% ----------------------------------------------------------
+\chapter[Introdução]{Introdução}
+\label{Introdução}
+
+
+O Algodão (\textit{Gossypium hirsutum L.}) é uma cultura com relevante importância no cenário internacional. 
+Chegando a ser conhecido como "ouro branco" em diversos países, a fibra do algodão subsidia a indústria têxtil e tem um impacto
+econômico de cerca de 600 bilhões de dólares ao ano \cite{Khan2020}. No Brasil, a produção de pluma de
+algodão gira em torno de 2,5 milhões de toneladas ao ano, em uma área plantada com cerca de 1,6 milhão
+de hectares \cite{conab2024}.
+
+Uma importante etapa dentro cadeia produtiva do algodão é a classificação da qualidade da fibra de
+acordo com níveis internacionais. Esses níveis de qualidade determinam o preço de comercialização e o
+poder de negociação do produto \cite{yasar2021quality}.
+
+A classificação internacional da fibra começou com os americanos, em 1906, pelo Departamento de
+Agricultura dos Estados Unidos (USDA), que estabeleceu a padronização da qualidade da fibra, em um
+sistema que existe até hoje. Atualmente o USDA estabelece 15 padrões de classificação de algodão, que
+são atualizados todos os anos e servem como referência para as classificações visuais realizadas \cite{cottoninc2017}.
+
+No Brasil, o processo de classificação é regulamentado pela Instrução Normativa n. 24/2016 do
+Ministério de Estado da Agricultura, Pecuária e Abastecimento (MAPA), que traça padrões para a
+classificação, com requisitos de identidade e qualidade, amostragem e apresentação do produto \cite{mapa2016}.
+
+No processo produtivo do algodão a classificação é feita por amostragem, e pode ser realizada de duas
+formas: por método visual ou por método instrumental. A classificação visual é realizada por classificador
+(pessoa física) tendo como base Padrões Físicos Universais, levando em conta a cor das fibras, a presença
+de folhas que irá caracterizar as impurezas, as contaminações de matérias estranhas e o modo de
+preparação (beneficiamento) do produto. Já a classificação instrumental é realizada por equipamento do
+tipo HVI (\textit{High Volume Instrument}) \cite{mapa2016}. A classificação instrumental demanda um tempo de análise 
+considerável, bem como custos elevados, preparo das amostras e condições controladas em laboratório \cite{Oliveira2022}.
+
+Após a produção do fardo do algodão beneficiado e a classificação é realizada a etapa de "emblocamento"
+que consiste na criação de blocos de algodão de aproximadamente 25 mil toneladas, compostos por fardos
+que possuem a mesma classificação (geralmente entre 110 e 125 fardos). Cada bloco é a menor unidade
+de comercialização.
+
+Como o processo de beneficiamento nas algodoeiras ocorre 24 horas por dia e 7 dias por semana e devido
+a limitações logísticas, existe a necessidade de se realizar o "emblocamento" no menor tempo possível.
+Por isso, as empresas optam por realizar esta etapa do processo de acordo com a classificação visual, já
+que os resultados da classificação por instrumentos podem demorar até 24 horas para chegar.
+
+Mesmo com a classificação visual, que é mais rápida que a por instrumentos, existe um ponto de lentidão
+no processo, pois é necessário que as amostras sejam enviadas para as unidades de classificação e
+somente depois que o emblocamento é realizado. Ter as unidades de classificação dentro da indústria não
+se mostra viável pela necessidade de se ter um ambiente controlado para garantia da qualidade das
+amostras. Assim, ter equipamentos que possam ser instalados na indústria (após a geração dos fardos),
+que possam coletar, processar e analisar de forma automatizada as amostras de cada fardo, se mostra uma
+alternativa com grande potencial para melhoria do processo. Neste cenário, um sistema de visão
+computacional parece ser o mais adequado.
+
+Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um
+computador enxerga o meio à sua volta, extraindo informações significativas a partir de imagens
+capturadas por diversos dispositivos como câmeras, sensores, scanners, etc. Estas informações permitem
+reconhecer, manipular e pensar sobre os objetos que compõem uma imagem \cite{ballard1982computer}.
+
+Por volta da década de 70, foram iniciados os primeiros estudos na área de visão computacional. Ao longo
+desses anos uma série de pesquisas foram conduzidas e técnicas de análise foram elaboradas,
+principalmente com o uso de inteligência artificial. Assim, a visão computacional fornece ao computador
+uma infinidade de informações precisas a partir de imagens e vídeos, de forma que o computador consiga
+executar tarefas inteligentes, simulando e aproximando-se da inteligência humana \cite{oliveira2024visao}.
+
+Um sistema básico de visão computacional consiste em quatro características: iluminação, câmera,
+computador e software de processamento de imagens. Esse sistema vai permitir a captura da imagem, sua
+conversão digital para armazenamento e processamento no computador e o software de processamento de
+imagens será responsável pelo aprimoramento, segmentação, detecção ou classificação da imagem
+\cite{zhang2014computer}
+
+O sistema de iluminação deve ser capaz de destacar as características de interesse do objeto, em
+detrimento das demais características. É um sistema de extrema importância para se garantir a eficiência e
+a acurácia de um sistema de visão computacional, além de ter uma grande influência na qualidade das
+imagens. As chaves de um bom sistema de iluminação são aquelas que provêm uma iluminação uniforme
+com um espectro de características e que produzem imagens de alta qualidade \cite{thomasson2005}.
+
+A câmera é o componente principal do sistema de visão computacional, que é usado para a aquisição da
+imagem e para a troca de dados com o computador. Existem diferentes tipos de dispositivos que capturam
+imagens em diversos espectros como monocromáticas, RGB, ultrassom, raios-x, NIR, etc \cite{brosnan2002}.
+
+A classificação visual por se tratar de um processo realizado manualmente e, apesar de possuir um
+padrão, o resultado está sujeito à interpretação a à subjetividade do profissional que a está executando,
+muitas vezes abrindo margens para questionamentos e rejeições na fase de negociação da mercadoria.
+
+Diante deste cenário, justifica-se a construção de um sistema que possibilite realizar a classificação visual
+do produto, seguindo todas as regulamentações necessárias e que elimine a subjetividade do processo e
+com velocidade. Assim, propõe-se este trabalho com o objetivo de construir um sistema automatizado de
+classificação do algodão, utilizando modelos de visão computacional e inteligência artificial, com o
+intuito de se ter uma maior padronização das classificações realizadas, bem como reduzir o número de
+rejeições da fase de negociação da mercadoria. Objetivos específicos: O hardware deve possibilitar a
+coleta e a classificação da amostra, sem depender de outros equipamentos ou softwares; A velocidade
+para a coleta da imagem, processamento e inferência deve ser adequada à demanda que a operação exige.
+Deve ser possível integrar via API os dados das amostras e suas classificações.

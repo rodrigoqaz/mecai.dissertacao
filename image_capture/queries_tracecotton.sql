@@ -83,14 +83,6 @@ SELECT * FROM temp WHERE rn=1
 
 
 
-SELECT * FROM tracecotton.talhao 
-
-
-
-
-
-SELECT max(databeneficiamento) FROM tracecotton.fardinho WHERE codigosai  = '00078986195518337950'
-
 -- Verifica onde que estão as malas
 SELECT
 	la.descricao
