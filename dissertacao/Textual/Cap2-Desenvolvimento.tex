@@ -92,7 +92,7 @@ Após, uma das amostras retiradas seguem para o processo de classificação visu
 	\legend{Fonte: Do Autor}
 \end{figure}
 
-O algodão é classificado em tipos de cor, representados por códigos que correspondem aos Padrões Físicos Universais, conforme apresentado na Tabela \ref{tab_tipo_cor} e por grau de folhas, conforme Tabela \ref{tab_grau_folha}. Esses padrões devem ser visualizados e memorizados antes de iniciar a classificação, pondendo ser consultados sempre que necessário.
+A classificação do algodão é feita com base em tipos de cor e graus de folha, ambos representados por códigos que correspondem aos Padrões Físicos Universais. A Tabela \ref{tab_tipo_cor} apresenta esses tipos de cor e suas respectivas classes. O grau de folha é uma escala que varia de 1 a 8, determinada pela quantidade de folhas presentes na amostra.  Esses padrões devem ser visualizados e memorizados antes de iniciar a classificação, pondendo ser consultados sempre que necessário.
 
 Após a memorização dos padrões, as amostras devem ser divididas no sentido longitudinal ao meio, subdividindo as metades com cuidado para não descaracterizá-las durante o manuseio. As duas piores partes são selecionadas para análise, sendo a pior parte voltada para cima, para facilitar a análise.
 
@@ -100,15 +100,20 @@ Avalia-se a cor, brilho, manchas, impurezas, contaminações e defeitos de benef
 
 \input{tables/tipo_cor}
 \clearpage
-\input{tables/grau_folha}
-\clearpage
-
 
 \subsubsection{Classificação instrumental}
 
-Em paralelo a segunda amostra é enviada para a classificação instrumental. O ambiente de trabalho deve atender a condições específicas de umidade e temperatura. As amostras devem estar em bandejas teladas ou perfuradas em uma única camada para garantir circulação de ar.
+Em paralelo a segunda amostra é enviada para a classificação instrumental, que é realizada em laboratório. O ambiente de trabalho deve atender a condições específicas de umidade e temperatura. As amostras devem estar em bandejas teladas ou perfuradas em uma única camada para garantir circulação de ar.
 
-São utilizados equipamentos do tipo HVI (\textit{High Volume Instrument}), que devem estar calibrados conforme as especificações do fabricante.
+São utilizados equipamentos do tipo HVI (\textit{High Volume Instrument}), que devem estar calibrados conforme as especificações do fabricante. Na Figura \Ref{fig_hvi_maquina}, é apresentado o modelo Uster HVI1000, que realiza a análise do HVI.
+
+\begin{figure}[H]
+	\caption{\label{fig_hvi_maquina}Equipamento Uster HVI 1000}
+	\begin{center}
+		\includegraphics[trim={0 0 0 0},clip, scale=.3]{img/hvi_maquina.jpg}
+	\end{center}
+	\legend{Fonte: \cite{uster2024hvi}}
+\end{figure}
 
 O processo de análise consiste na análise de micronaire, que é feita em um corpo de prova, enquando os outros parâmetros são analisados em dois corpos de prova por amostra. A amostra é submetida ao equipamento HVI para obtenção do relatório. O resultado é analisado e um documento de classificação é gerado.
 
@@ -128,17 +133,21 @@ Os parâmetros analisados são:
 
 
 
-
-
-
-
-
-
-
-
-
 \subsection{Relação entre a classificação visual e instrumental}
+ 
+\citeonline{nickerson1958grade} chegaram à relação entre a reflectância (\%Rd) e o índice de amarelo (+b) com a classificação do algodão por meio de um estudo detalhado que utilizou o Colorímetro Nickerson-Hunter. Este instrumento mede a cor do algodão em termos destes dois atributos, permitindo uma representação em um gráfico bidimensional. Para converter essas medidas em uma classificação de cor única, os autores desenvolveram um índice que relaciona os valores medidos com os padrões oficiais de tipo de algodão. 
 
+A análise envolveu encontrar uma linha de melhor ajuste entre os dados medidos e os padrões de cor, utilizando métodos de regressão para obter fórmulas de conversão e diagramas que facilitassem essa associação (Figura \ref{fig_hvi_color_chart}). Essa abordagem permitiu criar índices numéricos para diferentes estados do algodão, como fibras em estado bruto e fios tingidos, mantendo o valor de \textit{Middling} (Cor Média) em 100 e ajustando as relações para outros graus de cor.
+
+\clearpage
+\begin{figure}[H]
+	\caption{\label{fig_hvi_color_chart}Gráfico de cores e classificação manual e instrumental de fibras de algodão. No eixo vertical, estão os valores de reflectância. Quanto maior o valor, mais brilhante é o algodão. No eixo horizontal, estão valores típicos do índice de amarelo. Quanto maior o valor, mais amarela é a amostra.}
+	\begin{center}
+		\includegraphics[trim={0 0 0 0},clip, scale=.5]{img/hvi_color_chart.jpg}
+	\end{center}
+	\legend{Fonte: \citeonline{cottoninc2024hvicolor}}
+	% \nota{}
+\end{figure}
 
 
 
