@@ -306,3 +306,4 @@ TSWLatexianTemp*
 .venv/*
 .venv/pyvenv.cfg
 image_capture/amostras/*
+*.aux

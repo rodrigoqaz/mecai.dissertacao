@@ -30,7 +30,7 @@
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{USPSC-classe/USPSC}[01/06/2021 v3.1 USPSC]
+\ProvidesClass{classe/USPSC}[01/06/2021 v3.1 USPSC]
 \RequirePackage{ifthen}
 %
 % Captura as options article e twocolumn
