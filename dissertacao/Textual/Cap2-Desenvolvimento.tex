@@ -150,8 +150,6 @@ A análise envolveu encontrar uma linha de melhor ajuste entre os dados medidos 
 \end{figure}
 
 
-
-
 \section{Visão Computacional}\label{rev_cv}
 
 Neste capítulo será explorada com mais profundidade a disciplina de visão computacional, os sistemas de visão computacional e seus conceitos fundamentais, o processamento de imagens e aplicação da visão computacional no agro, com ênfase nas tecnologias e métodos aplicados à cultura do algodão.
@@ -166,17 +164,47 @@ No entanto, descobriu-se que a complexidade era maior do que imaginado, devido �
 
 \subsubsection{Captura de imagens}
 
-Existem diferentes sensores que podem ser utilizados para gerar uma imagem, como ultrassom, raios-X, sensores térmicos, sensores de espectroscopia de infravermelho próximo (NIR) e câmeras tradicionais, estas geralmente mais utilizadas  em problemas de visão computacional. 
+Existem diferentes sensores que podem ser utilizados para gerar uma imagem, como ultrassom, raios-X, sensores térmicos, sensores de espectroscopia de infravermelho próximo (NIR) e câmeras tradicionais, estas geralmente mais utilizadas em problemas de visão computacional \cite{brosnan2004improving}. 
 
-As câmeras são responsáveis pela captura da imagem, que é então convertida em sinais eletrônicos e processada. As câmeras CCD (dispositivo de carga acoplada) são comumente usadas devido à sua capacidade de produzir imagens de alta qualidade a partir de pixels que representam a intensidade de luz incidente. Existem dois tipos principais de câmeras CCD: de área (matriz) e de varredura linear. As câmeras de área capturam imagens completas de uma vez, enquanto as de varredura linear digitalizam linhas de pixels repetidamente para formar a imagem, ideal para inspeções de objetos em movimento contínuo. O tipo de câmera escolhido depende das especificidades da aplicação, como velocidade de processamento e nível de detalhe necessário na imagem.
+As câmeras são responsáveis pela captura da imagem, que é então convertida em sinais eletrônicos e processada. Basicamente, existem dois tipos de sersores: as câmeras CCD (\textit{Charge-Coupled Device}) e CMOS (\textit{Complementary Metal-Oxide-Semiconductor}).
+
+As câmeras CCD são reconhecidas pela alta qualidade de imagem que oferecem, especialmente em condições de baixa iluminação. Isso ocorre devido ao menor ruído intrínseco de seus sensores, que apresentam substratos mais silenciosos e menor quantidade de circuitos integrados no chip. Além disso, os sensores CCD possuem maior faixa dinâmica, proporcionando uma melhor relação entre os níveis de saturação e o limite inferior de sinal detectável, o que resulta em imagens mais detalhadas e com melhor gradação tonal. Outra vantagem significativa das câmeras CCD é a uniformidade na resposta dos pixels, o que as torna ideais para aplicações que exigem alta precisão, como fotografia científica, televisores de alta performance e aplicações médicas. No entanto, essa tecnologia apresenta desvantagens como maior consumo de energia e tamanho físico do sistema, já que muitas funções do sensor dependem de circuitos externos \cite{littwiller2001ccd_cmos}.
+
+Os sensores CMOS evoluíram significativamente nas últimas décadas, consolidando-se como uma alternativa viável aos CCDs, especialmente em aplicações que demandam baixo custo, baixo consumo de energia e integração de múltiplas funcionalidades em um único chip. A arquitetura CMOS permite a integração de circuitos analógicos e digitais diretamente no sensor, resultando em sistemas menores e mais leves. Além disso, sensores CMOS consomem menos energia, podendo operar com uma única fonte de baixa tensão, o que os torna ideais para dispositivos móveis e portáteis. Apesar dessas vantagens, os CMOS ainda enfrentam desafios como menor sensibilidade, maior ruído em condições de baixa iluminação e menor faixa dinâmica \cite{bigas2006cmos}. Na Tabela \ref{tab:ccd_vs_cmos} é apresentado um resumo comparando as principais características dos sensores CCD e CMOS, apresentados por \citeonline{bigas2006cmos}.
+
+\input{tables/ccd_vs_cmos.tex}
+
+FALAR AQUI SOBRE FORMA DE TRANSMITIR IMAGENS E COMPACTAÇÃO JPG E BMP
 
 \subsubsection{Iluminação}
 
+A iluminação desempenha um papel essencial nos sistemas de visão computacional, pois define as propriedades ópticas dos objetos a serem analisados. A luz incidente pode ser absorvida, refletida ou transmitida, influenciando diretamente a qualidade das imagens capturadas. Para otimizar o desempenho do sistema de visão, a escolha e a configuração do sistema de iluminação devem ser adaptadas à aplicação específica. Essa seleção cuidadosa reduz a necessidade de etapas complexas de processamento de imagem, aumentando a eficiência e a precisão das análises \cite{chen2002machine_vision}.
+
+\citeonline{zhang2014computer} destacam a importância de fontes de luz que realcem as características dos objetos e permitam distinções claras entre as partes detectadas e outras áreas. A eficiência e a precisão de um sistema de visão computacional dependem significativamente da qualidade da iluminação, que deve fornecer luz uniforme e estável, além de evitar reflexos e sombras que possam comprometer a análise. 
+
+A escolha da iluminação ideal depende das características espectrais desejadas para a aplicação, considerando tanto a geometria do objeto quanto os atributos a serem destacados. Por exemplo, sistemas que utilizam luz difusa são eficazes para minimizar reflexos especulares, enquanto a iluminação traseira pode ser essencial para delinear contornos e aumentar o contraste em objetos translúcidos. Diferentes tipos de lâmpadas são utilizados, incluindo tubos de raios X, fluorescentes, incandescentes, lasers e lâmpadas de infravermelho, cada uma operando em faixas espectrais específicas, desde raios X (0,01-10 nm) até o infravermelho próximo (700-2500 nm). Enquanto as lâmpadas fluorescentes são preferidas para análises baseadas em luz visível, os LEDs têm ganhado destaque por sua estabilidade, baixo consumo de energia e ampla disponibilidade em comprimentos de onda específicos \cite{cubero2010advances}.
+
 \subsubsection{Software}
 
-\subsection{Processamento de imagens}
+????
 
-segmentacao, extração de feature, classificacao
+\subsection{Processamento e análise de imagens}
+
+O processamento e a análise das imagens são componentes fundamentais nos sistemas de visão computacional, desempenhando um papel crucial na extração de informações visuais úteis para a classificação, detecção de defeitos e avaliação de qualidade \cite{krutz2000colour}. 
+
+Segundo \citeonline{brosnan2002}, o processamento de imagens engloba operações destinadas a melhorar a qualidade das imagens capturadas, removendo ruídos, corrigindo distorções geométricas e uniformizando a iluminação. Essas etapas iniciais são essenciais para garantir que as imagens estejam adequadamente preparadas para a análise subsequente. Já a análise de imagens refere-se à segmentação e à extração de características dos objetos de interesse, como forma, cor e textura, permitindo a interpretação e o reconhecimento dos elementos nas imagens.
+
+A análise de imagens é frequentemente dividida em três níveis: o processamento de baixo nível, que inclui a aquisição e o pré-processamento de imagens; o processamento de nível intermediário, focado na segmentação, representação e descrição; e o processamento de alto nível, que envolve o reconhecimento e a interpretação de padrões \cite{gunasekaran1996computer, sun2000pizza}.
+
+A aquisição consiste na conversão do sinal eletrônico do sensor para uma forma numérica. O pré-processamento refere-se ao processamento inicial dos dados brutos da imagem para correção de distorções geométricas, remoção de ruídos, correção do nível de cinza e correção de desfoque (Shirai, 1987). O objetivo dessa etapa é elhor a qualidade da imagem, removendo distorções indesejadas ou destacando características de interesse.
+
+No nível intermediário, a segmentação de imagens é uma das etapas mais importantes em toda a técnica de processamento de imagens, pois os dados extraídos posteriormente dependem fortemente da precisão dessa operação. Seu principal objetivo é dividir uma imagem em regiões que possuam uma forte correlação com objetos ou áreas de interesse. A segmentação pode ser realizada por três técnicas diferentes: limiarização, segmentação baseada em bordas e segmentação baseada em regiões (Sonkaetal., 1999;Sun, 2000) [VER NO BROSNAN] (Melhor explicar um pouco mais sobre cada técnica)
+
+pré-processamento
+segmentação
+representação
+descrição
+reconhecimento e interpretação de padrões
 
 \subsection{Aplicações da visão computacional no Agronegócio}
 
