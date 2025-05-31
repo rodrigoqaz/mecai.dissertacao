@@ -1,0 +1,11 @@
+version_name: "v5"
+type: "processing"
+input_version: "v1"
+description: "Dataset balanceado com Oversample com técnicas de DataAugmentation para as classes minoritárias"
+
+processing_steps:
+  - type: "sampling"
+    params:
+      method: "oversample_with_augmentation"
+      args:
+        ratio: 1.0

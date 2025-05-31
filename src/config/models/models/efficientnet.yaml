@@ -1,0 +1,67 @@
+model_type: "efficientnet"
+params:
+  architecture: "efficientnet_b0"
+  pretrained: true
+  unfreeze_layers: 5
+  hidden_units: 512
+  dropout: 0.5
+  weights: "IMAGENET1K_V1"
+optimizer:
+  type: "AdamW"
+  params:
+    lr: 0.0003
+    weight_decay: 0.001
+# scheduler:
+#   type: "ReduceLROnPlateau"
+#   params:
+#     mode: "min"
+#     patience: 8
+#     factor: 0.3
+#     min_lr: 0.00001
+scheduler:
+  type: "CosineAnnealingWarmRestarts"
+  params:
+    T_0: 10        
+    T_mult: 2     
+    eta_min: 0.00001
+loss:
+  type: "CrossEntropyLoss"
+  params:
+    label_smoothing: 0.1
+augmentations:
+  - type: "CutMix"
+    params:
+      alpha: 1.0
+      prob: 0.8
+  - type: "MixUp"
+    params:
+      alpha: 0.4
+      prob: 0.8
+  # - type: "RandomResizedCrop"
+  #   params:
+  #     size: 224
+  #     scale: [0.8, 1.0]
+  # - type: "RandomHorizontalFlip"
+  #   params:
+  #     p: 0.3
+  # - type: "ColorJitter"
+  #   params:
+  #     brightness: 0.2
+  #     contrast: 0.2
+  #     saturation: 0.1
+  # - type: "RandomRotation"
+  #   params:
+  #     degrees: 15
+  # - type: "RandomErasing"
+  #   params:
+  #     p: 0.2
+callbacks:
+  - class_path: src.utils.callbacks.EarlyStopping
+    init_args:
+      patience: 15
+      verbose: true
+  - class_path: src.utils.callbacks.ModelCheckpoint
+    init_args:
+      filepath: "best_model.pth"
+      monitor: val_loss
+      save_best_only: true

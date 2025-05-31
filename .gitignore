@@ -307,3 +307,8 @@ TSWLatexianTemp*
 .venv/pyvenv.cfg
 image_capture/amostras/*
 *.aux
+*__pycache__/
+data/*
+
+credentials.json
+token.pickle

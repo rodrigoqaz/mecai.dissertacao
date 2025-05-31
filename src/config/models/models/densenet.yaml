@@ -1,0 +1,41 @@
+model_type: "densenet"
+params:
+  architecture: "densenet121"
+  pretrained: true
+  unfreeze_layers: 3
+  hidden_units: 512
+  dropout: 0.5
+  weights: "IMAGENET1K_V1"
+
+optimizer:
+  type: "AdamW"
+  params:
+    lr: 0.0002
+    weight_decay: 0.0005
+
+scheduler:
+  type: "ReduceLROnPlateau"
+  params:
+    mode: "min"
+    patience: 5
+    factor: 0.2
+    min_lr: 0.0000001
+
+loss:
+  type: "CrossEntropyLoss"
+  params:
+    label_smoothing: 0.1
+
+augmentations:
+  {}
+
+callbacks:
+  - class_path: src.utils.callbacks.EarlyStopping
+    init_args:
+      patience: 12
+      verbose: true
+  - class_path: src.utils.callbacks.ModelCheckpoint
+    init_args:
+      filepath: "best_densenet.pth"
+      monitor: "val_accuracy"
+      save_best_only: true

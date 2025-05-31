@@ -109,7 +109,10 @@ for root, dirs, files in os.walk('image_capture/amostras/'):
         amostras.append(codigo_fardinho)
 
 dados_fardinhos = consulta_dados_tracecotton(session)
+dados_fardinhos.to_parquet('dados_fardinhos.parquet')
 amostras_classificadas = dados_fardinhos[dados_fardinhos['codigosai'].isin(amostras)]
+print(amostras_classificadas.head())
+amostras_classificadas.to_parquet('amostras_classificadas.parquet')
 contagem_amostras = pd.Series(amostras).value_counts().to_dict()
 amostras_classificadas['qtd_imagens'] = amostras_classificadas['codigosai'].map(contagem_amostras).fillna(0).astype(int)
 

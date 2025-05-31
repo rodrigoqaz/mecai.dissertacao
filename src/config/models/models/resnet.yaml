@@ -1,0 +1,49 @@
+model_type: "resnet"
+params:
+  architecture: "resnet50"
+  pretrained: true
+  unfreeze_layers: 8
+  hidden_units: 1024
+  dropout: 0.7
+  weights: "IMAGENET1K_V1"
+optimizer:
+  type: "AdamW"
+  params:
+    lr: 0.001
+    weight_decay: 0.001
+# scheduler:
+#   type: "ReduceLROnPlateau"
+#   params:
+#     mode: "min"
+#     patience: 5
+#     factor: 0.5
+#     min_lr: 0.00001
+scheduler:
+  type: "CosineAnnealingWarmRestarts"
+  params:
+    T_0: 10        
+    T_mult: 2     
+    eta_min: 0.00001
+loss:
+  type: "CrossEntropyLoss"
+  params:
+    label_smoothing: 0.1
+augmentations:
+  - type: "CutMix"
+    params:
+      alpha: 1.0
+      prob: 0.6
+  - type: "MixUp"
+    params:
+      alpha: 0.4
+      prob: 0.6
+callbacks:
+  - class_path: src.utils.callbacks.EarlyStopping
+    init_args:
+      patience: 15
+      verbose: true
+  - class_path: src.utils.callbacks.ModelCheckpoint
+    init_args:
+      filepath: "best_model_restnet.pth"
+      monitor: val_loss
+      save_best_only: true

@@ -1,0 +1,12 @@
+version_name: "v1"
+type: "initial" 
+raw_source: "data/silver/amostras_recortadas_quadrado"
+json_mapping: "data/silver/amostras_recortadas.json"
+light_source: "AB"
+processing_steps:
+  - type: "organize"
+    params:
+      name_pattern: "{classe}_{original_name}"
+  - type: "resize"
+    params:
+      size: [224, 224]
