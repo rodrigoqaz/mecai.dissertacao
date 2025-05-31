@@ -11,12 +11,16 @@ Este projeto de dissertação de mestrado desenvolve um sistema de classificaç�
 ## 📒 Sumário
 - [📋 Visão Geral](#visão-geral)
 - [🎯 Objetivos](#-objetivos)
-- [📁 Estrutura do Projeto](#estrutura-do-projeto)
-- [Principais Funcionalidades](#principais-funcionalidades)
-- [Como Executar](#como-executar)
-- [Dependências](#dependências)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [🚀 Principais Funcionalidades](#-principais-funcionalidades)
+- [💾 Como Executar](#como-executar)
+- [📊 Monitoramento e Logs](#-monitoramento-e-logs)
+- [📈 Resultados](#-resultados)
+- [🤝 Contribuição](#-contribuição)
+- [📄 Licença](#-licença)
+- [👨‍💻 Autor](#-autor)
+- [🙏 Agradecimentos](#-agradecimentos)
+- [☑️ Status do Projeto](#-status-do-projeto)
 
 
 ### 🎯 Objetivos
@@ -154,7 +158,7 @@ Este projeto é de uso acadêmico. Consulte o arquivo LICENSE (se houver) para m
 
 ---
 
-## 📊 Status do Projeto
+## ☑️ Status do Projeto
 
 ![Status](https://img.shields.io/badge/status-Em%20Desenvolvimento-yellow)
 
