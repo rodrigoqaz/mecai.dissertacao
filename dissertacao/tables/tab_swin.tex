@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\caption{Especificações Técnicas e Aplicações das Variantes Swin Transformer}
+\label{tab:swin_variations}
+\begin{tabular}{@{}lccc p{6cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Parâmetros} & \textbf{GFLOPs} & \textbf{Top-1 Acc*} & \textbf{Cenário de Uso na Classificação de Algodão} \\ \midrule
+Swin-T (Tiny) & 28M & 4,5 & 81,3\% & Classificação em dispositivos de borda ou triagem preliminar de amostras. \\
+Swin-S (Small) & 50M & 8,7 & 83,0\% & Equilíbrio entre custo e precisão para monitoramento de linha de produção. \\
+Swin-B (Base) & 88M & 15,4 & 83,5\% & Padrão para pesquisa acadêmica; alta capacidade de distinção entre classes similares. \\
+Swin-L (Large) & 197M & 34,5 & 87,3\%** & Máximo desempenho para análise laboratorial de granulação fina (\textit{fine-grained}). \\ \midrule
+SwinV2-G (Giant) & 3B & 650+ & 90,1\% & Modelos de fundação; voltado para \textit{benchmarking} e pré-treino massivo. \\ \bottomrule
+\end{tabular}
+\footnotesize{*Acurácia medida no ImageNet-1K. **Treinado com ImageNet-22K.}
+\end{table}

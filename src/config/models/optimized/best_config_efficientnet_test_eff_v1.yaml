@@ -1,0 +1,56 @@
+augmentations:
+- params:
+    alpha: 1.0
+    prob: 0.8
+  type: CutMix
+- params:
+    alpha: 0.4
+    prob: 0.8
+  type: MixUp
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 15
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_efficientnet.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v8/train_val
+  dataset_name: v8
+  device: auto
+  experiment_name: test_eff_v1
+  max_epochs: 3
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: efficientnet
+optimizer:
+  params:
+    lr: 0.00017666722885722823
+    weight_decay: 0.0001270727650677548
+  type: Adam
+params:
+  architecture: efficientnet_b0
+  dropout: 0.2515514645970944
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 4
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.15162506061522743
+    min_lr: 1.0e-06
+    mode: min
+    patience: 6
+  type: ReduceLROnPlateau
+train_transform:
+  transforms: []
+val_transform:
+  transforms: []

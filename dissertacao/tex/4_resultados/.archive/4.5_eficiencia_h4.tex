@@ -1,0 +1,34 @@
+\section{Eficiência e Viabilidade Industrial ($H_4$)}
+
+A validação da Hipótese $H_4$ exige o equilíbrio entre o rigor estatístico e a viabilidade operacional. A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do dataset (V10).
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Ranking de Eficiência Industrial (Dataset V10).}
+    \label{tab:industrial_ranking}
+    \input{tables/h4_industrial_ranking.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor.
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+Para visualizar o compromisso entre as métricas, a Figura \ref{fig:efficiency_tradeoff_full} apresenta o gráfico de dispersão correlacionando o MCC, a latência de inferência e a complexidade computacional (GFLOPs).
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
+  \caption{Trade-off Industrial: MCC vs. Latência (escala logarítmica). O tamanho das bolhas representa a complexidade em GFLOPs. Observa-se o agrupamento das CNNs modernas no quadrante superior esquerdo.}
+  \label{fig:efficiency_tradeoff_full}
+\end{figure}
+
+A análise da Figura \ref{fig:efficiency_tradeoff_full} permite identificar três perfis tecnológicos distintos:
+\begin{enumerate}
+    \item \textbf{Alta Precisão (Elite):} A \textbf{DenseNet} ocupa o topo do eixo Y, mas desloca-se para a direita no eixo de latência, indicando um custo computacional elevado para o ganho marginal de performance.
+    \item \textbf{Ponto de Operação Industrial (Sweet Spot):} A \textbf{ConvNext} situa-se no quadrante superior esquerdo, mantendo um MCC elevado com a menor latência entre os modelos de alta performance. O tamanho moderado de sua bolha (GFLOPs) reforça sua adequação para sistemas de tempo real.
+    \item \textbf{Baixa Eficiência Relativa:} Os modelos baseados em \textbf{Transformers} (bolhas maiores e mais à direita) demonstram baixa eficiência para este problema específico, apresentando alta latência sem superar a barreira de performance das CNNs.
+\end{enumerate}
+
+Conclui-se que, embora a DenseNet possua superioridade estatística, a \textbf{ConvNext} emerge como a solução de maior viabilidade industrial, confirmando os pressupostos da hipótese $H_4$ ao oferecer o melhor balanço entre agilidade e assertividade.

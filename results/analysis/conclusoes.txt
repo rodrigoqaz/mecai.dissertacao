@@ -1,0 +1,1 @@
+Análise de 308 experimentos v8.Modelo com maior teto de performance: efficientnetModelo com maior estabilidade (menor desvio): swin

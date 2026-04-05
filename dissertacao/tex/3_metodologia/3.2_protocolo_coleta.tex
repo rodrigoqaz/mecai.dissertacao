@@ -1,0 +1,63 @@
+%Revisado
+
+O processo de aquisição de dados foi conduzido em ambiente industrial, diretamente nas instalações de uma unidade de beneficiamento de algodão (algodoeira) localizada no município de Sapezal, Mato Grosso, um dos principais polos produtivos do cerrado brasileiro. A coleta ocorreu durante o beneficiamento safra de 2023/2024, totalizando 3.852 imagens brutas, sendo 1.284 para cada uma das três configurações de iluminação (2800K, 6000K e ambas).
+    
+Para garantir a rastreabilidade e a reprodutibilidade do experimento, estabeleceu-se um protocolo padronizado de captura, desenhado não apenas para gerar as imagens, mas para assegurar o vínculo exato com os laudos de qualidade oficiais (o \textit{ground truth} dos modelos). O fluxo de trabalho operacionalizou-se nas seguintes etapas, ilustradas no fluxograma da Figura \ref{fig:fluxograma_coleta}\footnote{Um vídeo demonstrativo da operação do sistema de captura na unidade de beneficiamento pode ser acessado no Material Suplementar ou por meio do link: \url{https://www.youtube.com/shorts/d_1C78sa11c}}:
+
+\begin{enumerate}
+    \item \textbf{Identificação e Rastreabilidade:} O operador inicia o ciclo utilizando um leitor de código de barras para escanear a etiqueta universal da amostra. Ess procedimento vincula automaticamente o ID único do fardo, o lote de processamento e a origem da pluma aos metadados dos arquivos de imagem que serão gerados, eliminando o risco de erros de digitação e garantindo o cruzamento futuro com os dados de classificação oficial (HVI/Visual).
+    
+    \item \textbf{Posicionamento Padronizado:} A porção de algodão é extraída de sua embalagem e alocada no centro da base do equipamento de captura. O operador realiza a padronização manual do formato da amostra, acomodando a superfície da pluma para garantir a máxima planicidade possível. Esse rigor na modelagem física da amostra é crucial para evitar oclusões severas, minimizar a formação de sombras irregulares e assegurar que a área exposta à lente seja representativa da densidade real do fardo.
+    
+    \item \textbf{Captura Multiespectral:} Por meio da interface do \textit{software} de controle, a sequência de aquisição é disparada. O operador orquestra manualmente o acionamento dos LEDs e a captura das imagens em três condições sequenciais: iluminação exclusiva de 2800K (AM), iluminação exclusiva de 6000K (BR) e iluminação combinada (AB). As três matrizes de pixels resultantes são salvas em formato sem perdas e atreladas ao ID escaneado no Passo 1.
+
+    \item \textbf{Encaminhamento para Classificação Oficial:} Concluída a aquisição visual, a amostra física é imediatamente reconduzida ao fluxo normal da algodoeira, sendo destinada ao laboratório para a classificação comercial humana. Esse passo é o que permite a rotulagem supervisionada do \textit{dataset} nas etapas posteriores da pesquisa.
+\end{enumerate}
+
+
+\begin{figure}[ht!]
+\centering
+\caption{Fluxograma do processo de coleta de amostras e aquisição de imagens.}
+% --- Definição dos estilos dos elementos do fluxograma ---
+%   \tikzset{
+%     process/.style    = {rectangle, rounded corners, draw, fill=blue!10, text width=7.5em, text centered, minimum height=2em, node distance=1.5cm},
+%     startstop/.style  = {circle, draw, fill=green!20, text centered, minimum height=2em, node distance=0.5cm},
+%     arrow/.style      = {-{Stealth[]}, thick}
+%   }
+% --- Desenho do fluxograma ---
+\begin{tikzpicture}[node distance=2cm and 1cm]
+    % --- Linha 1 ---
+    \node (inicio) [startstop] {Início};
+    \node (ler_barcode) [process, right=0.5cm of inicio] {1. Ler código de barras da amostra};
+    \node (posicionar) [process, right=0.5cm of ler_barcode] {2. Posicionar amostra na Caixa de Captura};
+    \node (iniciar_captura) [process, right=0.5cm of posicionar] {3. Iniciar processo de captura no software};
+    % --- Linha 2 ---
+    \node (captura) [process, below=of inicio, node distance=2.5cm, xshift=2cm , text width=10em] {
+        4. Capturar imagens:
+        \begin{itemize}[leftmargin=*, noitemsep]
+            \item {\footnotesize Iluminação AM (2800K)}
+            \item {\footnotesize Iluminação BR (6000K)}
+            \item {\footnotesize Iluminação AB (Ambas)}
+        \end{itemize}
+    };
+    \node (salvar) [process, right=0.5cm of captura, text width=5em] {5. Salvar as três imagens associadas ao ID};
+    % --- Linha 3 ---
+    \node (remover) [process, right=0.5cm of salvar, node distance=2.5cm, text width=5em] {6. Remover amostra da caixa};
+    \node (fim) [startstop, fill=red!20, right=0.5cm of remover, text width=5em] {Próxima Amostra};
+    % --- Conexões (setas) ---
+    \draw [arrow] (inicio) -- (ler_barcode);
+    \draw [arrow] (ler_barcode) -- (posicionar);
+    \draw [arrow] (posicionar) -- (iniciar_captura);
+    % Conexão da Linha 1 para a Linha 2
+    \draw [arrow] (iniciar_captura.south) -- ++(0,-0.5) -| (captura.north);
+    \draw [arrow] (captura) -- (salvar);
+    \draw [arrow] (salvar) -- (remover);
+    \draw [arrow] (remover) -- (fim);
+\end{tikzpicture}
+% \caption*{Fonte: Elaborado pelo autor (2025).}
+\label{fig:fluxograma_coleta}
+\end{figure}
+
+A execução rigorosa desse protocolo resultou em um conjunto de dados primário robusto, em que cada amostra física originou múltiplas imagens sob diferentes condições espectrais, todas rigorosamente rastreáveis até o seu laudo de qualidade comercial.
+
+

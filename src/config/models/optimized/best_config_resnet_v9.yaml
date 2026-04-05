@@ -1,0 +1,44 @@
+augmentation_config:
+  batch_level_aug_method: cutmix
+  mix_alpha: 0.8360639939670744
+  per_image_aug_method: none
+  use_augmentation: true
+global_config:
+  batch_size: 32
+  dataset_name: v9
+  device: auto
+  experiment_name: ELITE_EVAL_v9_resnet
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: resnet
+params:
+  architecture: resnet50
+  augmentations: '[{''type'': ''CutMix'', ''params'': {''alpha'': 1.0, ''prob'': 0.6}},
+    {''type'': ''MixUp'', ''params'': {''alpha'': 0.4, ''prob'': 0.6}}]'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_model_restnet.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v9/train_val
+  device: auto
+  dropout: '0.3430438420399564'
+  experiment_name: ResNet
+  global_config: '{''data_dir'': ''data/gold/datasets/v9/train_val'', ''experiment_name'':
+    ''ResNet'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v9'', ''seed'':
+    42, ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto''}'
+  hidden_units: '512'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.1}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 0.0001809652483472131, ''weight_decay'':
+    6.83675414080605e-05}}'
+  params: '{''architecture'': ''resnet50'', ''pretrained'': True, ''unfreeze_layers'':
+    3, ''hidden_units'': 512, ''dropout'': 0.3430438420399564, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''StepLR'', ''params'': {''step_size'': 9, ''gamma'': 0.1}}'
+  unfreeze_layers: '3'
+  weights: IMAGENET1K_V1

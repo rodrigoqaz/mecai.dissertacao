@@ -1,0 +1,107 @@
+% Revisado
+\subsection{Fundamentos de um Sistema de Visão Computacional}
+
+    Um sistema de visão computacional é a integração de \textit{hardware} e \textit{software} projetada para simular a percepção visual humana. \citeonline{saldana2013review} definem que tais sistemas têm o objetivo de extrair e analisar informações de objetos de forma automática, objetiva e não invasiva. A arquitetura típica estrutura-se de três pilares fundamentais: o dispositivo de aquisição de imagens (sensores), o sistema de iluminação e a unidade de processamento (software).
+
+    \subsubsection{Aquisição de imagens}
+
+        A aquisição da imagem é o primeiro estágio do processo, no qual a radiação eletromagnética refletida pelo objeto é convertida em dados digitais. Embora existam sensores baseados em ultrassom, raios-X e espectroscopia NIR, as câmeras digitais operando no espectro visível são os dispositivos predominantes na agricultura de precisão \cite{brosnan2004improving}.
+
+        No núcleo dessas câmeras, a captura é realizada por dois tipos principais de sensores: CCD (\textit{Charge-Coupled Device}) e CMOS (\textit{Complementary Metal-Oxide-Semiconductor}).
+
+        As câmeras CCD são historicamente reconhecidas pela alta fidelidade de imagem e sensibilidade em condições de baixa luminosidade. Isso decorre de sua arquitetura, que privilegia uma maior área fotossensível (fator de preenchimento) e uniformidade na resposta dos pixels, resultando em baixo ruído e ampla faixa dinâmica. Tais características as tornaram padrão em aplicações científicas de alta precisão. Contudo, seu alto consumo energético e a complexidade dos circuitos externos limitam sua portabilidade \cite{littwiller2001ccd_cmos}.
+
+        Em contrapartida, a tecnologia CMOS evoluiu drasticamente nas últimas décadas. Sua arquitetura permite a integração de conversores e amplificadores diretamente no pixel, reduzindo o consumo de energia, o tamanho físico e o custo de fabricação. Embora versões antigas apresentassem maior ruído, sensores CMOS modernos atingiram níveis de qualidade comparáveis aos CCDs, tornando-se a escolha dominante para dispositivos móveis e sistemas embarcados no campo \cite{bigas2006cmos}. A Tabela \ref{tab:ccd_vs_cmos} resume as diferenças técnicas entre as tecnologias.
+
+        \input{tables/ccd_vs_cmos.tex}
+
+        No entanto, para a aplicação específica da classificação de algodão, a escolha do sensor impõe desafios críticos que vão além da arquitetura de fabricação. A natureza física da pluma exige características sensoriais específicas para garantir a correlação com os padrões comerciais:
+
+    \begin{enumerate}
+        \item \textbf{Faixa Dinâmica (\textit{Dynamic Range}):} O algodão beneficiado possui alta refletância (brilho), criando um cenário de alto contraste em que as impurezas são significativamente mais escuras que a fibra. \citeonline{li2025measurement} destacam que a captura de imagens nesse cenário enfrenta o desafio de sombras e brilho excessivo; sensores com baixa faixa dinâmica tendem a saturar nos brancos ou perder detalhes nas áreas sombreadas das impurezas, exigindo algoritmos robustos de segmentação (como o Color-Unet) para garantir a consistência da medição de cor.
+        
+        \item \textbf{Resolução Espacial:} A detecção de micro-impurezas (\textit{pepper trash}) impõe um desafio de amostragem. \citeonline{li2025cottonyolo} argumentam que métodos tradicionais falham em detectar esses pequenos objetos devido à complexidade do fundo e à mistura de pixels. O uso de sensores de alta resolução, aliados a redes neurais profundas, torna-se mandatório para distinguir contaminantes minúsculos que, em resoluções menores, seriam invisíveis ou confundidos com ruído.
+        
+        \item \textbf{Fidelidade de Cor:} A classificação comercial depende estritamente dos parâmetros de Amarelamento (+b) e Reflectância (Rd). Segundo \citeonline{li2023novel}, a simples captura RGB não garante a correlação com o padrão HVI. É necessária uma calibração rigorosa e a conversão para espaços de cor perceptuais (como CIE $L^*a^*b^*$ ou Hunter) para que o sistema de visão atinja coeficientes de determinação superiores a 0,88 quando comparado aos colorímetros industriais, evitando erros de graduação que resultam em prejuízo financeiro.
+    \end{enumerate}
+
+
+        Além do sensor, a integridade da análise depende do formato de armazenamento. Em aplicações científicas, formatos de compressão sem perdas, como PNG, BMP ou TIFF, são preferíveis, pois preservam o valor exato de cada pixel. Formatos com perdas, como o popular JPEG, utilizam algoritmos que descartam informações de alta frequência para reduzir o tamanho do arquivo. Para a classificação de algodão, na qual a textura fina e a presença de micro-impurezas são críticas, os artefatos de bloco gerados pela compressão JPEG podem ser interpretados erroneamente pelos algoritmos como ruído ou defeitos, comprometendo a precisão do modelo \cite{vanderwalt2014scikit}.
+
+
+    \subsubsection{Iluminação}
+
+        A iluminação é um componente crítico nos sistemas de visão computacional, pois define as propriedades ópticas de absorção, reflexão e transmissão dos objetos analisados. Uma captura bem iluminada reduz a necessidade de etapas algorítmicas complexas de pré-processamento, aumentando a eficiência computacional e a precisão das análises \cite{chen2002machine_vision}. Segundo \citeonline{zhang2014computer}, a fonte de luz ideal deve fornecer uma incidência uniforme e estável, realçando as características de interesse e mitigando reflexos ou sombras indesejáveis que possam comprometer a segmentação do objeto.
+
+        No contexto específico da classificação de algodão, a iluminação desempenha um papel duplo e, por vezes, antagônico, exigindo um compromisso técnico (\textit{trade-off}):
+
+        \begin{itemize}
+            \item \textbf{Para Análise de Cor (Simulação de HVI):} A classificação comercial baseia-se na reflectância (\%Rd) e no amarelamento (+b). \citeonline{rady2025computervision}, ao desenvolverem sistemas de visão para graduação de algodão egípcio, demonstraram que a consistência na classificação de cor exige uma iluminação difusa e homogênea. O uso de luz direcional cria sombras e reflexos na fibra que alteram os valores RGB capturados, impedindo a correlação direta com os padrões físicos universais.
+            
+            \item \textbf{Para Detecção de Impurezas e Robustez:} Paradoxalmente, a luz difusa que favorece a cor tende a ``suavizar'' a textura, ocultando defeitos tridimensionais. \citeonline{verma2026graphcotton} destacam que a variabilidade de iluminação é um dos principais desafios para a segmentação robusta de capulhos e impurezas em cenários complexos. Para detectar contaminantes que possuem a mesma cor da fibra (como plásticos claros) ou defeitos de preparação (\textit{neps}), uma componente de luz direcional ou rasante é fundamental para gerar microssombras que revelam a morfologia do objeto, permitindo que modelos de detecção superem as limitações da simples análise de cor.
+        \end{itemize}
+
+        Atualmente, a tecnologia LED (\textit{Light-Emitting Diode}) consolidou-se como padrão para solucionar esse dilema. Sua estabilidade espectral e capacidade de controle rápido permitem o desenvolvimento de sistemas de iluminação híbridos ou multiespectrais, que alternam entre configurações difusas e direcionais para capturar o máximo de informação da amostra em uma única inspeção \cite{cubero2010advances}.
+
+        Dessa forma, o projeto do sistema de iluminação para esta dissertação não buscou apenas a visibilidade, mas a fidelidade fotométrica, garantindo que a imagem digital servisse como um \textit{proxy} confiável tanto para a avaliação cromática quanto para a inspeção morfológica da qualidade.
+
+
+    \subsubsection{Software}
+
+        O componente de \textit{software} atua como o cérebro do sistema de visão computacional, responsável não apenas por orquestrar o \textit{hardware} de captura e iluminação, mas principalmente por implementar os algoritmos de interpretação visual. Historicamente, o desenvolvimento baseava-se em bibliotecas de processamento de imagem clássico (ou \textit{rule-based}), como o OpenCV (\textit{Open Source Computer Vision Library}). Essas ferramentas exigiam que o engenheiro definisse manualmente os descritores matemáticos para extrair bordas, cores ou formas geométricas \cite{opencv_library}.
+
+        No entanto, o estado da arte na agricultura de precisão sofreu uma mudança de paradigma com a consolidação do aprendizado profundo (\textit{Deep Learning}). Conforme revisado por \citeonline{mustofa2023comprehensive}, o foco do desenvolvimento de \textit{software} migrou da engenharia de características manual (\textit{feature engineering}) para a curadoria de dados e o treinamento de redes neurais convolucionais (CNNs). Nesse novo cenário, o \textit{software} não segue mais regras lógicas rígidas baseadas em limiares de cor, mas aprende padrões complexos a partir de exemplos, exigindo \textit{frameworks} robustos para o treinamento e inferência dos modelos.
+
+        Atualmente, dois ecossistemas dominam o desenvolvimento de \textit{software} para visão agrícola:
+
+        \begin{itemize}
+            \item \textbf{Frameworks de Treinamento (PyTorch/TensorFlow):} São as plataformas nas quais os modelos são construídos. Uma revisão recente de \citeonline{zhang2025bibliometric} destaca que, embora o TensorFlow tenha sido pioneiro na produção industrial, o PyTorch ganhou predominância na pesquisa agrícola devido à sua flexibilidade e facilidade de \textit{debugging}, permitindo a prototipagem rápida de novas arquiteturas para diversas aplicações.
+            
+            \item \textbf{Arquiteturas de Detecção (YOLOv8/Transformers):} O \textit{software} moderno implementa arquiteturas pré-treinadas que oferecem o equilíbrio ideal entre velocidade e precisão. \citeonline{jelali2025improvedyolov8} destacam a arquitetura YOLOv8 (\textit{You Only Look Once}, versão 8) como o padrão atual para monitoramento agrícola em tempo real, superando antecessores na detecção de pequenos objetos em cenários não estruturados, o que representa uma característica vital para identificar impurezas minúsculas no algodão.
+        \end{itemize}
+
+        Por fim, uma camada crítica do \textit{software} frequentemente negligenciada é a ferramenta de anotação e gestão de dados. Como a performance do modelo depende estritamente da qualidade dos exemplos fornecidos (``Garbage In, Garbage Out''), o uso de plataformas para rotulagem consistente de imagens tornou-se um pré-requisito. \citeonline{yang2025ip} argumentam que a falta de anotações precisas é hoje o maior gargalo para a aplicação de visão computacional no campo, exigindo softwares que facilitem a marcação semântica de defeitos e o aumento de dados para robustecer o modelo contra variações de iluminação.
+
+\subsection{Processamento e Análise de Imagens}
+
+    O processamento e a análise de imagens constituem o núcleo algorítmico dos sistemas de visão, transformando a matriz numérica bruta capturada pelo sensor em informações semânticas para a tomada de decisão. A literatura clássica, consolidada por \citeonline{gonzalez2017digital}, organiza esse fluxo em uma hierarquia de três níveis: baixo, médio e alto nível. Embora a ascensão do aprendizado profundo (\textit{deep learning}) tenha automatizado a transição entre essas etapas, a compreensão dessa estrutura permanece fundamental para o design de sistemas robustos.
+
+    \subsubsection{Processamento de Baixo Nível: Pré-processamento}
+    
+        O processamento de baixo nível engloba operações nas quais tanto a entrada quanto a saída são imagens. O objetivo primordial é a melhoria da qualidade visual e a restauração de dados para facilitar as etapas subsequentes. Técnicas comuns incluem a correção radiométrica (uniformização da iluminação), a redução de ruído via filtros espaciais e a correção geométrica de distorções da lente.
+        
+        No contexto moderno de redes neurais, esta etapa evoluiu para incluir o aumento de dados (\textit{data augmentation}) e a normalização estatística. \citeonline{shorten2019survey} destacam que, para aplicações agrícolas onde a variabilidade de campo é alta, aplicar transformações geométricas e de cor nas imagens de treinamento é crucial para evitar o \textit{overfitting} e garantir que o modelo generalize bem para diferentes condições de iluminação.
+
+    \subsubsection{Processamento de Nível Intermediário: Segmentação e Representação}
+    
+        Nesse estágio, a operação transita de imagens para atributos. A tarefa central é a segmentação, que visa particionar a imagem em regiões de interesse: no caso do algodão, separar a fibra do fundo e isolar as impurezas.
+        
+        Abordagens tradicionais baseavam-se em limiarização (\textit{thresholding}) e detecção de bordas \cite{sonka1993}. Contudo, \citeonline{li2025cottonyolo} argumentam que métodos clássicos falham na classificação de algodão devido à complexidade da textura: sombras na fibra podem ser confundidas com sujeira, e impurezas claras (como plásticos) não possuem contraste suficiente para uma limiarização simples.
+        
+        Essa limitação impulsionou a adoção de redes neurais convolucionais (CNNs). Diferentemente da extração manual de atributos (forma, textura, momentos), as CNNs aprendem hierarquicamente as representações necessárias: as primeiras camadas da rede atuam como filtros de borda e textura, enquanto as camadas profundas agem como segmentadores semânticos, identificando padrões complexos que escapam à modelagem matemática tradicional \cite{lecun2015deep}.
+
+    \subsubsection{Processamento de Alto Nível: Interpretação e Classificação}
+    
+        O nível final envolve a ``compreensão'' da cena, atribuindo significado aos objetos segmentados. Na classificação de qualidade do algodão, isso não significa apenas detectar uma partícula, mas interpretá-la semanticamente: classificar se é uma folha, um caule ou um defeito de preparação (\textit{nep}) e, com base no conjunto, atribuir uma nota global ao fardo (Tipo/Grau).
+        
+        Enquanto sistemas antigos utilizavam classificadores estatísticos (como SVM ou KNN) sobre vetores de características fixos, os sistemas modernos realizam a classificação de forma integrada. O modelo aprende a correlacionar a distribuição espacial e morfológica das impurezas diretamente com os padrões de qualidade comercial, emulando o processo cognitivo de um classificador humano experiente \cite{pacal2024systematic}.
+
+\subsection{Aplicações da Visão Computacional}
+
+    A aplicação da visão computacional no agronegócio ultrapassou a fase experimental para se tornar uma ferramenta essencial na garantia de qualidade e produtividade. A literatura recente evidencia uma migração das técnicas clássicas de processamento de imagem para abordagens baseadas em aprendizado profundo, capazes de lidar com a variabilidade natural dos produtos agrícolas \cite{patricio2018,tian2020}.
+    
+    Na sequência, discute-se como essa tecnologia evoluiu do monitoramento de campo para a rigorosa inspeção de qualidade industrial, nicho no qual este trabalho se insere.
+
+    \subsubsection{Monitoramento e Detecção de Padrões em Campo}
+
+        No ambiente de cultivo, a visão computacional é amplamente utilizada para a detecção de anomalias biológicas. \citeonline{ahad2023} e \citeonline{ritharson2023} demonstraram que CNNs podem superar a sensibilidade humana na identificação de doenças, atingindo níveis de acurácia superiores a 98\% em culturas de arroz. A tendência atual é a implementação desses modelos em arquiteturas leves (como YOLOv8) para processamento em tempo real \cite{shwetha2024}.
+        
+        Essa capacidade de detecção estende-se à cultura do algodão ainda no campo. \citeonline{singh2023}, por exemplo, desenvolveram algoritmos para identificar capulhos maduros em tempo real, buscando a automação da colheita. Embora a detecção em campo esteja avançada, o maior desafio tecnológico reside na etapa seguinte: a avaliação da qualidade do produto colhido.
+
+    \subsubsection{Inspeção de Qualidade e Padronização Pós-Colheita}
+
+        A avaliação de qualidade de produtos agrícolas, historicamente subjetiva, tem sido transformada pela automação visual. Desde os trabalhos pioneiros de \citeonline{Majumdar1999} na classificação de cereais por textura, a tecnologia evoluiu para detectar defeitos sutis, muitas vezes imperceptíveis ao olho humano, em esteiras de alta velocidade. \citeonline{zhu2024} aplicaram técnicas de luz estruturada para identificar danos mecânicos em maçãs, validando o uso de visão computacional para a tipificação comercial.
+
+        No contexto específico da fibra de algodão, a pureza e a cor são os atributos mais críticos. A detecção de contaminantes (\textit{foreign matter}) é um problema clássico revisitado por \citeonline{wang2023}, que implementaram a arquitetura YOLOv5 para distinguir fibras de materiais estranhos (cascas, plásticos) com alta velocidade. A complexidade desta tarefa assemelha-se à detecção de ervas daninhas em campo, na qual a distinção entre o ``alvo'' e o ``fundo'' exige robustez contra variações de iluminação e oclusão \cite{juwono2023, subeesh2022}.
+        
+        Apesar desses avanços pontuais na detecção de contaminantes, ainda existe uma lacuna na correlação direta entre os padrões visuais aprendidos por máquinas e as classes comerciais manuais (Tipo e Cor) utilizadas na comercialização da pluma, conforme estabelecido pelos Padrões Universais. É nessa intersecção entre a avançada capacidade de detecção de objetos (YOLO/CNNs) e a necessidade de padronização comercial que esta dissertação atua.

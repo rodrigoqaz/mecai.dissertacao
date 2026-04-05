@@ -1,0 +1,41 @@
+augmentation_config:
+  use_augmentation: false
+global_config:
+  batch_size: 32
+  dataset_name: v10
+  device: auto
+  experiment_name: ELITE_EVAL_v10_convnext
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: convnext
+params:
+  architecture: convnext_tiny
+  augmentations: '{}'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_convnext.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v10/train_val
+  device: auto
+  dropout: '0.23015540856031444'
+  experiment_name: ConvNeXt
+  global_config: '{''data_dir'': ''data/gold/datasets/v10/train_val'', ''experiment_name'':
+    ''ConvNeXt'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v10'', ''max_epochs'':
+    30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto'', ''seed'': 42}'
+  hidden_units: '512'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.11922140490616356}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 0.00023525631599871242, ''weight_decay'':
+    0.04819640028407592}}'
+  params: '{''architecture'': ''convnext_tiny'', ''pretrained'': True, ''unfreeze_layers'':
+    5, ''hidden_units'': 512, ''dropout'': 0.23015540856031444, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    3, ''factor'': 0.15316611732354923, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '5'
+  weights: IMAGENET1K_V1

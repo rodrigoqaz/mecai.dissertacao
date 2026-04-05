@@ -1,0 +1,54 @@
+Este capítulo tem como objetivo consolidar a linha de raciocínio fundamental para a elaboração desta dissertação. Primeiramente, apresenta-se um panorama geral sobre o agronegócio brasileiro, com foco na cultura do algodão, abordando pontos como os principais desafios da produção, sua importância e seus destinos comerciais. Em seguida, o texto detalha o processo de avaliação da qualidade do algodão, com ênfase nos padrões internacionais, regulamentações específicas no Brasil e os processos adotados na indústria. Na sequência, contextualiza-se o tema dos sistemas de visão computacional, com aplicações no setor da agricultura, especialmente na classificação automatizada. Por fim, o capítulo discute o papel da inteligência artificial e  os principais modelos empregados em sistemas de visão computacional, culminando na identificação da lacuna de pesquisa que este trabalho se propõe a preencher.
+
+\section{Agronegócio Brasileiro e o Algodão}
+\label{sec:agro_brasileiro_algodao}
+
+Esta seção apresenta a fundamentação teórica sobre a cadeia produtiva do algodão no Brasil, contextualizando o cenário onde a solução proposta nesta dissertação foi aplicada. Para o desenvolvimento de sistemas de visão computacional eficazes na classificação de fibras naturais, é imprescindível compreender a origem dos defeitos visuais e das impurezas que determinam a classificação da qualidade. Dessa forma, as subseções a seguir mapeiam o fluxo agroindustrial, desde a colheita mecanizada e o beneficiamento até os gargalos logísticos, identificando como cada etapa do processo produtivo influencia as propriedades físicas da pluma e impõe desafios específicos à classificação automática da qualidade da fibra do algodão.
+
+\input{tex/2_revisao_literatura/2.1_agro_brasil_algodao.tex}
+
+\section{Qualidade do algodão}
+\label{sec:qualidade}
+
+% A classificação e a avaliação da qualidade do algodão são processos fundamentais para a cadeia de produção e comércio dessa fibra, influenciando diretamente o valor de mercado e a adequação às diversas aplicações industriais. Nesta seção será examinado o histórico, os critérios de classificação e as normas internacionais, com destaque para o sistema estadunidense, além das especificidades regulatórias no Brasil.
+
+A classificação e a avaliação da qualidade do algodão são processos fundamentais para a cadeia produtiva e para o mercado têxtil, influenciando diretamente a precificação (ágio ou deságio) e a adequação da fibra aos processos industriais de fiação. Esta seção examina o contexto histórico, os critérios normativos e a diferença entre os métodos de classificação visual e instrumental, destacando as limitações que impulsionam o desenvolvimento de novas tecnologias de classificação automática por visão computacional.
+
+\input{tex/2_revisao_literatura/2.2_qualidade_algodao.tex}
+
+\section{Visão Computacional Aplicada à Agricultura}
+\label{sec:cv_agricultura}
+
+    Esta seção explora os fundamentos teóricos da visão computacional e dos sistemas de processamento de imagens. A partir de um resgate histórico da disciplina, o texto detalha a arquitetura formal desses sistemas e sua aplicação no agronegócio, com ênfase nas tecnologias e métodos aplicados à cultura do algodão.
+
+    A visão computacional, embora frequentemente associada às inovações recentes da inteligência artificial, possui raízes que remontam a meados do século XX. Segundo a revisão histórica de \citeonline{oliveira2024visao}, a área foi idealizada inicialmente em 1955, sob a premissa de equipar computadores com capacidades sensoriais análogas aos ``olhos e ouvidos'' humanos. Nas décadas seguintes, especialmente nos anos 1970, pesquisadores acreditavam que a emulação da visão biológica seria um marco rapidamente alcançável. Nesse contexto, destaca-se o trabalho seminal de \citeonline{marr1976vision} no campo da neurofisiologia, que propôs uma abordagem computacional para a visão, formulando algoritmos para a interpretação de cenas que serviram como alicerce para grande parte da pesquisa subsequente \cite{vaina2004marr}.
+
+    Contudo, a evolução da área revelou que o processamento visual era intrinsecamente mais complexo do que o previsto, dada a lacuna de conhecimento sobre como o próprio cérebro humano interpreta estímulos visuais. Após décadas de avanços progressivos e o aumento do poder computacional, a visão computacional consolidou-se como a disciplina científica dedicada ao desenvolvimento de métodos que permitem às máquinas não apenas capturar, mas interpretar e ``compreender'' imagens com um nível de abstração semelhante à percepção humana \cite{ballard1982computer}.
+
+    \input{tex/2_revisao_literatura/2.3_cv_agricultura.tex}
+
+\section{Classificação Automatizada do Algodão com Visão Computacional}
+\label{sec:classificacao_algodao}
+
+    A classificação da pluma de algodão, historicamente dependente da inspeção manual ou de instrumentos laboratoriais como o HVI, atravessa uma profunda mudança de paradigma impulsionada pela inteligência artificial. A convergência entre processamento de imagem, aprendizado de máquina e tecnologias conectadas (\textit{IoT/Edge Computing}) tem se consolidado como uma solução transformadora para superar as limitações dos métodos tradicionais, que frequentemente exigem mão de obra intensiva, demandam tempo excessivo e estão sujeitos à subjetividade.
+
+    A literatura recente evidencia que a aplicação dessas tecnologias evoluiu substancialmente, expandindo-se do monitoramento agrícola em campo para a automação rigorosa do ``processamento inteligente'' e da inspeção de qualidade na indústria. O uso do aprendizado profundo assumiu um papel dominante nesse cenário, viabilizando a extração de características complexas da fibra que abordagens matemáticas ou estatísticas convencionais não conseguiam modelar com precisão.
+
+    Esta seção explora a trajetória tecnológica dessa automação, abordando desde as limitações físicas dos sensores de captura até a evolução dos modelos preditivos. A discussão abrange a transição do aprendizado de máquina clássico para o atual estado da arte baseado em redes neurais convolucionais e transformers, detalhando como a pesquisa moderna tem solucionado a avaliação automatizada dos três pilares da qualidade comercial do fardo: cor, impurezas (\textit{trash}) e preparação.
+
+    \input{tex/2_revisao_literatura/2.4_classificacao_algodao_cv.tex}
+
+\section{Arquiteturas de Aprendizado Profundo para Classificação de Imagens}
+\label{sec:arquiteturas}
+
+    A eficácia dos sistemas de visão computacional não está apenas no volume de dados ou no poder de processamento bruto, mas fundamentalmente no \textit{design} das arquiteturas de extração de características. Na classificação da pluma de algodão, o modelo enfrenta um desafio multiescala crônico, exigindo um campo receptivo global para avaliar a uniformidade da cor e a distribuição das fibras, ao mesmo tempo em que necessita de altíssima sensibilidade local para detectar micro-impurezas (\textit{pepper trash}) e defeitos de preparação (\textit{neps}).
+
+    Historicamente, a superação desses desafios acompanhou a própria evolução das topologias de redes neurais. A transição de redes rasas para modelos ultraprofundos exigiu inovações matemáticas substanciais para lidar com gargalos computacionais e com a degradação do gradiente (\textit{vanishing gradient}). Mais recentemente, a hegemonia das operações puramente convolucionais passou a ser desafiada por mecanismos de autoatenção (\textit{self-attention}) global, redefinindo os limites da representação visual das máquinas.
+
+    Esta seção mapeia a trajetória evolutiva das arquiteturas de estado da arte em classificação de imagens, agrupando-as por seus paradigmas fundamentais de \textit{design}. A análise parte dos blocos construtivos clássicos e da consolidação da profundidade (VGG e Inception), avança pelas soluções de roteamento de gradiente (ResNet e DenseNet), explora os limites da eficiência convolucional (EfficientNet e ConvNeXt) e culmina nos modernos paradigmas baseados em atenção (Vision Transformers e Swin-T). Para cada arquitetura, discute-se não apenas sua inovação teórica, mas principalmente sua viabilidade geométrica e computacional frente à complexidade textural do algodão.
+
+    \input{tex/2_revisao_literatura/2.5_arquiteturas_deep_learning.tex}
+
+\section{Síntese da Literatura e Lacunas da Pesquisa}
+
+    \input{tex/2_revisao_literatura/2.6_lacunas.tex}

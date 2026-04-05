@@ -47,3 +47,6 @@ class ConfigurationManager:
         
     def get_input_version(self):
         return self.config.get('input_version')
+
+    def get_split_config(self):
+        return self.config.get('output', {}).get('split', {})

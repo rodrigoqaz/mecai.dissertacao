@@ -1,4 +1,26 @@
+# Configuração completa do modelo EfficientNet
 model_type: "efficientnet"
+
+# Configurações globais
+global_config:
+  # Diretório dos dados
+  data_dir: "data/gold/datasets/v12/train_val"
+  
+  # Experimento e MLflow
+  experiment_name: "EfficientNet"
+  mlflow_uri: "file:///mlruns"
+  dataset_name: "v12"
+  seed: 42
+  
+  # Treinamento
+  max_epochs: 30
+  batch_size: 32
+  
+  # Hardware
+  num_workers: 0
+  device: "auto"  # auto, cpu, cuda, mps
+
+# Configurações específicas do modelo
 params:
   architecture: "efficientnet_b0"
   pretrained: true
@@ -6,28 +28,45 @@ params:
   hidden_units: 512
   dropout: 0.5
   weights: "IMAGENET1K_V1"
+
+# Otimizador
 optimizer:
   type: "AdamW"
   params:
     lr: 0.0003
     weight_decay: 0.001
-# scheduler:
-#   type: "ReduceLROnPlateau"
-#   params:
-#     mode: "min"
-#     patience: 8
-#     factor: 0.3
-#     min_lr: 0.00001
+
+# Scheduler
 scheduler:
   type: "CosineAnnealingWarmRestarts"
   params:
     T_0: 10        
     T_mult: 2     
     eta_min: 0.00001
+
+# Função de perda
 loss:
   type: "CrossEntropyLoss"
   params:
     label_smoothing: 0.1
+
+# Transformações para treinamento
+train_transform:
+  {}
+  # transforms:
+  #   - name: "Resize"
+  #     params:
+  #       size: [244, 244]
+  #   - name: "Normalize"
+  #     params:
+  #       mean: [0.485, 0.456, 0.406]
+  #       std: [0.229, 0.224, 0.225]
+
+# Transformações para validação
+val_transform:
+  {}
+
+# Augmentações (aplicadas no DataLoader)
 augmentations:
   - type: "CutMix"
     params:
@@ -37,31 +76,15 @@ augmentations:
     params:
       alpha: 0.4
       prob: 0.8
-  # - type: "RandomResizedCrop"
-  #   params:
-  #     size: 224
-  #     scale: [0.8, 1.0]
-  # - type: "RandomHorizontalFlip"
-  #   params:
-  #     p: 0.3
-  # - type: "ColorJitter"
-  #   params:
-  #     brightness: 0.2
-  #     contrast: 0.2
-  #     saturation: 0.1
-  # - type: "RandomRotation"
-  #   params:
-  #     degrees: 15
-  # - type: "RandomErasing"
-  #   params:
-  #     p: 0.2
+
+# Callbacks
 callbacks:
   - class_path: src.utils.callbacks.EarlyStopping
     init_args:
-      patience: 15
+      patience: 7
       verbose: true
   - class_path: src.utils.callbacks.ModelCheckpoint
     init_args:
-      filepath: "best_model.pth"
+      filepath: "best_model_efficientnet.pth"
       monitor: val_loss
       save_best_only: true

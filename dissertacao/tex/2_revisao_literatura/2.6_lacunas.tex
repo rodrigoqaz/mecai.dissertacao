@@ -1,0 +1,22 @@
+%Revisado
+
+A revisão bibliográfica apresentada neste capítulo evidencia que a classificação da qualidade da pluma de algodão representa um gargalo crítico na cadeia produtiva. Historicamente dependente da avaliação humana subjetiva ou de instrumentos laboratoriais de alto custo, como o HVI, o setor encontra na Visão Computacional e no Aprendizado Profundo as soluções tecnológicas mais viáveis para a automação objetiva e em larga escala.
+
+O estado da arte revela uma transição clara nas abordagens de extração de características visuais. A trajetória das CNNs, culminando em arquiteturas modernas como EfficientNet e ConvNeXt, estabeleceu um patamar elevado de eficiência e robustez. Essas arquiteturas provaram ser particularmente eficazes na extração de microtexturas e na detecção de impurezas, características fundamentais para a análise de fibras orgânicas. Por outro lado, a ascensão dos modelos baseados em atenção, representados pelo ViT e pelo Swin Transformer, introduziu a capacidade de modelar dependências globais na imagem, permitindo uma análise estrutural que antes era limitada pelo campo receptivo fixo das convoluções. 
+
+% A literatura converge para a premissa de que o desempenho superior em tarefas de classificação industrial não advém apenas da topologia da rede, mas da simbiose entre arquitetura, técnicas de \textit{transfer learning} e receitas modernas de treinamento — incluindo otimizadores desacoplados (como AdamW) e técnicas de regularização.
+
+Apesar da consolidação dessas tecnologias em domínios genéricos de visão computacional, a literatura focada especificamente na classificação automatizada da pluma de algodão ainda é escassa. A ausência de uma comparação sistemática e direta entre as arquiteturas convolucionais modernas e os \textit{transformers} hierárquicos neste contexto agroindustrial revela as seguintes lacunas de pesquisa, as quais justificam o desenvolvimento desta dissertação:
+
+\begin{itemize}
+    \item \textbf{Escassez de Dados em Domínios Específicos e Dependência de Pré-treino:} A maioria dos estudos que validam a superioridade dos \textit{Vision Transformers} assume a disponibilidade de \textit{datasets} massivos. A eficácia e a capacidade de convergência dessas arquiteturas em \textit{datasets} restritos de pluma de algodão, onde a anotação de especialistas é custosa e escassa, ainda carecem de validação profunda.
+    
+    \item \textbf{Similaridade Inter-classes Extrema:} A distinção entre as classes comerciais de pluma envolve variações sutis e a identificação de defeitos milimétricos (como \textit{neps}). A literatura atual não explorou exaustivamente como os diferentes mecanismos de extração (convolução local \textit{vs.} atenção global) lidam com a confusão entre classes vizinhas no espectro de qualidade, caracterizando este problema como um autêntico desafio de classificação.
+    
+    \item \textbf{Robustez sob Condições Operacionais Reais:} A literatura frequentemente avalia modelos em condições laboratoriais altamente controladas. Há uma lacuna significativa quanto à resiliência de arquiteturas estado da arte frente às variações de iluminação, presença de sombras e heterogeneidade na preparação da amostra, fatores típicos da esteira de processamento de algodão.
+    
+    \item \textbf{\textit{Trade-off} entre Acurácia e Latência para \textit{Edge Computing}:} Embora modelos como a EfficientNet ofereçam eficiência teórica, o impacto real do custo computacional de mecanismos de autoatenção (Swin) na latência de inferência é pouco documentado na área agrícola. Para que sistemas de classificação operem em tempo real no setor produtivo (\textit{Edge Computing}), é imperativo estabelecer \textit{benchmarks} que comparem não apenas o F1-Score, mas o custo paramétrico e a velocidade de inferência (FLOPs) em \textit{hardwares} limitados.
+\end{itemize}
+
+Em suma, esta pesquisa propõe-se a preencher essas lacunas ao avaliar, de forma inédita e comparativa, o desempenho das principais arquiteturas de \textit{deep learning} aplicadas à classificação do algodão. O objetivo final é fornecer uma análise empírica robusta que subsidie decisões técnicas no setor produtivo, buscando o equilíbrio ótimo entre o rigor acadêmico da classificação de alta complexidade e a viabilidade técnica de implementação industrial.
+

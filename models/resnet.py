@@ -2,7 +2,7 @@ import torch.nn as nn
 from torchvision import models
 from src.config.models.config import Config
 
-def initialize_model(num_classes: int, **params) -> nn.Module:
+def initialize_model(device, num_classes: int, **params) -> nn.Module:
     """
     Inicializa um modelo ResNet pré-treinado, adaptando o head para fine-tuning.
     """
@@ -12,10 +12,23 @@ def initialize_model(num_classes: int, **params) -> nn.Module:
     hidden_units = params.get('hidden_units', 512)
     dropout = params.get('dropout', 0.3)
     weights = params.get('weights', 'IMAGENET1K_V1')
-    device = Config.device
+    input_channels = params.get('input_channels', 3)
+    # device = Config.device
 
     # Carregar modelo base
     base_model = getattr(models, architecture)(weights=weights if pretrained else None)
+
+    # Ajusta a primeira camada, caso o número de canais no input seja diferente de 3 (RGB)
+    if input_channels != 3:
+        old_conv1 = base_model.conv1
+        base_model.conv1 = nn.Conv2d(
+            in_channels=input_channels,
+            out_channels=old_conv1.out_channels,
+            kernel_size=old_conv1.kernel_size,
+            stride=old_conv1.stride,
+            padding=old_conv1.padding,
+            bias=old_conv1.bias
+        )
 
     # Congelar todas as camadas
     for param in base_model.parameters():
@@ -42,6 +55,3 @@ def initialize_model(num_classes: int, **params) -> nn.Module:
     return base_model.to(device)
 
 
-'''
-Aumentar um pouco mais a complexidade do modelo.
-'''

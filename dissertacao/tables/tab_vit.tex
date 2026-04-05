@@ -1,0 +1,14 @@
+\begin{table}[ht]
+\centering
+\caption{Comparativo de Paradigmas: CNN vs. Vision Transformer (ViT)}
+\label{tab:cnn_vs_vit}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Característica} & \textbf{Convolucionais (CNN)} & \textbf{Vision Transformer (ViT)} \\ \midrule
+Unidade de Processamento & Janelas locais (Pixels) & Patches de imagem (Tokens) \\
+Campo Receptivo & Cresce com a profundidade & Global desde a primeira camada \\
+Viés Indutivo & Localidade e Translação (Fortes) & Fraco (Aprendido via dados) \\
+Complexidade Espacial & Linear $O(N)$ & Quadrática $O(N^2)$ \\
+Escalabilidade & Satura em grandes datasets & Melhora com o aumento de dados \\ \bottomrule
+\end{tabular}
+\end{table}

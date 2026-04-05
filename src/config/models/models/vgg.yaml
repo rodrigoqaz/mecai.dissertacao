@@ -1,18 +1,53 @@
+# Configuração completa do modelo VGGNet
 model_type: "vgg"
 
+# Configurações globais (antes eram hardcoded no Config)
+global_config:
+  # Diretório dos dados
+  data_dir: "data/gold/datasets/v12/train_val"
+  
+  # Experimento e MLflow
+  experiment_name: "VGGNet"
+  mlflow_uri: "file:///mlruns"
+  dataset_name: "v12"
+  seed: 42
+  
+  # Treinamento
+  max_epochs: 30
+  batch_size: 32
+  
+  # Hardware
+  num_workers: 0
+  device: "auto"  # auto, cpu, cuda, mps
+
+# Configurações específicas do modelo
 params:
+  architecture: "vgg16"
+  pretrained: true
   unfreeze_layers: 4
-  dropout_rate_1: 0.5
-  dropout_rate_2: 0.3
   hidden_units: 256
+  dropout: 0.5
   weights: "IMAGENET1K_V1"
 
-optimizer: 
-  type: "Adam"
+# Otimizador
+optimizer:
+  type: "AdamW"
   params:
-    lr: 0.0001
-    weight_decay: 0.00001
+    lr: 0.001
+    weight_decay: 0.001
+# optimizer: 
+#   type: "Adam"
+#   params:
+#     lr: 0.0001
+#     weight_decay: 0.00001
 
+# Scheduler
+# scheduler:
+#   type: "CosineAnnealingWarmRestarts"
+#   params:
+#     T_0: 10        
+#     T_mult: 2     
+#     eta_min: 0.00001
 scheduler:
   type: "ReduceLROnPlateau"
   params:
@@ -20,18 +55,66 @@ scheduler:
     patience: 3
     factor: 0.1
 
+# Função de perda
 loss:
   type: "CrossEntropyLoss"
-  params: {}
+  params:
+    label_smoothing: 0.1
 
+# Transformações para treinamento
+train_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [244, 244]
+    # - name: "RandomHorizontalFlip"
+    #   params:
+    #     p: 0.5
+    # - name: "RandomRotation"
+    #   params:
+    #     degrees: 15
+    # - name: "ColorJitter"
+    #   params:
+    #     brightness: 0.2
+    #     contrast: 0.2
+    #     saturation: 0.2
+    #     hue: 0.1
+    # - name: "ToTensor"
+    # - name: "Normalize"
+    #   params:
+    #     mean: [0.485, 0.456, 0.406]
+    #     std: [0.229, 0.224, 0.225]
+
+# Transformações para validação
+val_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [244, 244]
+    # - name: "Normalize"
+    #   params:
+    #     mean: [0.485, 0.456, 0.406]
+    #     std: [0.229, 0.224, 0.225]
+
+# Augmentações (aplicadas no DataLoader)
+augmentations:
+  - type: "CutMix"
+    params:
+      alpha: 1.0
+      prob: 0.6
+  - type: "MixUp"
+    params:
+      alpha: 0.4
+      prob: 0.6
+
+# Callbacks
 callbacks:
   - class_path: src.utils.callbacks.EarlyStopping
     init_args:
       patience: 7
       verbose: true
-
   - class_path: src.utils.callbacks.ModelCheckpoint
     init_args:
-      filepath: "best_model.pth"
+      filepath: "best_model_vggnet.pth"
       monitor: val_loss
       save_best_only: true

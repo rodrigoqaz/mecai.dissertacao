@@ -1,0 +1,69 @@
+% Revisado
+
+\subsection{Agricultura no Brasil}
+\label{subsec:agricultura_brasil}
+
+    A agricultura brasileira já se consolidou como uma das maiores do mundo, fornecendo produtos essenciais para diversos setores da economia global, como a alimentação, a bioenergia, o setor têxtil, entre outros. Essa consolidação é um reflexo de investimentos em inovações tecnológicas, que começaram com a terceira revolução agrícola (Revolução Verde) e se estendem até hoje com a disseminação da agricultura digital, integrando a agricultura de precisão e ferramentas como inteligência artificial para aumento da produtividade e sustentabilidade \cite{abbade2014agro, basso2024agriculture}.
+
+    O setor tem se destacado como um dos mais robustos, representando 23\% da economia nacional \cite{filho2024pib}, com exportações atingindo recordes históricos. Mesmo em cenários de queda nos preços das commodities e desafios climáticos(como secas e o fenômeno El Niño \cite{lin2019elnino}) e gargalos logísticos \cite{goncalves2024logistica}, o Brasil manteve o crescimento no valor total exportado. Em 2024, a expectativa é de que o país alcance US\$ 168,1 bilhões em exportações de produtos agrícolas, impulsionado por fatores como a desvalorização do real frente ao dólar, o que aumenta a competitividade dos produtos brasileiros no mercado internacional \cite{cardoso2024perspectivas}.
+
+    No contexto da produção agrícola brasileira, a tecnologia desempenhou um papel essencial na adaptação do país a diferentes tipos de culturas, permitindo o cultivo de variedades mais resistentes e otimizadas para o clima tropical \cite{basso2024agriculture}. Além disso, a introdução de biotecnologia e o avanço em estudos moleculares têm possibilitado o desenvolvimento de culturas com maior produtividade e resistência a pragas \cite{das2023biotech}, sendo o algodão (\textit{Gossypium hirsutum}) um exemplo significativo, cuja produção se beneficia de tais avanços, como resistência genética e técnicas de cultivo adaptadas ao clima e solo brasileiros \cite{ribeiro2017cottontrans, ribeiro2019cottontrans, ribeiro2023cottontrans}.
+
+\subsection{A Cadeia Produtiva do Algodão}
+\label{subsec:cadeia_algodao}
+
+    Em 2024, o Brasil se consolidou como o maior exportador mundial de algodão em volume. As condições climáticas favoráveis, aliadas ao aumento da demanda internacional, permitiram um crescimento expressivo das exportações brasileiras de algodão. A produção alcançou 3,2 milhões de toneladas, com a China como principal destino, e as exportações estão projetadas para somar US\$ 5,2 bilhões até o fim do ano, um aumento de 56\% em relação ao ano anterior. Isso reflete o papel estratégico do algodão na pauta exportadora do agronegócio brasileiro, que vai além da alimentação, abrangendo setores como o têxtil e de bioenergia \cite{cardoso2024perspectivas}.
+
+    A cadeia produtiva do algodão é caracterizada por um fluxo agroindustrial complexo, no qual a valoração final do produto depende intrinsecamente da preservação das características da fibra ao longo das etapas de produção, beneficiamento e classificação. A seguir, descrevem-se as etapas críticas que influenciam a qualidade visual e intrínseca da pluma.
+
+    \subsubsection{Produção no Campo: O Impacto da Colheita na Pureza da Fibra}
+
+        A qualidade da fibra de algodão começa no manejo da lavoura. Fatores de estresse abiótico e o manejo da desfolha influenciam diretamente parâmetros fisiológicos da planta, determinando a maturidade e a resistência da fibra colhida \cite{sezener2021cotton}.
+
+        No entanto, um dilema crítico para a classificação visual reside na natureza do método de colheita. Em Mato Grosso, estado responsável por mais de 56\% da produção nacional, a colheita é plenamente mecanizada. Embora o sistema de fusos (\textit{picker}) seja majoritário devido à sua seletividade superior, o sistema de arranque (\textit{stripper}) ainda é utilizado em nichos de cultivo adensado visando a redução de custos operacionais. Independentemente do maquinário, a mecanização impõe um \textit{trade-off} na qualidade: \citeonline{ferreira2013sistemas} destacam que, enquanto a colheita manual apresenta perdas e impurezas em torno de 5\%, a colheita mecânica eleva esse patamar para 15 a 17\%.
+
+        Essa carga de material estranho impacta diretamente a análise automática. A ação mecânica, mesmo no sistema \textit{picker}, introduz contaminantes biológicos e promove a formação de \textit{neps}, fenômeno exacerbado no sistema \textit{stripper}, que agrega cascas, galhos, folhas e brácteas à pluma \cite{kazama2016influencia, silva2007colheita}. A presença destes contaminantes heterogêneos é descrita por \citeonline{ferreira2013sistemas} como a responsável pela redução da reflectância e aumento do amarelamento da pluma, o que define a complexidade do problema para sistemas de visão computacional. Diferente de ambientes controlados, a classificação automática exige algoritmos robustos capazes de realizar a segmentação semântica da fibra valiosa em meio a esse ``ruído'' vegetal e às oclusões geradas pelo processo de extração mecânica.
+
+    \subsubsection{Beneficiamento (Algodoeira): O Processo de Limpeza}
+
+        Após a colheita, o algodão em caroço é transportado para a Unidade de Beneficiamento. Essa etapa configura-se como o elo de ligação entre a produção agrícola e a indústria têxtil, sendo fundamental para a preservação das qualidades intrínsecas da fibra. Segundo \citeonline{ferreira2022cadeia}, o beneficiamento moderno no Brasil passou por profundas transformações tecnológicas, substituindo modelos obsoletos por parques fabris empresariais focados em atender à demanda internacional por qualidade e rastreabilidade.
+
+        O fluxo operacional nessas unidades visa separar a fibra da semente e remover as impurezas trazidas do campo. Conforme detalhado tecnicamente por \citeonline{silva2010impacto} ao analisarem algodoeiras em Mato Grosso, o processo típico envolve:
+
+        \begin{itemize}
+            \item \textbf{Pré-limpeza:} Sistemas de extração e batedores que removem impurezas grosseiras (cascas e galhos) antes que o algodão entre nos descaroçadores.
+            
+            \item \textbf{Descaroçamento:} O ponto crítico do processo, no qual serras mecânicas separam a fibra do caroço. É nesta etapa que ocorre o maior estresse na fibra, podendo elevar a formação de \textit{neps} em até 80\%.
+
+            \item \textbf{Limpeza de Pluma:} Uso de equipamentos como o \textit{Constelation} e fluxos de ar para expulsar a sujeira fina (poeira). Embora aumente a limpeza visual, o excesso de processamento mecânico aqui pode romper fibras e agravar a contagem de \textit{neps}.
+        \end{itemize}
+
+        Apesar da modernização citada por \citeonline{ferreira2022cadeia}, a remoção mecânica de impurezas não ocorre sem prejuízos à integridade da pluma: o processo é eficaz na limpeza, mas acaba fragmentando contaminantes maiores em partículas minúsculas (\textit{pepper trash}), dificultando sua detecção posterior por métodos tradicionais \cite{mustafic2016}. Para sistemas de visão computacional, isso resulta em um panorama desafiador, em que a distinção entre uma impureza vegetal fragmentada e um emaranhado de fibra exige alta precisão de detecção.
+
+
+    \subsubsection{Classificação Comercial e Rastreabilidade}
+
+        Após o beneficiamento e a prensagem, o algodão passa pela etapa de classificação, que vai além da simples verificação técnica para atuar como o mecanismo central de regulação comercial. Conforme destacado por \citeonline{martins2020qualidade}, a qualidade da fibra é o fator determinante para a precificação, definindo se o lote receberá ágio ou deságio sobre o preço-base de mercado (como o índice CEPEA/ESALQ), dependendo de seus atributos intrínsecos (comprimento, resistência, micronaire) e extrínsecos (impurezas e cor).
+
+        Para mitigar a subjetividade da análise visual humana, o setor consolidou o uso de instrumentos de HVI (\textit{High Volume Instrument}). Segundo o relatório da \citeonline{itmf2025brazil}, a padronização via HVI foi crucial para que o Brasil deixasse de ser visto apenas como um fornecedor de \textit{commodity} e passasse a competir em mercados \textit{premium}. No entanto, o custo operacional dessa instrumentação e o tempo de análise a tornam inviável para o controle logístico de emblocamento em tempo real. Além disso, a variabilidade no campo ainda impõe barreiras severas: \citeonline{souza2021perdas} demonstram que fatores como o tempo de exposição da fibra às intempéries e o atraso na colheita degradam significativamente os parâmetros de Cor (\textit{Color Grade}) e aumentam o índice de Impurezas (\textit{Trash}), comprometendo a classificação final e gerando prejuízos industriais.
+
+        Paralelamente à classificação, a rastreabilidade tornou-se um requisito não tarifário para a exportação. O Sistema Abrapa de Identificação (SAI) evoluiu para integrar dados de campo e indústria. De acordo com análise técnica de \citeonline{lima2025blockchain}, o uso de tecnologias como \textit{blockchain} no SAI garante a imutabilidade dos dados, permitindo que cada fardo carregue uma ``identidade digital'' auditável desde a fazenda até a fiação.
+
+        Recentemente, essa rastreabilidade foi ampliada pelo programa ``SouABR'', que conecta a ponta produtiva ao varejo de moda. Segundo estudo da \citeonline{fgv2022rastreabilidade}, essa iniciativa permite que o consumidor final, via \textit{QR Code}, acesse o histórico completo da peça, certificando a origem sustentável e as características técnicas da fibra utilizada.
+
+        Uma análise aprofundada sobre os parâmetros técnicos do HVI e os obstáculos computacionais da classificação visual será apresentada na Seção \ref{sec:qualidade}.
+
+    \subsubsection{Armazenamento e Logística}
+
+        A logística do algodão configura-se como o gargalo final da cadeia produtiva, especialmente no contexto atual no qual o Brasil consolidou-se como o maior exportador mundial da fibra. Segundo o levantamento oficial da \citeonline{conab2025boletim}, a superação dos Estados Unidos no ranking global de exportações impõe uma pressão inédita sobre a infraestrutura nacional, exigindo eficiência para escoar um volume recorde destinado majoritariamente aos mercados asiáticos.
+
+        A primeira dificuldade crítica reside na etapa de armazenagem na origem. Diferente de outras commodities, o fardo de algodão exige condições específicas de temperatura e umidade para evitar a degradação da fibra. No entanto, \citeonline{lourenco2020capacidade} alertam para um déficit estrutural na capacidade estática de armazenagem em Mato Grosso. O estudo aponta que o crescimento da produção agrícola no estado foi muito superior ao investimento em armazéns, forçando o uso de pátios improvisados que expõem a pluma a riscos climáticos e dificultam a segregação dos lotes por qualidade visual e HVI.
+
+        No transporte, a matriz brasileira permanece fortemente dependente do modal rodoviário para percorrer distâncias que frequentemente superam 2.000 km entre o Cerrado e os portos. Em uma análise recente sobre a infraestrutura do agronegócio, \citeonline{pera2025logistica} alerta que, na contramão das melhores práticas globais, o Brasil aumentou sua dependência de caminhões para o escoamento de safra (de 45\% para 54\% na última década), enquanto o uso de ferrovias recuou. Essa distorção estrutural, segundo o autor, torna o frete brasileiro significativamente mais oneroso e intensivo em carbono quando comparado aos competidores estadunidenses, que possuem uma matriz de transporte integrada e eficiente para o escoamento de suas commodities.
+
+        Para mitigar a saturação histórica do Porto de Santos, novas rotas de escoamento ganharam relevância estratégica. O estudo técnico de \citeonline{coelho2025algodao}, publicado pelo Banco do Nordeste, destaca a ascensão do Porto de Salvador e dos terminais do Arco Norte como alternativas viáveis. Segundo o autor, a consolidação dessas rotas reduziu o tempo de trânsito para a Ásia e permitiu que a produção da Bahia e do norte de Mato Grosso escoasse com menor custo operacional.
+
+        Essa descentralização é corroborada pelos dados da \citeonline{antaq2025anuario}, que registram um crescimento sustentado na movimentação de cargas conteinerizadas nos portos do Norte/Nordeste. A agência reguladora aponta que a diversificação portuária não é apenas uma questão econômica, mas uma necessidade de segurança logística para garantir o cumprimento dos contratos internacionais em prazos rígidos.
+
+        Por fim, este cenário logístico complexo impõe um entrave adicional à garantia da qualidade. A longa exposição ao transporte rodoviário e o armazenamento em pátios abertos aumentam o risco de degradação da fibra (amarelamento por umidade e proliferação de fungos) e de contaminações externas (ruptura de embalagens e entrada de poeira). Nesse contexto, a classificação visual realizada na origem torna-se um "retrato estático" que pode não refletir o estado do fardo no destino final. Isso evidencia a relevância de sistemas de classificação automática baseados em visão computacional, capazes de realizar inspeções rápidas e não destrutivas nos nós logísticos (portos e recepção de fiações), assegurando que a qualidade contratada seja efetivamente a entregue.
+

@@ -1,0 +1,23 @@
+Esta dissertação apresentou o desenvolvimento e a avaliação de um sistema de visão computacional voltado à classificação automatizada da pluma de algodão, comparando paradigmas de redes convolucionais e baseados em atenção. A pesquisa demonstrou que a automação desse processo, historicamente subjetivo e logisticamente oneroso, é tecnicamente viável e estatisticamente robusta quando fundamentada em protocolos rígidos de aquisição física e modelos de aprendizado profundo de última geração.
+
+\section{Contribuições e Principais Achados}
+
+
+As evidências experimentais permitiram validar as hipóteses propostas, resultando nas seguintes conclusões:
+
+\begin{itemize}
+    \item Primazia da Iluminação (H2): A transição da versão V1 para a V10 do dataset confirmou que a otimização física da iluminação (uso de luz fria de 6000K para realce morfológico) é um fator de impacto superior ao ajuste fino de hiperparâmetros isoladamente.
+    \item Superioridade das CNNs sobre Transformers (H1): Contrariando tendências de domínios genéricos, as arquiteturas convolucionais superaram os Vision Transformers (ViT). O viés indutivo de localidade das CNNs mostrou-se essencial para capturar as micro-texturas da fibra de algodão, especialmente em conjuntos de dados de domínio específico onde a convergência de mecanismos de atenção global é dificultada pela escassez de dados massivos.
+    \item Inviabilidade da Engenharia de Features Manual (H3): A tentativa de expansão espectral via filtros de Gabor (V8) resultou em degradação de performance, ratificando que o aprendizado end-to-end sobre dados brutos é mais eficaz para modelar a variabilidade estocástica de fibras naturais.
+    \item Eficiência Industrial (H4): Embora a DenseNet-121 tenha obtido a maior precisão estatística (MCC de 0,646), a ConvNeXt-T foi identificada como a solução de maior viabilidade prática. Sua latência de 6,8 ms permite uma integração fluida em esteiras de alta velocidade, atendendo ao requisito de tempo real exigido pelo fluxo logístico das algodoeiras.
+\end{itemize}
+
+\section{Limitações e Trabalhos Futuros}
+
+Apesar do sucesso na classificação das 10 classes comerciais mais prevalentes, o estudo encontrou limites físicos de discriminabilidade visual em classes adjacentes. Como desdobramentos desta pesquisa, sugerem-se:
+
+\begin{itemize}
+    \item Integração de Metadados Físicos: Combinar a análise visual com dados instrumentais do HVI (como Micronaire e Resistência) em uma arquitetura multimodal para reduzir a confusão entre tipos vizinhos.
+    \item Edge Computing e IoT: Implementar o modelo ConvNeXt em dispositivos de borda integrados diretamente nos pontos de recepção de fardos e portos, permitindo uma auditoria de qualidade distribuída ao longo da cadeia logística.
+    \item Detecção de Contaminantes Não-Botânicos: Expandir o dataset para incluir materiais estranhos críticos (plásticos e óleos), explorando técnicas de segmentação de instância para quantificação precisa de impurezas.
+\end{itemize}

@@ -1,9 +1,7 @@
-import torch
 import torch.nn as nn
 from torchvision import models
-from src.config.models.config import Config
 
-def initialize_model(num_classes: int, **params) -> nn.Module:
+def initialize_model(device, num_classes: int, input_channels: int = 3, **params) -> nn.Module:
     """
     Inicializa um modelo EfficientNet pré-treinado, adaptando o head para fine-tuning.
     """
@@ -13,10 +11,24 @@ def initialize_model(num_classes: int, **params) -> nn.Module:
     hidden_units = params.get('hidden_units', 256)
     dropout = params.get('dropout', 0.3)
     weights = params.get('weights', 'IMAGENET1K_V1')
-    device = Config.device
 
     # Carregar modelo base
     base_model = getattr(models, architecture)(weights=weights if pretrained else None)
+
+    # Ajustar a primeira camada convolucional se input_channels for diferente de 3
+    if input_channels != 3:
+        first_conv_layer = base_model.features[0]
+        original_conv = first_conv_layer[0]
+        new_conv = nn.Conv2d(
+            input_channels,
+            original_conv.out_channels,
+            kernel_size=original_conv.kernel_size,
+            stride=original_conv.stride,
+            padding=original_conv.padding,
+            bias=(original_conv.bias is not None)
+        )
+        first_conv_layer[0] = new_conv
+        # base_model.features[0] = new_conv
 
     # Congelar todas as camadas
     for param in base_model.parameters():

@@ -1,0 +1,89 @@
+# Configuração completa do modelo Inception
+model_type: "inception"
+
+# Configurações globais (antes eram hardcoded no Config)
+global_config:
+  # Diretório dos dados
+  data_dir: "data/gold/datasets/v12/train_val"
+  
+  # Experimento e MLflow
+  experiment_name: "Inception"
+  mlflow_uri: "file:///mlruns"
+  dataset_name: "v12"
+  seed: 42
+  
+  # Treinamento
+  max_epochs: 30
+  batch_size: 32
+  
+  # Hardware
+  num_workers: 0
+  device: "auto"  # auto, cpu, cuda, mps
+
+# Configurações específicas do modelo
+params:
+  architecture: "inception_v3"
+  pretrained: true
+  unfreeze_layers: 2
+  hidden_units: 1024
+  dropout: 0.7
+  weights: "IMAGENET1K_V1"
+
+# Otimizador
+optimizer:
+  type: "AdamW"
+  params:
+    lr: 0.001
+    weight_decay: 0.001
+
+# Scheduler
+scheduler:
+  type: "ReduceLROnPlateau"
+  params:
+    mode: "min"
+    patience: 5
+    factor: 0.5
+    min_lr: 0.00001
+
+# Função de perda
+loss:
+  type: "CrossEntropyLoss"
+  params:
+    label_smoothing: 0.1
+
+# Transformações para treinamento
+train_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [299, 299]
+
+# Transformações para validação
+val_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [299, 299]
+
+# Augmentações (aplicadas no DataLoader)
+augmentations:
+  - type: "CutMix"
+    params:
+      alpha: 1.0
+      prob: 0.6
+  - type: "MixUp"
+    params:
+      alpha: 0.4
+      prob: 0.6
+
+# Callbacks
+callbacks:
+  - class_path: src.utils.callbacks.EarlyStopping
+    init_args:
+      patience: 7
+      verbose: true
+  - class_path: src.utils.callbacks.ModelCheckpoint
+    init_args:
+      filepath: "best_model_inception.pth"
+      monitor: val_loss
+      save_best_only: true

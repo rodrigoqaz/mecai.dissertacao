@@ -1,0 +1,44 @@
+augmentation_config:
+  use_augmentation: false
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_efficientnet.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 48
+  data_dir: data/gold/datasets/v1/train_val
+  dataset_name: v1
+  device: auto
+  experiment_name: efficientnet_v1_AB_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: efficientnet
+optimizer:
+  params:
+    lr: 0.00038503486685968004
+    weight_decay: 1.0012078005753836e-05
+  type: AdamW
+params:
+  architecture: efficientnet_b0
+  dropout: 0.2524019982846959
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 3
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    T_0: 7
+    T_mult: 2
+    eta_min: 1.0e-06
+  type: CosineAnnealingWarmRestarts

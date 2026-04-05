@@ -309,6 +309,12 @@ image_capture/amostras/*
 *.aux
 *__pycache__/
 data/*
+mlruns/*
 
 credentials.json
 token.pickle
+
+*.pth*.pth
+*.pth
+*.zip
+.venv/*

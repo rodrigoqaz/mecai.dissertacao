@@ -1,0 +1,59 @@
+%Revisado
+
+Para consolidar o rigor científico desta pesquisa e permitir uma avaliação objetiva das arquiteturas selecionadas, formalizou-se um desenho experimental focado em responder às lacunas identificadas na literatura, especificamente quanto ao \textit{trade-off} entre o poder de extração de características de granulação fina (\textit{fine-grained}) e a eficiência computacional.
+
+\subsection{Fases da Experimentação e Hipóteses do Estudo}
+
+    Em vez de concentrar a avaliação em um único teste estático, o desenho metodológico desta pesquisa foi estruturado como uma sequência lógica de experimentos. A experimentação foi conduzida em três fases progressivas, cada qual desenhada para responder a hipóteses formalmente estabelecidas.
+
+    \subsubsection{Fase 1: Benchmark Global}
+
+        Esta fase consistiu na avaliação cruzada de todas as arquiteturas sob as exatas mesmas condições de treinamento e hiperparâmetros. Esta etapa exploratória foi desenhada para testar a seguinte prova estrutural:
+
+        \begin{itemize}
+            \item\textbf{$H_{0,1}$ (Hipótese Nula):} Não existe diferença estatisticamente significativa no poder de generalização entre as diferentes famílias de arquiteturas avaliadas.
+            \item\textbf{$H_1$ (Alternativa 1):} Existe uma variação estatisticamente significativa no desempenho preditivo entre as topologias.
+        \end{itemize}
+
+    \subsubsection{Fase 2: Impacto da Temperatura de Cor}
+
+        Esta fase analisou isoladamente o impacto das condições físicas de captura. Consistiu em reavaliar o desempenho das redes variando estritamente a temperatura de cor da iluminação (luz quente, fria e mista), com o objetivo de testar a seguinte premissa:
+
+        \begin{itemize}
+            \item\textbf{$H_{0,2}$ (Hipótese Nula):} A alteração física da iluminação no momento da captura não produz variação estatisticamente significativa no desempenho preditivo dos modelos.
+            \item\textbf{$H_2$ (Alternativa 2):} A otimização espectral da iluminação exerce um impacto positivo e estatisticamente significativo no desempenho preditivo universal.
+        \end{itemize}
+
+    \subsubsection{Fase 3: Expansão Espectral}
+
+        A última fase experimental avaliou a utilidade técnica da injeção de conhecimento morfológico explícito. Consistiu em expandir os tensores de entrada utilizando bancos de filtros de Gabor clássicos, com o intuito de validar a seguinte hipótese:
+
+        \begin{itemize}
+            \item\textbf{$H_{0,3}$ (Hipótese Nula):} A expansão espectral por meio de \textit{feature engineering} não altera de forma estatisticamente significativa a capacidade discriminativa dos classificadores em relação ao aprendizado sobre matrizes RGB puras.
+            \item\textbf{$H_3$ (Alternativa 3):} A injeção de características morfológicas pré-computadas eleva de forma estatisticamente significativa a precisão dos classificadores, mostrando-se mais eficiente do que o aprendizado \textit{end-to-end} estrito.
+        \end{itemize}
+
+
+\subsection{Métricas de Avaliação}
+
+    Devido ao inerente desbalanceamento de classes dos dados deste estuvo, a acurácia global foi monitorada apenas como métrica de referência estrutural, uma vez que ela pode apresentar um viés otimista ao mascarar o erro nas classes minoritárias. A avaliação definitiva da capacidade de generalização dos modelos baseou-se nas seguintes métricas:
+
+    \begin{enumerate}
+        \item \textbf{\textit{F1-Score} Macro:} Avalia a média harmônica entre a precisão (\textit{precision}) e a revocação (\textit{recall}). O cálculo \textit{macro} computa a métrica separadamente para cada uma das 10 classes comerciais e extrai a média aritmética não ponderada. Isso garante que as classes minoritárias (ex: Tipo 44.4) exerçam o mesmo peso na avaliação final que as majoritárias (ex: Tipo 31.2).
+        
+        \item \textbf{Coeficiente de Correlação de Matthews (MCC):} Considerada uma das métricas mais confiáveis para avaliação multiclasse em \textit{datasets} severamente desequilibrados. O MCC mede a correlação entre as predições e o \textit{ground truth}, retornando um valor no intervalo de $[-1, +1]$, no qual $+1$ representa uma predição perfeita, $0$ equivale a uma predição aleatória e $-1$ denota discordância total.
+        
+        \item \textbf{Coeficiente Kappa de Cohen ($\kappa$):} Estatística que mensura a concordância entre as predições do classificador e os rótulos reais, compensando a probabilidade de essa concordância ocorrer puramente ao acaso. É uma métrica crucial para o domínio agrícola, pois penaliza severamente modelos enviesados que adotam a estratégia de prever apenas a classe dominante.
+        
+        \item \textbf{Área Sob a Curva ROC Macro (\textit{macro ROC AUC}):} Mensura a capacidade discriminativa do modelo na separação das classes de qualidade, independentemente do limiar de decisão adotado pela função \textit{softmax}. Para o problema multiclasse, o cálculo foi realizado utilizando a abordagem Um-Contra-Todos (\textit{One-vs-Rest} - OvR) para cada tipo de algodão, extraindo-se em seguida a média não ponderada (\textit{macro}).
+        
+        \item \textbf{Matriz de Confusão:} Utilizada para a análise qualitativa detalhada dos erros interclasses. Permite diagnosticar se os modelos estão confundindo amostras de algodão vizinhas no espectro de qualidade (ex: classificar o Tipo 31.2 como 31.3 devido a variações sutis de amarelamento).
+        
+        \item \textbf{Eficiência Computacional:} Para chancelar a viabilidade da implementação da arquitetura vencedora em sistemas \textit{edge computing} na indústria, aferiu-se o número total de parâmetros treináveis (em milhões) e as Operações de Ponto Flutuante por Segundo (FLOPs), correlacionando esse custo com o ganho preditivo.
+    \end{enumerate}
+
+\subsection{Testes Estatísticos de Significância}
+
+    A constatação empírica de que um modelo ``A'' obteve um MCC fracionariamente maior que um modelo ``B'' no conjunto de teste não é suficiente para decretar sua superioridade na literatura científica. Para garantir que as diferenças de desempenho observadas entre as melhores arquiteturas não decorreram de variações aleatórias da amostragem, aplicou-se o Teste Estatístico de McNemar.
+
+    O Teste de McNemar é uma prova não paramétrica aplicada a tabelas de contingência $2 \times 2$, amplamente recomendada na literatura de \textit{machine learning} \cite{dietterich1998approximate} para comparar a proporção de erros e acertos de dois classificadores que foram avaliados sobre o exato mesmo conjunto de teste retido (\textit{holdout}). Adotou-se um nível de significância $\alpha = 0,05$ (Intervalo de Confiança de 95\%). Portanto, rejeitaram-se as respectivas Hipóteses Nulas ($H_{0,n}$) das fases experimentais apenas quando o valor-p (\textit{p-value}) resultante da comparação arquitetural foi inferior a $0,05$, atestando uma superioridade estatisticamente na classificação da pluma de algodão.

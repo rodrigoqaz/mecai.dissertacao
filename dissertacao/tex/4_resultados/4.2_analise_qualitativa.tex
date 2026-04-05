@@ -1,0 +1,12 @@
+4.2 Análise Qualitativa e Significância Interclasses
+
+O que o texto vai argumentar:
+Você fará um mergulho profundo nos melhores modelos da Fase 1 (ex: DenseNet e ConvNeXt). O texto explicará onde o classificador se confunde (geralmente entre as classes limítrofes do MAPA, como 41.4 e 41.5) e usará o p-value do McNemar para cravar quem é o vencedor matemático do benchmark.
+
+Artefatos gerados pelo seu script Python:
+
+Matriz de Confusão Normalizada (Heatmap Seaborn): Um mapa de calor limpo, paleta "Blues", do modelo campeão na Luz AM + RGB (best_model_confusion_matrix.pdf). O script deve colocar os rótulos reais no eixo Y e as predições no eixo X.
+
+Matriz de McNemar (Heatmap Triangular): Aquele seu gráfico de p_values_v10.pdf, mas gerado para os dados da Fase 1. O Python deve calcular o p-value pareado entre os modelos top 5 e pintar de cinza (ou colocar "ns") o que não for estatisticamente significante ($p > 0,05$).
+
+Mapas de Ativação Visual (Explainable AI - Grad-CAM): O famoso mapa de calor sobre a imagem original, mostrando para onde a rede neural estava "olhando" quando tomou a decisão. O pacote pytorch-grad-cam gera isso em 5 linhas de código.

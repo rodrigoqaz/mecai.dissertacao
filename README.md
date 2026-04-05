@@ -1,166 +1,92 @@
-# Dissertação - MECAI: Classificação de Algodão com Visão Computacional
+# Classificação da Qualidade do Algodão via Deep Learning
 
-![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.7.0-red.svg)
-![License](https://img.shields.io/badge/license-Academic-green.svg)
+Este projeto de dissertação de mestrado propõe um sistema de visão computacional para a classificação automática da pluma de algodão (tipagem), comparando arquiteturas de redes neurais sob diferentes condições de iluminação e profundidade espectral.
 
+---
 
-## 📋 Visão Geral
-Este projeto de dissertação de mestrado desenvolve um sistema de classificação automática de algodão utilizando técnicas de visão computacional e aprendizado profundo. O objetivo é criar modelos capazes de identificar e classificar diferentes tipos e qualidades de algodão através de análise de imagens. O repositório adota uma estrutura monorepo para facilitar a integração entre coleta de dados, processamento, experimentação e documentação acadêmica.
+## 🚀 Guia de Execução da Pesquisa
 
-## 📒 Sumário
-- [📋 Visão Geral](#visão-geral)
-- [🎯 Objetivos](#-objetivos)
-- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
-- [🚀 Principais Funcionalidades](#-principais-funcionalidades)
-- [💾 Como Executar](#como-executar)
-- [📊 Monitoramento e Logs](#-monitoramento-e-logs)
-- [📈 Resultados](#-resultados)
-- [🤝 Contribuição](#-contribuição)
-- [📄 Licença](#-licença)
-- [👨‍💻 Autor](#-autor)
-- [🙏 Agradecimentos](#-agradecimentos)
-- [☑️ Status do Projeto](#-status-do-projeto)
+O fluxo de trabalho é dividido em quatro estágios principais para garantir o rigor científico.
 
-
-### 🎯 Objetivos
-
-- Desenvolver modelos de deep learning para classificação de algodão
-- Implementar pipeline completo de processamento de dados e treinamento
-- Criar aplicação para coleta e anotação de dados
-- Produzir documentação acadêmica completa em formato de dissertação
-
-
-
-## 📁 Estrutura do Projeto
-
-```
-mecai.dissertacao/
-├── data/                   # Camadas de dados (bronze, silver, gold)
-│   ├── bronze/
-│   ├── silver/
-│   └── gold/
-├── dissertacao/            # Arquivos LaTeX e recursos para a dissertação/documentação acadêmica
-├── image_capture/          # Aplicação para captura de amostras de algodão
-├── models/                 # Definição e arquivos de modelos treinados
-├── notebooks/              # Jupyter Notebooks para experimentação
-├── src/                    # Código-fonte principal
-│   ├── config/             # Configurações do projeto
-│   ├── data/               # Processamento e manipulação de dados
-│   └── utils/              # Utilitários gerais
-├── .gitignore
-├── build_datasets.py       # Script para construir datasets
-├── limpar.sh               # Script de limpeza de arquivos temporários
-├── requirements.txt        # Dependências do projeto
-└── train_model.py          # Script principal de treinamento
-```
-
-## 🚀 Principais Funcionalidades
-
-- **Coleta de Dados:** Aplicação para captura de imagens de amostras de algodão.
-- **Processamento de Dados:** Scripts para construção, manipulação e leitura de datasets em múltiplas camadas (bronze, silver, gold).
-- **Modelagem:** Definição, treinamento e avaliação de modelos de classificação de imagens.
-- **Documentação Acadêmica:** Estrutura completa para escrita e compilação da dissertação em LaTeX, conforme o padrão fornecido pela USP.
-- **Notebooks:** Experimentação e análise exploratória de dados e resultados.
-
-## 💾 Como Executar
-
-1. **Pré-requisitos**
-
-- Python 3.10
-- MPS ou CUDA-compatible GPU (recomendado para treinamento)
-- Git
-
-2. **Clone o repositório:**
-
-```bash
-git clone https://github.com/rodrigoqaz/mecai.dissertacao
-cd mecai.dissertacao
-```
-
-3. **Crie e ative o ambiente virtual:**
-
-```bash
-python -m venv .venv
-source .venv/bin/activate # Linux/Mac
-.venv\Scripts\activate # Windows
-```
-
-4. **Instale as dependências:**
-
-```bash
-pip install -r requirements.txt
-```
-
-5. **Construa os datasets (se necessário):**
-
-adicionar aqui a etapa de download tbm
+### 1. Preparação dos Dados
+Converte as amostras brutas em conjuntos de dados processados (v1 a v12).
 ```bash
 python build_datasets.py
 ```
+*Consulte `data/gold/` para verificar as versões geradas.*
 
-5. **Treine o modelo:**
-
+### 2. Otimização de Hiperparâmetros (Optuna)
+Busca automática das melhores configurações para cada arquitetura e versão de dataset.
 ```bash
-python train_model.py
+python optimize_model.py --model densenet --trials 30 --objective mcc_loss_composite
 ```
-6. **Limpe arquivos temporários (gerados pelo compilador Latex):**
+*As melhores configurações são salvas automaticamente em `src/config/models/optimized/`.*
 
+### 3. Treinamento da Elite
+Geração dos pesos finais (.pth) para os modelos campeões identificados na etapa anterior.
 ```bash
-.\limpar.sh
+# Use o script de treinamento v2 com o YAML otimizado
+python train_model_v2.py --config src/config/models/optimized/best_config_...yaml
 ```
 
-## 📊 Monitoramento e Logs
+### 4. Pipeline de Dissertação (Geração de Resultados)
+Este pipeline transforma experimentos em evidência científica pronta para a tese.
 
-O projeto utiliza **MLflow** para rastreamento de experimentos:
-
-- Métricas de treino e validação
-- Hiperparâmetros
-- Artefatos do modelo
-- Comparação entre experimentos
-
-## 📈 Resultados
-
-### Modelos Treinados
-
-- `best_model.pth`: Melhor modelo geral
-- `best_model_restnet.pth`: Melhor modelo ResNet
-- `best_densenet.pth`: Melhor modelo DenseNet
-
-### Métricas (Exemplo)
-
-```
-Modelo: VGG16
-Acurácia: XX.X%
-F1-Score: XX.X%
-Precisão: XX.X%
-Recall: XX.X%
+#### A. Mineração (`select_best_models.py`)
+Varre o MLflow e seleciona o melhor run de cada categoria baseado no MCC.
+```bash
+python select_best_models.py
 ```
 
-## 🤝 Contribuição
+#### B. Tribunal de Teste (`run_final_test_inference.py`)
+Executa a inferência definitiva no conjunto de teste (`hold-out`) nunca visto pelos modelos.
+- **Benchmarking:** Mede latência real (com sincronização de hardware) e complexidade computacional (**GFLOPs**).
+```bash
+python run_final_test_inference.py
+```
 
-Contribuições são bem-vindas! Para sugerir melhorias ou reportar problemas, abra uma issue ou envie um pull request.
-
-## 📄 Licença
-
-Este projeto é de uso acadêmico. Consulte o arquivo LICENSE (se houver) para mais detalhes.
-
-## 👨‍💻 Autor
-
-**Rodrigo de Souza Oliveira** - Mestrando em [Matemática, Estatística e Computação aplicado à Indústria/ICMC-USP]
-
-## 🙏 Agradecimentos
-
-- Orientador(a): [Nome]
-- Programa de Pós-graduação em [Área]
-- [Instituição de Ensino]
-- Colaboradores e colegas
+#### C. Análise Estatística (`generate_hypothesis_results.py`)
+Gera os artefatos finais para inclusão no documento LaTeX.
+- **Teste de McNemar:** Valida a significância estatística entre as arquiteturas e os sensores.
+- **Artefatos:** Tabelas LaTeX, Heatmaps de P-Value e Matrizes de Confusão.
+```bash
+python generate_hypothesis_results.py
+```
 
 ---
 
-## ☑️ Status do Projeto
+## 📊 Matriz de Experimentos
 
-![Status](https://img.shields.io/badge/status-Em%20Desenvolvimento-yellow)
+| Versão | Luz | Canais | Foco Científico |
+| :--- | :--- | :--- | :--- |
+| **V1** | AB | 3 (RGB) | **Baseline:** Espectro pleno. |
+| **V8** | AB | 15 | Impacto da **Expansão Espectral Digital**. |
+| **V9** | AM | 3 (RGB) | Impacto do **Filtro Amarelo** (Cor). |
+| **V10** | BR | 3 (RGB) | Impacto do **Filtro Branco** (Impurezas). |
+| **V11** | AM | 15 | Sinergia Luz Amarela + 15 Canais. |
+| **V12** | BR | 15 | Sinergia Luz Branca + 15 Canais. |
 
+## 📚 Documentação Detalhada
+
+Para informações aprofundadas sobre partes específicas do projeto, consulte:
+
+*   **[Otimização de Hiperparâmetros](docs/optimization.md):** Detalhes sobre o espaço de busca do Optuna e checklist de experimentos.
+*   **[Preparação de Dados](docs/data_preparation.md):** Pipeline de conversão Bronze -> Silver -> Gold.
+*   **[Revisão de Arquiteturas](docs/architectures_review.md):** Análise técnica das redes neurais utilizadas (CNNs e Transformers).
+*   **[Desenho Experimental](docs/experimental_plan.md):** Metodologia estatística e plano de testes de hipóteses.
 
 ---
+
+## 🛠️ Tecnologias e Dependências
+- **Deep Learning:** PyTorch, Torchvision, Torchinfo.
+- **Eficiência:** fvcore (GFLOPs).
+- **Estatística:** statsmodels (McNemar), scikit-learn.
+- **Tracking:** MLflow, Optuna.
+- **Documentação:** LaTeX (TeLive/MiKTeX).
+
+---
+
+## 📁 Estrutura de Resultados (`results/`)
+- `dissertation_artifacts/`: Figuras e tabelas prontas para o PDF final.
+- `predictions/`: Dados binários das predições de teste.
+- `weights/`: Pesos oficiais da elite dos modelos.

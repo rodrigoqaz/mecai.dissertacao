@@ -1,0 +1,23 @@
+%Revisado
+
+Para determinar a arquitetura mais adequada ao desafio multiescala da classificação da pluma de algodão (que exige tanto a análise global da cor quanto a detecção local de micro-impurezas), estruturou-se um \textit{benchmark} abrangente. Em vez de focar em uma única topologia, a pesquisa avaliou um espectro de modelos representativos dos principais paradigmas da visão computacional.
+
+As arquiteturas foram instanciadas por meio da biblioteca \textit{TorchVision} do PyTorch \cite{paszke2017automatic} e agrupadas em três categorias de avaliação experimental:
+
+\begin{enumerate}
+    \item \textbf{Modelos baseados em autoatenção (\textit{Vision Transformers}):} Avaliou-se o ViT (\textit{Vision Transformer}) em suas variantes ViT-B/16 e ViT-B/32, além do Swin Transformer hierárquico nas versões \textit{Tiny} (Swin-T) e \textit{Small} (Swin-S). A inclusão dessas redes visou testar a capacidade dos mecanismos de atenção global na captura da uniformidade estrutural da fibra.
+    
+    \item \textbf{CNNs Modernas:} Testou-se a família EfficientNet (variantes B0, B1 e B2) e a arquitetura ConvNeXt (variantes \textit{Tiny} e \textit{Small}). O objetivo foi avaliar o balanço ótimo entre precisão de extração de características de granulação fina (\textit{fine-grained}) e viabilidade computacional em cenários de inferência rápida.
+    
+    \item \textbf{CNNs Clássicas (\textit{Baselines}):} Foram incluídas arquiteturas que consagraram o paradigma do aprendizado profundo, englobando redes com roteamento residual (ResNet-18, ResNet-34 e ResNet-50), conectividade densa (DenseNet-121 e DenseNet-169), topologias multiescala (Inception-v3) e modelos estritamente sequenciais (VGG-16 e VGG-19, ambas em suas versões otimizadas com \textit{Batch Normalization}).
+\end{enumerate}
+
+\subsection{Estratégia de \textit{Transfer Learning} e Customização do Topo (\textit{Classification Head})}
+
+    Devido à complexidade inerente de se treinar arquiteturas ultraprofundas (especialmente os \textit{Transformers}) a partir de uma inicialização aleatória, com um conjunto de 7.908 tensores, adotou-se a estratégia de \textit{transfer learning} (Transferência de Aprendizado). 
+    
+    Todos os \textit{backbones} listados foram inicializados com pesos pré-treinados no \textit{dataset} genérico \textit{ImageNet-1K} (pesos padrão \texttt{IMAGENET1K\_V1}). Essa inicialização permitiu que as redes aproveitassem os filtros convolucionais primários, responsáveis pela detecção de bordas, contrastes e texturas básicas, acelerando a convergência e mitigando o risco de sobreajuste. Apenas as camadas finais foram submetidas ao processo de descongelamento de pesos (\textit{unfreezing}), cuja profundidade exata foi definida dinamicamente pelo algoritmo de otimização Optuna \cite{akiba2019optuna} para cada rede, conforme documentado no Apêndice \ref{apendice:optuna_search_spaces}.
+
+    Por fim, como as arquiteturas originais são projetadas para classificar 1.000 categorias genéricas, o componente de classificação original (\textit{Classification Head}) de cada rede foi removido. Em sua substituição, acoplou-se um novo bloco classificador, estritamente projetado para o escopo desta pesquisa. 
+    
+    A nova estrutura conectada à saída do \textit{backbone} consistiu em: uma camada de redução de dimensionalidade por média global (\textit{Global Average Pooling} - GAP); uma camada de \textit{Dropout} (com taxa estocástica também regulada pelo Optuna entre $0,0$ e $0,7$, dependendo da propensão da rede ao \textit{overfitting}); e uma camada densa e linear final configurada com exatamente 10 neurônios de saída, correspondentes às 10 classes comerciais de qualidade da pluma de algodão avaliadas. A ativação preditiva final foi governada pela função \textit{Softmax} durante o cálculo da perda de entropia cruzada.

@@ -1,0 +1,45 @@
+augmentation_config:
+  batch_level_aug_method: cutmix
+  mix_alpha: 0.4048728327538645
+  per_image_aug_method: none
+  use_augmentation: true
+global_config:
+  batch_size: 32
+  dataset_name: v1
+  device: auto
+  experiment_name: ELITE_EVAL_v1_vgg
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: vgg
+params:
+  architecture: vgg19_bn
+  augmentations: '[{''type'': ''CutMix'', ''params'': {''alpha'': 1.0, ''prob'': 0.6}},
+    {''type'': ''MixUp'', ''params'': {''alpha'': 0.4, ''prob'': 0.6}}]'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_model_vggnet.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v1/train_val
+  device: auto
+  dropout: '0.4441282253824618'
+  experiment_name: VGGNet
+  global_config: '{''data_dir'': ''data/gold/datasets/v1/train_val'', ''experiment_name'':
+    ''VGGNet'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v1'', ''seed'':
+    42, ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto''}'
+  hidden_units: '256'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.0}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''SGD'', ''params'': {''lr'': 0.0024503926254677262, ''weight_decay'':
+    0.00524088301810897, ''momentum'': 0.9}}'
+  params: '{''architecture'': ''vgg19_bn'', ''pretrained'': True, ''unfreeze_layers'':
+    3, ''hidden_units'': 256, ''dropout'': 0.4441282253824618, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    3, ''factor'': 0.2649011048051569, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '3'
+  weights: IMAGENET1K_V1

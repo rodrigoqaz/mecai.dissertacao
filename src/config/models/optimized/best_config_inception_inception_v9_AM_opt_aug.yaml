@@ -1,0 +1,53 @@
+augmentation_config:
+  basic_params:
+    brightness_range: 0.288047368577472
+    contrast_range: 0.012934767740187536
+    horizontal_flip_prob: 0.0669663891337755
+    n_augments: 3
+    rotation_range: 1
+    width_shift_range: 0.02362081397019715
+  per_image_aug_method: basic
+  use_augmentation: true
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_inception.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v9/train_val
+  dataset_name: v9
+  device: auto
+  experiment_name: inception_v9_AM_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: inception
+optimizer:
+  params:
+    lr: 0.00013755175051579922
+    weight_decay: 1.1014541555570418e-05
+  type: AdamW
+params:
+  architecture: inception_v3
+  dropout: 0.5044460988423672
+  hidden_units: 1024
+  pretrained: true
+  unfreeze_layers: 6
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.189622636043057
+    min_lr: 1.0e-06
+    mode: min
+    patience: 4
+  type: ReduceLROnPlateau

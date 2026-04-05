@@ -16,10 +16,19 @@ class ModelFactory:
         return callbacks
 
     @staticmethod
-    def create_pipeline(model_config, num_classes):
+    def create_pipeline(device, model_config, num_classes, input_channels: int = 3):
         # Modelo
         module = import_module(f"models.{model_config.model_type}")
-        model = module.initialize_model(num_classes, **model_config.params)
+        model_params = model_config.params
+        # model_params['input_channels'] = input_channels
+
+        model = module.initialize_model(device, num_classes, input_channels=input_channels, **model_params)
+
+        if 'input_channels' in model_params:
+             print(f"[DEBUG FACTORY] ALERTA! input_channels encontrado em params: {model_params['input_channels']}")
+        else: 
+            print(f"Input Channels OK: {input_channels}")
+
         # Otimizador
         opt_class = getattr(optim, model_config.optimizer['type'])
         optimizer = opt_class(model.parameters(), **model_config.optimizer['params'])

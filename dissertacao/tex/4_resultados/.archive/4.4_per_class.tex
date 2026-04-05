@@ -1,0 +1,34 @@
+\section{Análise de Desempenho por Classe e Significância Estatística}
+
+A análise detalhada da arquitetura campeã, a \textbf{DenseNet V10}, revela a robustez do modelo na distinção de classes comerciais de algodão. A Tabela \ref{tab:best_class_metrics} apresenta as métricas por categoria no conjunto de teste.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Métricas detalhadas por classe para o modelo DenseNet V10.}
+    \label{tab:best_class_metrics}
+    \input{tables/best_model_class_metrics.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor.
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+A Matriz de Confusão Normalizada (Figura \ref{fig:matriz_v10}) corrobora estes achados, mostrando que a maioria dos erros ocorre entre classes adjacentes no espectro morfológico.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{images/best_model_confusion_matrix.pdf}
+  \caption{Matriz de Confusão Normalizada para o modelo DenseNet V10.}
+  \label{fig:matriz_v10}
+\end{figure}
+
+Para aprofundar a análise, a Figura \ref{fig:p_values_v10} apresenta a matriz de significância estatística (McNemar) entre os modelos. Um ponto crucial reside na comparação entre a \textbf{DenseNet} (líder em MCC) e a \textbf{ConvNext} (segunda colocada). O teste de McNemar revela que a superioridade da DenseNet sobre a ConvNext é estatisticamente significativa ($p < 0,05$). Isso indica que a DenseNet possui uma capacidade superior de capturar padrões discriminativos sutis que a ConvNext, apesar de sua arquitetura moderna, não consegue replicar integralmente neste conjunto de dados.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/p_value_heatmap_v10.pdf}
+  \caption{Matriz de significância estatística (McNemar) no dataset V10. O sufixo (ns) indica ausência de diferença estatística.}
+  \label{fig:p_values_v10}
+\end{figure}

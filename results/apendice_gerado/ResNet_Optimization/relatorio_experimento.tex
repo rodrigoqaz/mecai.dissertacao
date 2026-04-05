@@ -1,0 +1,48 @@
+
+\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \centering
+        \caption{Hiperparâmetros e Resultados do Melhor Modelo - ResNet\_Optimization}
+        \vspace{0.2cm}
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{ll | lrrr}
+                \hline
+                \multicolumn{2}{c|}{\textbf{Hiperparâmetros}} & \multicolumn{4}{c}{\textbf{Métricas por Classe}} \\ \hline
+                \textbf{Parâmetro} & \textbf{Valor} & \textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+    \cline{3-6} 
+Agendador (Patience) & 10 & \textbf{Média (Macro)} & 0.0000 & 0.0000 & 0.0000 \\ 
+Agendador de LR & ReduceLROnPlateau & \textbf{MCC} & \multicolumn{3}{c}{0.0000} \\ 
+Architecture & resnet34 &  & & &  \\ 
+Batch Size & 32 &  & & &  \\ 
+Decaimento de Peso (WD) & 0.0001 &  & & &  \\ 
+Dropout & 0.4943 &  & & &  \\ 
+Função de Perda & CrossEntropyLoss &  & & &  \\ 
+Hidden Units & 2048 &  & & &  \\ 
+Label Smoothing & 0.0596 &  & & &  \\ 
+Otimizador & AdamW &  & & &  \\ 
+Taxa de Aprendizado (LR) & 6.96e-05 &  & & &  \\ 
+Unfreeze Layers & 12 &  & & &  \\ 
+            \hline
+            \end{tabular}%
+        }
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{results/apendice_gerado/ResNet_Optimization/dashboard_consolidado.pdf}
+        \caption{Histórico de Otimização, Curvas de Aprendizado e Matriz de Confusão - ResNet\_Optimization}
+    \end{figure}
+\end{minipage}
+
+\clearpage
+\pdfpagewidth=297mm \pdfpageheight=210mm
+\newgeometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm} 
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][l]{\includegraphics[width=1.7\textwidth]{results/apendice_gerado/ResNet_Optimization/optuna_parallel.pdf}}
+    \caption{Coordenadas Paralelas dos principais hiperparâmetros para ResNet\_Optimization}
+\end{figure}
+\clearpage
+\pdfpagewidth=210mm \pdfpageheight=297mm
+\restoregeometry
+\newpage

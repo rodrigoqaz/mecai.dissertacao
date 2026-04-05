@@ -1,0 +1,117 @@
+
+\chapter{Espaços de Busca de Hiperparâmetros (Optuna)}
+\label{apendice:optuna_search_spaces}
+
+Este apêndice detalha os limites inferiores, superiores e as escolhas categóricas que compuseram o espaço de busca paramétrico para a Otimização Bayesiana (TPE) utilizando o \textit{framework} Optuna. Os espaços foram segmentados de acordo com as particularidades arquiteturais e requisitos de regularização de cada família de modelos.
+
+\section*{A.1. Parâmetros Arquiteturais e de Otimização}
+
+As Tabelas \ref{tab:space_transformers}, \ref{tab:space_modern_cnn} e \ref{tab:space_robust_cnn} detalham as faixas exploradas para o ajuste fino (\textit{fine-tuning}) das topologias baseadas em atenção e das redes convolucionais. Para taxas de aprendizado (\textit{Learning Rate}) e decaimento de peso (\textit{Weight Decay}), a amostragem ocorreu em escala logarítmica.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Espaço de busca para arquiteturas baseadas em Atenção (\textit{Transformers}).}
+    \label{tab:space_transformers}
+    \begin{tabular}{l c c}
+        \toprule
+        \textbf{Hiperparâmetro} & \textbf{Vision Transformer (ViT)} & \textbf{Swin Transformer} \\
+        \midrule
+        Versões da Arquitetura & Base (16), Base (32) & Tiny, Small \\
+        Tamanho do \textit{Batch} & $\{16, 32\}$ & $\{16, 32\}$ \\
+        Camadas Descongeladas & $[1, 4]$ & $[1, 4]$ \\
+        Unidades Ocultas (Head) & $\{256, 512\}$ & $\{256, 512\}$ \\
+        Taxa de \textit{Dropout} & $[0.0, 0.3]$ & $[0.0, 0.3]$ \\
+        Otimizador & AdamW & AdamW \\
+        \textit{Learning Rate} (log) & $[1 \times 10^{-5}, 2 \times 10^{-4}]$ & $[1 \times 10^{-5}, 2 \times 10^{-4}]$ \\
+        \textit{Weight Decay} (log) & $[0.01, 0.1]$ & $[0.01, 0.1]$ \\
+        \textit{Label Smoothing} & $[0.0, 0.1]$ & $[0.0, 0.1]$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht!]
+    \centering
+    \caption{Espaço de busca para Redes Convolucionais Modernas.}
+    \label{tab:space_modern_cnn}
+    \begin{tabular}{l c c}
+        \toprule
+        \textbf{Hiperparâmetro} & \textbf{ConvNeXt} & \textbf{EfficientNet} \\
+        \midrule
+        Versões da Arquitetura & Tiny, Small & B0, B1, B2 \\
+        Tamanho do \textit{Batch} & $\{16, 32\}$ & $\{16, 32, 48\}$ \\
+        Camadas Descongeladas & $[2, 6]$ & $[2, 8]$ \\
+        Unidades Ocultas (Head) & $\{512, 1024\}$ & $\{256, 512\}$ \\
+        Taxa de \textit{Dropout} & $[0.2, 0.5]$ & $[0.2, 0.5]$ \\
+        Otimizador & AdamW & Adam, AdamW \\
+        \textit{Learning Rate} (log) & $[1 \times 10^{-4}, 4 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
+        \textit{Weight Decay} (log) & $[1 \times 10^{-3}, 0.05]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ \\
+        \textit{Label Smoothing} & $[0.1, 0.2]$ & Fixo em $0.1$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht!]
+    \centering
+    \caption{Espaço de busca para Redes Convolucionais Clássicas e Robustas.}
+    \label{tab:space_robust_cnn}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l c c c c}
+        \toprule
+        \textbf{Hiperparâmetro} & \textbf{ResNet} & \textbf{Inception-v3} & \textbf{DenseNet} & \textbf{VGG-BN} \\
+        \midrule
+        Versões da Arquitetura & 18, 34, 50 & V3 & 121, 169 & 16, 19 \\
+        Tamanho do \textit{Batch} & $\{32, 64\}$ & $\{32, 64\}$ & $\{16, 32\}$ & $\{16, 32\}$ \\
+        Camadas Descongeladas & $[1, 3]$ & $[2, 6]$ & $[2, 6]$ & $[2, 6]$ \\
+        Unidades Ocultas (Head) & $\{256, 512\}$ & $\{512, 1024\}$ & $\{256, 512\}$ & $\{256, 512\}$ \\
+        Taxa de \textit{Dropout} & $[0.3, 0.6]$ & $[0.3, 0.6]$ & $[0.2, 0.5]$ & $[0.4, 0.7]$ \\
+        Otimizador & SGD, AdamW & AdamW & AdamW & SGD, AdamW \\
+        \textit{Learning Rate} (log) & $[1 \times 10^{-4}, 1 \times 10^{-1}]^*$ & $[1 \times 10^{-4}, 1 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
+        \textit{Weight Decay} (log) & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
+        \bottomrule
+    \end{tabular}
+    }
+    \vspace{0.1cm}
+    \footnotesize{*Nota: A faixa de \textit{Learning Rate} da ResNet dependeu do otimizador ($10^{-4}$ a $10^{-3}$ para AdamW e $10^{-3}$ a $10^{-1}$ para SGD).}
+\end{table}
+
+\section*{A.2. Parâmetros de \textit{Data Augmentation} e \textit{Schedulers}}
+
+Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \textit{Data Augmentation} foram testados no espaço de busca. A regularização em nível de lote avaliou estocasticamente o uso de \textit{CutMix} e \textit{MixUp} (com parâmetro $\alpha \in [0.2, 1.0]$) contra o treinamento padrão. As transformações intra-imagem (via Albumentations) seguiram os limites detalhados na Tabela \ref{tab:space_aug}. Os hiperparâmetros que regem os Agendadores de Taxa de Aprendizado (\textit{LR Schedulers}) estão documentados na Tabela \ref{tab:space_schedulers}.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Espaço de busca para transformações de \textit{Data Augmentation} em nível de imagem.}
+    \label{tab:space_aug}
+    \begin{tabular}{l c | l c}
+        \toprule
+        \multicolumn{2}{c|}{\textbf{Método Básico (\textit{Basic})}} & \multicolumn{2}{c}{\textbf{Método Avançado (\textit{Advanced})}} \\
+        \midrule
+        \textbf{Parâmetro} & \textbf{Intervalo} & \textbf{Parâmetro} & \textbf{Intervalo} \\
+        \midrule
+        Nº de Transformações & $[1, 3]$ & Prob. Distorção Geométrica & $[0.2, 0.5]$ \\
+        Graus de Rotação & $[0^\circ, 45^\circ]$ & Prob. Inserção de Ruído & $[0.1, 0.4]$ \\
+        Prob. Espelhamento (H) & $[0.0, 1.0]$ & Prob. \textit{Coarse Dropout} & $[0.1, 0.3]$ \\
+        Variação de Brilho & $[0.0, 0.3]$ & Quantidade de Furos (\textit{Holes}) & $[4, 12]$ \\
+        Variação de Contraste & $[0.0, 0.3]$ & Fator de Corte (\textit{Zoom Min}) & $[0.6, 0.8]$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht!]
+    \centering
+    \caption{Espaço de busca para agendadores de taxa de aprendizado (\textit{LR Schedulers}).}
+    \label{tab:space_schedulers}
+    \begin{tabular}{l c c}
+        \toprule
+        \textbf{Estratégia do \textit{Scheduler}} & \textbf{Parâmetro} & \textbf{Intervalo de Busca} \\
+        \midrule
+        \multirow{2}{*}{Cosine Annealing Warm Restarts} & $T_0$ (\textit{Epochs} até 1º reinício) & $[5, 15]$ \\
+                                                        & $\eta_{min}$ (LR mínimo) & $1 \times 10^{-6}$ (Fixo) \\
+        \midrule
+        \multirow{2}{*}{Reduce LR On Plateau} & \textit{Patience} (\textit{Epochs} sem melhora) & $[3, 8]$ \\
+                                              & Fator de Decaimento (\textit{Factor}) & $[0.1, 0.5]$ \\
+        \midrule
+        Step LR & \textit{Step Size} (\textit{Epochs}) & $[5, 15]$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}

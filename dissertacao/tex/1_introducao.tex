@@ -1,0 +1,43 @@
+% Revisado
+
+O algodão (\textit{Gossypium hirsutum L.}) representa uma das culturas de maior relevância econômica mundial, sendo conhecido como ``ouro branco'' devido ao seu impacto estratégico no agronegócio global. A fibra do algodão sustenta uma indústria têxtil avaliada em aproximadamente 600 bilhões de dólares anuais \cite{Khan2020}, consolidando sua posição como commodity essencial para a economia mundial. No contexto brasileiro, o país figura entre os principais produtores globais, com produção anual de aproximadamente 2,5 milhões de toneladas de pluma em área cultivada de 1,6 milhão de hectares \cite{conab2024}, o que reforça o seu papel fundamental na balança comercial nacional.
+
+A classificação da qualidade das fibras constitui uma etapa crítica na cadeia produtiva e comercial do algodão, determinando diretamente o valor de mercado e o poder de negociação do produto \cite{yasar2021quality}.O processo segue padrões internacionais que orientam a comercialização desde 1906, quando o Departamento de Agricultura dos Estados Unidos (USDA) criou o sistema de padronização que permanece como referência mundial. Atualmente o USDA mantém 15 categorias de classificação de algodão, que são atualizadas anualmente e servem como referência para as classificações visuais realizadas em diversos países \cite{cottoninc2017}.
+
+No Brasil, este processo é regulamentado pela Instrução Normativa n. 24/2016 do Ministério de Estado da Agricultura, Pecuária e Abastecimento (MAPA), que traça padrões para a classificação, com requisitos de identidade e qualidade, amostragem e apresentação do produto \cite{mapa2016}.
+
+No processo produtivo do algodão a classificação é feita por amostragem, e pode ser realizada de duas formas: por método visual ou por método instrumental. A classificação visual é realizada por especialistas com base nos Padrões Físicos Universais, levando em conta a cor das fibras, a presença de impurezas (como folhas e galhos), as contaminações de matérias estranhas e o modo de preparação (beneficiamento) do produto. Apesar de ser uma abordagem mais ágil, ela incorpora um grau elevado de subjetividade inerente à interpretação humana, o que pode resultar em variabilidade nos resultados e levantar questionamentos durante negociações comerciais. Já a classificação instrumental é realizada por equipamento do tipo HVI (\textit{High Volume Instrument}) e proporciona maior objetividade e reprodutibilidade. No entanto, essa técnica exige um tempo de análise consideravelmente maior, custos operacionais elevados, preparo específico das amostras e condições laboratoriais controladas \cite{Oliveira2022} \cite{mapa2016}.
+
+O principal gargalo logístico da cadeia produtiva ocorre na etapa de ``emblocamento'', que consiste na criação de blocos de algodão de aproximadamente 25 toneladas, compostos por fardos que possuem a mesma classificação (geralmente entre 110 e 125 fardos), sendo cada bloco é a menor unidade de comercialização. A dinâmica operacional das algodoeiras, funcionando continuamente 24 horas por dia durante a safra, exige velocidade nesse processo de ``emblocamento''. Por isso, as empresas optam por realizar esta etapa do processo de acordo com a classificação visual, já que os resultados da classificação por instrumentos podem demorar até 24 horas para ficarem prontos.
+
+Mesmo com a classificação visual, que é mais rápida que a por instrumentos, existe um ponto de lentidão no processo, pois é necessário que as amostras sejam enviadas para as unidades de classificação. Ter as unidades de classificação dentro da indústria não se mostra viável pela necessidade de se ter um ambiente controlado para garantia da integridade das amostras. 
+
+Nesse cenário, um sistema automatizado que possa ser instalado diretamente na linha de produção, capaz de analisar cada fardo em tempo real, emerge como uma solução de alto impacto para a otimização do processo. Para enfrentar este desafio, a Visão Computacional se apresenta como uma tecnologia adequada. 
+
+Trata-se da ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta, extraindo informações significativas a partir de imagens capturadas por diversos dispositivos como câmeras, sensores, scanners, etc. Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem \cite{ballard1982computer}.
+
+Desde os primeiros estudos na área, na década de 1970, até os dias atuais, o campo evoluiu drasticamente, principalmente com o advento da Inteligência Artificial, permitindo que computadores executem tarefas visuais complexas com precisão próxima ou superior à humana. Assim, a visão computacional fornece ao computador uma infinidade de informações precisas a partir de imagens e vídeos, de forma que o computador consiga executar tarefas inteligentes, simulando e aproximando-se da inteligência humana \cite{oliveira2024visao}.
+
+Um sistema básico de visão computacional consiste em quatro características: iluminação, câmera, computador e \textit{software} de processamento de imagens. Isso permite a captura da imagem, sua conversão digital para armazenamento e processamento no computador e o \textit{software} de processamento de imagens será responsável pelo aprimoramento, segmentação, detecção ou classificação da imagem \cite{zhang2014computer}.
+
+% O sistema de iluminação deve ser capaz de destacar as características de interesse do objeto, em detrimento das demais características. É um sistema de extrema importância para se garantir a eficiência e a acurácia de um sistema de visão computacional, além de ter uma grande influência na qualidade das imagens. As chaves de um bom sistema de iluminação são aquelas que provêm uma iluminação uniforme com um espectro de características e que produzem imagens de alta qualidade \cite{thomasson2005}.
+
+% A câmera é o componente principal do sistema de visão computacional, que é usado para a aquisição da imagem e para a troca de dados com o computador. Existem diferentes tipos de dispositivos que capturam imagens em diversos espectros como monocromáticas, RGB, ultrassom, raios-x, NIR, etc \cite{brosnan2002}.
+
+% ACHO QUE AQUI PODEMOS CRIAR UMA TRANSIÇÃO EXPLICANDO A PARTE DOS MÉTODOS DE VISÃO: CLASSIFICAÇÃO, DETECÇÃO E SEGMENTACAO
+
+A automação da classificação visual por meio da visão computacional visa, portanto, substituir um processo manual e subjetivo por um sistema objetivo, rápido e padronizado, mitigando as incertezas que geram disputas comerciais. Diante deste cenário, justifica-se a construção de um sistema que realize a classificação do produto em conformidade com as regulamentações, mas eliminando a subjetividade e o gargalo logístico do processo. Este trabalho busca, portanto, responder à seguinte pergunta:
+
+\textit{Até que ponto arquiteturas de aprendizado profundo, incluindo Redes Neurais Convolucionais e Transformers, podem automatizar a classificação visual do algodão em um ambiente industrial, equilibrando acurácia e eficiência computacional?}
+
+Assim, o objetivo geral deste trabalho é desenvolver e avaliar um sistema de visão computacional para a classificação automática do tipo de algodão, comparando o desempenho de arquiteturas CNN (\textit{Convolutional Neural Networks}) e \textit{Transformer}. Para atingir este objetivo, foram definidos os seguintes objetivos específicos:
+
+\begin{itemize}
+    \item Construir um dataset de imagens de algodão, capturadas sob iluminação controlada, representativo das classes de maior relevância comercial no cerrado brasileiro.
+    
+    \item Avaliar e comparar o desempenho de diferentes arquiteturas de aprendizado profundo (ResNet, VGGNet, Inception, EfficientNet, ViT, Swin-T e ConvNeXt) em termos de métricas de performance e eficiência.
+    
+    \item Analisar a relação entre a complexidade computacional dos modelos (número de parâmetros e tempo de inferência) e sua eficácia na classificação, identificando a arquitetura com o melhor balanço para aplicação industrial.
+\end{itemize}
+
+Este trabalho está organizado em seis capítulos. O Capítulo 2 apresenta uma revisão da literatura sobre a classificação de algodão e as arquiteturas de visão computacional. O Capítulo 3 detalha a metodologia utilizada para coleta das amostras e treinamento dos modelos. O Capítulo 4 apresenta os resultados obtidos, enquanto o Capítulo 5 propões uma discussão acerca dos melhores modelos avaliados e sua eficiência no âmbito industrial. Por fim, no Capítulo 6 são apresentadas as conclusões desta dissertação.

@@ -37,14 +37,60 @@ class AugmentationManager:
             ])
         
         elif method == "advanced":
+            p_distort = params.get('p_distort', 0.3)
+            p_noise = params.get('p_noise', 0.2)
+            p_dropout = params.get('p_dropout', 0.2)
+            num_holes = params.get('num_holes', 8)
+            crop_min = params.get('crop_scale_min', 0.7)
+
             return A.Compose([
-                A.RandomRotate90(),
-                A.ElasticTransform(alpha=1, sigma=50, alpha_affine=50, p=0.5),
-                A.GridDistortion(p=0.3),
-                A.OpticalDistortion(distort_limit=0.5, shift_limit=0.5, p=0.3),
-                A.Resize(224, 224)
+                # 1. Geometria Rígida (Sempre útil)
+                A.RandomRotate90(p=0.5),
+                A.HorizontalFlip(p=0.5),
+                A.VerticalFlip(p=0.5),
+                A.Transpose(p=0.5),
+
+                # 2. Invariância de Escala (Simula Zoom e muda enquadramento)
+                A.RandomResizedCrop(
+                    size=(224, 224), 
+                    scale=(crop_min, 1.0), 
+                    ratio=(0.8, 1.25), 
+                    p=1.0
+                ),
+
+                # 3. Distorções Elásticas e Ópticas (Controladas por p_distort)
+                # OneOf garante que não aplicamos todas ao mesmo tempo (destrutivo)
+                A.OneOf([
+                    A.ElasticTransform(
+                        alpha=120, sigma=120 * 0.05, p=1.0
+                    ),
+                    A.GridDistortion(num_steps=5, distort_limit=0.3, p=1.0),
+                    A.OpticalDistortion(distort_limit=0.5, p=1.0),
+                ], p=p_distort),
+
+                # 4. Ruído e Intensidade (Controladas por p_noise)
+                # Seguro para 15 canais (evita mexer em Hue/Saturation)
+                A.OneOf([
+                    A.GaussNoise(std_range=(0.02, 0.05), p=1.0),
+                    A.MultiplicativeNoise(multiplier=(0.9, 1.1), p=1.0),
+                    A.RandomBrightnessContrast(
+                        brightness_limit=0.2, contrast_limit=0.2, p=1.0
+                    ),
+                ], p=p_noise),
+
+                # 5. Regularização por Oclusão (CoarseDropout)
+                # Força o modelo a aprender contexto global
+                A.CoarseDropout(
+                    num_holes_range=(2, num_holes),
+                    hole_height_range=(8, 32),
+                    hole_width_range=(8, 32),
+                    fill=0,
+                    p=p_dropout
+                ),
+
+                # Garantia final de tamanho
+                A.Resize(height=224, width=224)
             ])
-        
         return None
 
     @staticmethod

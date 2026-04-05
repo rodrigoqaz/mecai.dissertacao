@@ -13,7 +13,8 @@ def train_epoch(
     model: nn.Module,
     loader: DataLoader,
     criterion: nn.Module,
-    optimizer: torch.optim.Optimizer
+    optimizer: torch.optim.Optimizer,
+    device
 ) -> Tuple[float, float]:
     """Executa uma época de treinamento"""
 
@@ -25,11 +26,39 @@ def train_epoch(
     with tqdm(loader, unit="batch") as tepoch:
         tepoch.set_description(f"Treinando Época {epoch+1}/{max_epochs}")
         for inputs, labels in tepoch:
-            inputs = inputs.to(Config.device)
-            labels = labels.to(Config.device)
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
+            # outputs, aux_outputs = model(inputs)
+
+            model_output = model(inputs)
+            if isinstance(model_output, tuple):
+                outputs, *aux_outputs = model_output
+            else:
+                outputs = model_output
+                aux_outputs = []
+
+            # Cálculo da perda principal
+            if labels.ndim == 2:  # Caso de labels modificados (ex: MixUp/CutMix)
+                loss = criterion(outputs, labels.argmax(dim=1))
+            else:
+                loss = criterion(outputs, labels)
+            
+            # Adição de perdas auxiliares (se existirem)
+            aux_loss_weight = 0.4  # Configurável via hyperparams
+            for aux_out in aux_outputs:
+                if labels.ndim == 2:
+                    aux_loss = criterion(aux_out, labels.argmax(dim=1))
+                else:
+                    aux_loss = criterion(aux_out, labels)
+                loss += aux_loss_weight * aux_loss
+
+            # outputs = model(inputs)
+            # loss = criterion(outputs, labels)
+            # if labels.ndim == 2:
+            #     loss = criterion(outputs, labels.argmax(dim=1)) + 0.4 * criterion(aux_outputs, labels.argmax(dim=1))
+            # else:
+            #     loss = criterion(outputs, labels) + 0.4 * criterion(aux_outputs, labels)
             loss.backward()
             optimizer.step()
 
@@ -57,7 +86,7 @@ def train_epoch(
     return epoch_loss, epoch_acc
 
 
-def validate(model: nn.Module, loader: DataLoader, criterion: nn.Module, class_names: list) -> Tuple[float, float, Dict]:
+def validate(model: nn.Module, loader: DataLoader, criterion: nn.Module, class_names: list, device) -> Tuple[float, float, Dict]:
     """Executa validação completa"""
     model.eval()
     all_preds = []
@@ -66,8 +95,8 @@ def validate(model: nn.Module, loader: DataLoader, criterion: nn.Module, class_n
     
     with torch.no_grad():
         for inputs, labels in loader:
-            inputs = inputs.to(Config.device)
-            labels = labels.to(Config.device)
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             
             outputs = model(inputs)
             loss = criterion(outputs, labels)

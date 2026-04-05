@@ -1,0 +1,41 @@
+%Revisado
+
+O escopo desta dissertação foi direcionado às 10 classes comerciais de algodão em pluma mais prevalentes na produção local, em estrita conformidade com os padrões oficiais de classificação estabelecidos pela Instrução Normativa nº 24/2016 do Ministério da Agricultura, Pecuária e Abastecimento (MAPA). A rotulagem de cada amostra (\textit{ground truth}) foi estabelecida com base no laudo de classificação visual humano, adotado pela própria unidade de beneficiamento parceira. Esse procedimento assegurou que os rótulos atribuídos aos tensores de imagem correspondessem aos parâmetros utilizados nas operações reais de comercialização, conferindo validade industrial ao problema de classificação.
+
+Após a etapa de pré-processamento (Camada \textit{Gold}), o \textit{dataset} final consolidou-se em 7.908 \textit{patches} de imagem. Para a condução rigorosa dos experimentos, realizou-se a divisão do conjunto de dados utilizando uma proporção de 80\% para treinamento/validação (6.326 amostras) e 20\% para teste retido isoladamente (1.582 amostras). 
+
+É necessário destacar que essa divisão foi realizada de forma estratificada por classe, utilizando uma semente aleatória fixa (\textit{random seed} = 42). A estratificação garantiu que a proporção original de cada classe fosse preservada em ambas as partições. A distribuição quantitativa exata dos dados particionados é detalhada na Tabela \ref{tab:distribuicao_classes}.
+
+\begin{table}[ht!]
+    \centering
+    \begin{threeparttable}
+    \caption{Distribuição de amostras (\textit{patches}) por classe e partição do \textit{dataset}.}
+    \label{tab:distribuicao_classes}
+    \begin{tabular}{c c c c}
+        \hline
+        \textbf{Classe Comercial} & \textbf{Treino/Validação (80\%)} & \textbf{Teste (20\%)} & \textbf{Total} \\
+        \hline
+        \textbf{31.2} & 1.126 & 281 & 1.407 \\
+        \textbf{31.3} & 975 & 244 & 1.219 \\
+        \textbf{31.4} & 1.112 & 278 & 1.390 \\
+        \textbf{32.3} & 858 & 215 & 1.073 \\
+        \textbf{32.4} & 275 & 69 & 344 \\
+        \textbf{33.3} & 1.034 & 259 & 1.293 \\
+        \textbf{41.4} & 238 & 59 & 297 \\
+        \textbf{41.5} & 234 & 58 & 292 \\
+        \textbf{42.4} & 302 & 76 & 378 \\
+        \textbf{44.4} & 172 & 43 & 215 \\
+        \hline
+        \textbf{Total Geral} & \textbf{6.326} & \textbf{1.582} & \textbf{7.908} \\
+        \hline
+    \end{tabular}
+    \begin{tablenotes}
+        \small 
+        \item \textit{Nota:} Divisão estratificada realizada antes da aplicação de técnicas de \textit{Data Augmentation}. Fonte: Do autor.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+A referida distribuição quantitativa reflete o desbalanceamento natural intrínseco à produção agrícola, caracterizado por uma forte prevalência de qualidades superiores (ex: a classe majoritária 31.2 possui 1.407 amostras, enquanto a minoritária 44.4 possui apenas 215).
+
+Para lidar com essa assimetria sem adulterar a distribuição estatística real do domínio de aplicação, o que poderia gerar viés de amostragem, optou-se por não aplicar técnicas de superamostragem artificial no disco. Em vez disso, a preservação da capacidade preditiva das classes minoritárias será tratada diretamente na fase de treinamento e validação dos modelos, por meio da adoção de métricas de otimização globalmente robustas a classes desbalanceadas, detalhadas na seção subsequente.

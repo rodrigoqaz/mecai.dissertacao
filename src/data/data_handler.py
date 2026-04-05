@@ -62,8 +62,12 @@ class DataLoader:
         
         return dataset
         
-    def _load_processed_images(self) -> Dict[str, List[Tuple[np.ndarray, str]]]:
-        dataset = defaultdict(list)
+    def _load_processed_images(self) -> Dict[str, Dict[str, List[Tuple[np.ndarray, str]]]]:
+        """
+        Carrega imagens processadas organizadas por split (ex: train_val, test).
+        Retorna: { 'split_name': { 'class_name': [(img, filename), ...] } }
+        """
+        dataset_splits = defaultdict(lambda: defaultdict(list))
         input_dir = self.config_manager.get_input_path()
 
         try:
@@ -74,29 +78,49 @@ class DataLoader:
                     f"Diretório não encontrado: {input_dir}"
                 )
                 logging.error(f"Diretório de entrada não encontrado: {input_dir}")
-                return dataset
-                
-            for class_dir in input_dir.iterdir():
-                if class_dir.is_dir():
-                    class_name = class_dir.name
-                    for img_path in class_dir.glob('*.npy'):
-                        try:
-                            img = np.load(str(img_path))
-                            dataset[class_name].append((img, img_path.name))
-                        except Exception as e:
-                            ErrorLogger.log_error(
-                                self.config_manager.get_output_path(),
-                                img_path,
-                                f"Erro ao carregar arquivo NPY: {e}"
-                            )
+                return dataset_splits
+            
+            # Busca todos os arquivos .npy recursivamente
+            npy_files = list(input_dir.rglob('*.npy'))
+            
+            if not npy_files:
+                logging.warning(f"Nenhum arquivo .npy encontrado em {input_dir}")
+                return dataset_splits
+
+            for img_path in npy_files:
+                try:
+                    # Estrutura esperada: input_dir / split / class / file.npy
+                    # Ou: input_dir / class / file.npy
+                    class_name = img_path.parent.name
+                    parent_of_class = img_path.parent.parent
+                    
+                    split_name = 'all'
+                    if parent_of_class.name in ['train_val', 'test']:
+                        split_name = parent_of_class.name
+                    elif class_name in ['train_val', 'test']:
+                        # Caso o arquivo esteja direto no split (improvável mas possível)
+                        continue
+                        
+                    img = np.load(str(img_path))
+                    dataset_splits[split_name][class_name].append((img, img_path.name))
+                except Exception as e:
+                    ErrorLogger.log_error(
+                        self.config_manager.get_output_path(),
+                        img_path,
+                        f"Erro ao carregar arquivo NPY: {e}"
+                    )
         except Exception as e:
             ErrorLogger.log_error(
                 self.config_manager.get_output_path(),
                 "load_processed_images",
                 f"Erro ao processar diretório de entrada: {e}"
             )
+        
+        for split, classes in dataset_splits.items():
+            total_imgs = sum(len(imgs) for imgs in classes.values())
+            logging.info(f"Split '{split}': {total_imgs} imagens em {len(classes)} classes.")
                     
-        return dataset
+        return dataset_splits
 
 class DatasetExporter:
     """
@@ -110,11 +134,15 @@ class DatasetExporter:
     def _create_dirs(self):
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-    def save_dataset(self, dataset):
+    def save_dataset(self, dataset: Dict, split_name: str):
+        """Salva um conjunto de dados em um subdiretório específico."""
+        split_dir = self.output_dir / split_name
+        split_dir.mkdir(parents=True, exist_ok=True)
+        
         with ThreadPoolExecutor(max_workers=8) as executor:
             futures = []
             for class_name, images in dataset.items():
-                class_dir = self.output_dir / class_name
+                class_dir = split_dir / class_name
                 class_dir.mkdir(parents=True, exist_ok=True)
                 
                 for img, filename in images:
@@ -128,8 +156,9 @@ class DatasetExporter:
                             allow_pickle=False
                         )
                     )
-                    
-            for _ in tqdm(futures, desc="Salvando imagens"):
+            
+            desc = f"Salvando imagens em '{split_name}'"
+            for _ in tqdm(executor.map(lambda f: f.result(), futures), total=len(futures), desc=desc):
                 pass
                 
     def save_metadata(self, dataset=None):

@@ -1,24 +1,9 @@
-import torch
 import torch.nn as nn
 from torchvision import models
-from src.config.models.config import Config
 
-def initialize_model(num_classes: int, **params) -> nn.Module:
+def initialize_model(device, num_classes: int, input_channels: int = 3, **params) -> nn.Module:
     """
     Inicializa um modelo DenseNet pré-treinado, adaptando o head para fine-tuning.
-    
-    Args:
-        num_classes (int): Número de classes de saída
-        params: Parâmetros de configuração:
-            - architecture: Arquitetura DenseNet (ex: densenet121)
-            - pretrained: Usar pesos pré-treinados (default: True)
-            - unfreeze_layers: Número de camadas finais para descongelar (default: 2)
-            - hidden_units: Unidades na camada oculta (default: 256)
-            - dropout: Taxa de dropout (default: 0.3)
-            - weights: Versão dos pesos (ex: IMAGENET1K_V1)
-    
-    Returns:
-        nn.Module: Modelo DenseNet configurado
     """
     # Obter parâmetros com valores padrão
     architecture = params.get('architecture', 'densenet121')
@@ -27,7 +12,6 @@ def initialize_model(num_classes: int, **params) -> nn.Module:
     hidden_units = params.get('hidden_units', 256)
     dropout = params.get('dropout', 0.3)
     weights = params.get('weights', 'IMAGENET1K_V1')
-    device = Config.device
 
     # Carregar modelo base
     try:
@@ -36,6 +20,19 @@ def initialize_model(num_classes: int, **params) -> nn.Module:
         weights_enum = None
         
     base_model = getattr(models, architecture)(weights=weights_enum)
+
+    # Ajustar a primeira camada convolucional se input_channels for diferente de 3
+    if input_channels != 3:
+        original_conv = base_model.features.conv0
+        new_conv = nn.Conv2d(
+            input_channels,
+            original_conv.out_channels,
+            kernel_size=original_conv.kernel_size,
+            stride=original_conv.stride,
+            padding=original_conv.padding,
+            bias=original_conv.bias
+        )
+        base_model.features.conv0 = new_conv
 
     # Congelar todas as camadas inicialmente
     for param in base_model.parameters():

@@ -1,0 +1,57 @@
+augmentations: {}
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_vit.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v8/train_val
+  dataset_name: v8
+  device: auto
+  experiment_name: vit_v8_AB_opt
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.03575895192880617
+  type: CrossEntropyLoss
+model_type: vit
+optimizer:
+  params:
+    lr: 1.0094205401363773e-05
+    weight_decay: 0.012453690319629757
+  type: AdamW
+params:
+  architecture: vit_b_32
+  dropout: 0.07340916206666995
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 1
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    T_0: 12
+    T_mult: 2
+    eta_min: 1.0e-06
+  type: CosineAnnealingWarmRestarts
+train_transform:
+  transforms:
+  - name: Resize
+    params:
+      size:
+      - 224
+      - 224
+val_transform:
+  transforms:
+  - name: Resize
+    params:
+      size:
+      - 224
+      - 224

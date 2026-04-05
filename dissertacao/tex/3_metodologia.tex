@@ -1,0 +1,52 @@
+%Revisando
+
+Este capítulo detalha os procedimentos metodológicos e as ferramentas desenvolvidas para a aquisição e o processamento de dados, que constituem a base para o treinamento e a validação do sistema de visão computacional proposto. A metodologia foi estruturada em quatro etapas principais: (1) o projeto e o desenvolvimento de um \textit{hardware} para a aquisição padronizada de imagens, denominado ``Caixa de Captura''; (2) o estabelecimento de um protocolo rigoroso para a coleta das amostras de pluma em ambiente agroindustrial; (3) o pré-processamento e a estruturação da base de dados; e (4) a configuração do ambiente computacional para o treinamento e a avaliação das arquiteturas de \textit{Deep Learning}. Cada fase foi projetada com foco na robustez da luminosidade, na padronização das amostras e na reprodutibilidade dos resultados.
+
+
+\section{Desenvolvimento do Sistema de Aquisição de Dados (Caixa de Captura)}
+\label{sec:sistema_aquisicao}
+
+    \input{tex/3_metodologia/3.1_aquisicao_dados.tex}
+
+\section{Protocolo de Coleta e Amostragem}
+\label{sec:protocolo_coleta}
+
+    \input{tex/3_metodologia/3.2_protocolo_coleta.tex}
+
+\section{Pré-processamento e Preparação dos Dados}
+\label{sec:prepdados}
+
+    \input{tex/3_metodologia/3.3_preprocessamento.tex}
+
+
+
+\section{Construção do Conjunto de Dados, Rotulagem e Balanceamento de Classes}
+\label{sec:conjunto_dados}
+
+    \input{tex/3_metodologia/3.4_conjunto_dados.tex}
+
+
+\section{Seleção e Adaptação dos Modelos Base (Modelos Avaliados)}
+\label{sec:modelos}
+
+    \input{tex/3_metodologia/3.5_selecao_modelos.tex}
+
+\section{Ambiente de treinamento e avaliação dos modelos}
+\label{sec:ambiente_treinamento}
+
+    \input{tex/3_metodologia/3.6_ambiente_treinamento.tex}
+
+
+    % Para garantir a reprodutibilidade e a gestão sistemática dos experimentos, foi desenvolvido um ambiente automatizado de treinamento e avaliação. A plataforma foi implementada em Python, utilizando a biblioteca PyTorch como framework principal para a construção e o treinamento dos modelos de deep learning, devido à sua flexibilidade e vasto ecossistema.
+
+    % A gestão do ciclo de vida dos experimentos foi realizada com a ferramenta MLflow. Esta plataforma permitiu o rastreamento automatizado de todos os artefatos experimentais, incluindo os hiperparâmetros utilizados, as métricas de performance (acurácia, perda), os modelos treinados e os gráficos de validação. Essa abordagem assegura a comparabilidade rigorosa entre os diferentes modelos e facilita a análise dos resultados, granatindo a transparência do processo.
+
+    % Para mitigar o overfitting e aumentar a capacidade de generalização dos modelos, foram empregadas as técnicas de regularização CutMix e MixUp em tempo real durante o treinamento, que combinam pares de imagens e seus rótulos para criar amostras sintéticas, incentivando o modelo a aprender representações mais robustas e a fazer predições menos confiantes em regiões ambíguas.
+
+    % A otimização de hiperparâmetros foi conduzida de forma sistemática utilizando a biblioteca Optuna, que implementa algoritmos de busca avançados. Especificamente, foi empregada a Otimização Bayesiana com o algoritmo TPE (Tree-structured Parzen Estimator), pois é computacionalmente mais eficiente do que métodos como \textit{grid search} ou \textit{random search} para explorar eficientemente o espaço de hiperparâmetros (como taxa de aprendizado, intensidade do dropout e parâmetros do otimizador) e convergir rapidamente para as configurações que maximizam a acurácia de validação, garantindo assim que cada modelo fosse avaliado em sua performance ótima.
+
+
+\section{Desenho Experimental}
+\label{sec:desenho_experimental}
+
+    \input{tex/3_metodologia/3.7_desenho_experimental.tex}

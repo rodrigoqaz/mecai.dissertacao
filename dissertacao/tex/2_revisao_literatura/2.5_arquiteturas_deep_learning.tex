@@ -1,0 +1,120 @@
+%Revisado
+\subsection{Arquiteturas Fundacionais: VGG e Inception}
+
+    A VGG estabeleceu o uso sistemático de filtros $3 \times 3$, demonstrando que a profundidade é o componente chave para a extração de hierarquias de características. Embora fundamental, sua ineficiência paramétrica e o uso de camadas densas massivas servem hoje como baseline histórico. A família Inception introduziu a ideia de processamento multiescala paralelo, capturando texturas em diferentes frequências espaciais, o que pavimentou o caminho para redes com campos receptivos mais inteligentes.
+
+    \subsubsection{A Arquitetura VGG Net}
+
+        A VGG Net, introduzida por \citeonline{vgg2024}, demonstrou que uma rede mais profunda, aliada a uma estrutura uniforme, é o fator determinante para a extração de características em larga escala. Diferentemente de sua predecessora, a \textit{AlexNet}, que utilizava filtros heterogêneos (como $11 \times 11$), a VGG propôs uma filosofia de \textit{design} baseada na simplicidade: a utilização exclusiva de filtros pequenos de $3 \times 3$ empilhados. Matematicamente, uma sequência de três dessas convoluções possui o mesmo campo receptivo efetivo de uma única camada de $7 \times 7$. No entanto, essa abordagem oferece vantagens críticas para a classificação de microtexturas.
+
+        Primeiramente, as três camadas introduzem três funções de ativação ReLU em vez de uma, permitindo que a rede aprenda funções de decisão muito mais complexas e discriminativas. Além disso, enquanto uma camada de $7 \times 7$ com $C$ canais possui $49C^2$ parâmetros, a pilha de três camadas de $3 \times 3$ utiliza apenas $27C^2$ parâmetros. Essa redução de quase 45\% permitiu o aumento da profundidade da rede (até 16 ou 19 camadas) sem um crescimento proibitivo do custo computacional.
+        
+        Embora existam diversas variantes (de VGG-11 a VGG-19), a VGG-16 tornou-se o padrão para tarefas de visão computacional. Sua estrutura é composta por blocos de camadas convolucionais seguidos por \textit{max-pooling} ($2 \times 2$ com \textit{stride} 2), culminando em camadas totalmente conectadas.
+
+        % \input{tables/tab_vgg.tex}
+        
+        Apesar de sua clareza arquitetural, a VGG apresenta limitações em cenários modernos de produção. A dependência de camadas totalmente conectadas massivas resulta em um alto consumo de memória (~528 MB para a VGG-16). Além disso, a ausência de conexões de salto torna o modelo sensível ao desaparecimento do gradiente em profundidades maiores.
+
+        No contexto desta dissertação, a VGG-16 é analisada como um extrator de características robusto. Sua capacidade de capturar microtexturas e sua uniformidade a tornam uma base ideal para \textit{transfer learning}, embora sua eficiência computacional seja inferior a modelos mais recentes como a \textit{EfficientNet}, um ponto crítico para a viabilidade em ambientes agrícolas embarcados.
+
+    \subsubsection{A Arquitetura Inception}
+
+        Enquanto a VGG focava na profundidade linear, a arquitetura Inception (GoogLeNet), introduzida por \citeonline{szegedy2015goingdeeper}, propôs uma mudança arquitetural baseada na esparsidade e na eficiência computacional. O objetivo central era aumentar o poder de representação da rede sem um crescimento paramétrico proibitivo, utilizando para isso o módulo Inception.
+
+        A inovação técnica fundamental da Inception v1 foi o processamento multiescala simultâneo. Em vez de selecionar um tamanho de filtro fixo por camada, o módulo executa convoluções de $1 \times 1$, $3 \times 3$ e $5 \times 5$ em paralelo, concatenando seus resultados. Essa captura multirresolução é altamente vantajosa para a classificação de plumas de algodão: o filtro $3 \times 3$ foca em características locais (fibras individuais e micro-impurezas), enquanto o $5 \times 5$ captura padrões globais (a morfologia geral da amostra). Para viabilizar o custo computacional desse paralelismo, a Inception introduziu convoluções de $1 \times 1$ antes dos filtros maiores para reduzir a profundidade dos canais (\textit{bottleneck}), mantendo a rede leve com 6,8 milhões de parâmetros na v1 (contra 138 milhões da VGG-16).
+
+        As versões subsequentes (v2 e v3) refinaram a arquitetura por meio de princípios de fatoração. Seguindo o objetivo de eficiência matemática, \textit{kernels} grandes ($5 \times 5$) foram substituídos por sequências de $3 \times 3$. Além disso, convoluções quadradas $n \times n$ foram fatoradas em operações assimétricas de $1 \times n$ e $n \times 1$ (ex.: $1 \times 7$ seguido de $7 \times 1$), reduzindo drasticamente as operações em ponto flutuante sem perda de campo receptivo. 
+
+        Esse paradigma de fatoração foi levado ao limite na Xception (\textit{Extreme Inception}) \cite{chollet2017xception}. Essa arquitetura utiliza convoluções separáveis em profundidade (\textit{depthwise separable convolutions}), isolando totalmente a busca por correlações espaciais das correlações entre canais. Dada a sua eficiência paramétrica, consolidou-se como um dos \textit{backbones} mais eficazes para tarefas que exigem alta precisão em texturas finas.
+
+        % \input{tables/tab_inception.tex}
+
+
+\subsection{Conexões Residuais e Densas: ResNet e DenseNet}
+
+    Conforme discutido na seção anterior, avanço na profundidade das redes neurais esbarrou em uma limitação matemática: o problema do desaparecimento do gradiente (\textit{vanishing gradient}). Para solucionar esse gargalo e viabilizar o treinamento de arquiteturas com dezenas ou centenas de camadas, uma nova geração de modelos alterou fundamentalmente o roteamento do fluxo de informações.
+
+    No contexto da classificação de plumas de algodão, essas abordagens tornaram-se essenciais, pois garantem que os detalhes sutis das micro-impurezas não sejam degradados ou perdidos ao longo de um processamento profundo. As subseções a seguir detalham as duas topologias mais influentes dessa fase: a ResNet e a DenseNet.
+
+    \subsubsection{A Arquitetura ResNet}
+
+        A introdução das Redes Residuais (ResNet) por \citeonline{he2016resnet} marcou um ponto de inflexão na visão computacional ao solucionar o problema da degradação em redes ultraprofundas. Antes da ResNet, adicionar camadas a uma CNN resultava em maiores erros de treinamento, devido à dificuldade dos otimizadores em convergir para mapeamentos de identidade em arquiteturas puramente sequenciais.
+
+        Para contornar esse obstáculo, a ResNet fundamenta-se na premissa de que é matematicamente mais eficiente otimizar um resíduo do que um mapeamento direto não referenciado. Em vez de forçar um bloco de camadas a aprender uma função desejada $H(x)$, a arquitetura o restringe a aprender a função residual $F(x)=H(x)-x$. A saída do bloco passa a ser a soma do resíduo com a entrada original, expressa por:
+        
+        $$H(x)=F(x)+x$$
+        
+        Essa formulação é materializada na rede por meio de conexões de salto (\textit{skip connections}), atalhos que permitem ao sinal do gradiente fluir pelas camadas sem atenuação. Na classificação de plumas de algodão, em que sutilezas de textura e coloração poderiam ser perdidas por muitas operações de convolução, o caminho de identidade assegura que as características visuais em baixo nível continuem inalteradas até as camadas de decisão.
+
+        A topologia interna da rede adapta-se em função da profundidade desejada, apoiando-se em dois projetos fundamentais de blocos residuais. Para redes de profundidade intermediária (como ResNet-18 e ResNet-34), utiliza-se o bloco básico (\textit{BasicBlock}), composto por duas convoluções de $3 \times 3$, configuração robusta para a extração de texturas em conjuntos de dados de médio porte. Para arquiteturas mais densas (ResNet-50, ResNet-101 e ResNet-152), implementa-se a estrutura de gargalo (\textit{bottleneck}). Esse \textit{design} aplica uma sequência de convoluções de $1 \times 1$, $3 \times 3$ e $1 \times 1$, utilizando as camadas unitárias exclusivamente para redução e subsequente restauração da dimensionalidade dos canais. Essa estratégia de compressão reduz drasticamente o número de parâmetros e as operações em ponto flutuante (GFLOPs), permitindo que modelos como a ResNet-101 apresentem um custo computacional significativamente inferior ao da VGG-16, mesmo possuindo profundidade muito maior.
+
+        % \input{tables/tab_resnet.tex}
+
+
+    \subsubsection{A Arquitetura DenseNet}
+
+        A arquitetura DenseNet (\textit{Densely Connected Convolutional Network}), proposta por \citeonline{huang2017densely}, representa uma evolução estrutural significativa na topologia das redes convolucionais. Enquanto a ResNet utiliza conexões de salto fundamentadas na adição de mapas de características, a DenseNet estabelece que cada camada seja conectada a todas as camadas subsequentes dentro de um bloco denso por meio de operações de concatenação. Matematicamente, se em uma topologia tradicional a camada $l$ recebe apenas a saída da camada imediatamente anterior ($l-1$), na DenseNet ela recebe como entrada todos os mapas de características das camadas precedentes:
+        
+        $$x_l = H_l([x_0, x_1, \dots, x_{l-1}])$$
+        
+        onde $[x_0, x_1, \dots, x_{l-1}]$ denota a concatenação das representações extraídas anteriormente.
+
+        Essa abordagem de conectividade densa oferece três vantagens teóricas diretas para a extração de texturas complexas. Primeiro, maximiza o reuso de características (\textit{feature reuse}). Filtros fundamentais aprendidos no início do bloco, como detectores de bordas e fibras individuais, são repassados intactos, evitando que o modelo precise recalcular padrões básicos em camadas mais profundas. Segundo, gera uma alta eficiência paramétrica. Como o conhecimento representacional é acumulado, as camadas individuais da DenseNet podem operar com uma profundidade de canais muito reduzida, resultando em modelos significativamente mais compactos que as ResNets equivalentes. Terceiro, a topologia promove uma supervisão profunda implícita (\textit{implicit deep supervision}): cada camada recebe um sinal de gradiente direto da função de perda primária, o que estabiliza o treinamento e atua como uma proteção adicional contra o desaparecimento do gradiente.
+
+        A dinâmica dimensional dessa arquitetura é regulada por dois componentes. O primeiro é a taxa de crescimento (\textit{growth rate}, denotada por $k$), o hiperparâmetro que define quantos novos mapas de características cada camada adiciona à rede. Mesmo com um $k$ conservador (como $k=32$), a densidade das conexões garante um elevado poder de representação. O segundo componente atua como um mecanismo de controle: as camadas de transição (\textit{transition layers}). Posicionadas entre os blocos densos, essas camadas realizam a compressão de canais via convoluções de $1 \times 1$ e a redução da resolução espacial por meio de operações de \textit{pooling}, contendo a explosão dimensional inerente às sucessivas concatenações.
+
+        Para o escopo desta dissertação, a DenseNet destaca-se por sua robustez geométrica. A literatura demonstra que a conectividade densa atua como um regularizador natural, mitigando o sobreajuste (\textit{overfitting}) em conjuntos de dados restritos onde a variância interclasse é sutil, consolidando-a como uma base arquitetural altamente eficaz para o reconhecimento de texturas orgânicas e fibrosas.
+
+        % \input{tables/tab_densenet.tex}
+
+
+\subsection{CNNs Modernas: EfficientNet e ConvNeXt)}
+
+    Embora as conexões residuais e densas tenham viabilizado topologias ultraprofundas, o roteamento maciço de características gerou inevitáveis gargalos de memória e ineficiência paramétrica. Para solucionar esse desequilíbrio, a literatura mais recente voltou-se para a otimização estrutural e o ganho de escala.
+
+    A EfficientNet liderou esse movimento ao introduzir o redimensionamento composto (\textit{compound scaling}), equilibrando matematicamente profundidade, largura e resolução. Para a classificação do algodão, essa arquitetura é vital: ela permite o processamento em altíssima resolução, essencial para detectar micro-impurezas, mantendo a viabilidade computacional. Em paralelo, a arquitetura ConvNeXt revisitou e modernizou o \textit{design} puramente convolucional, otimizando proporções de blocos e tamanhos de \textit{kernels} para provar que as CNNs clássicas continuam atingindo o estado da arte. As subseções a seguir detalham a matemática dessas duas abordagens.
+
+    \subsubsection{A Arquitetura EfficientNet}
+
+        A família EfficientNet, introduzida por \citeonline{tan2019efficientnet}, redefiniu o \textit{design} de redes convolucionais ao propor que o aumento da capacidade de um modelo não deve ser arbitrário. Os autores propuserarm o método de escalonamento composto (\textit{compound scaling}), que equilibra simultaneamente a profundidade, a largura e a resolução da rede. Diferentemente de arquiteturas anteriores que escalonavam apenas uma dimensão de forma empírica (como a profundidade na ResNet), a EfficientNet utiliza um coeficiente composto $\phi$ para coordenar o crescimento estruturado. Matematicamente, as dimensões de profundidade ($d$), largura ($w$) e resolução ($r$) são definidas pelas relações $d = \alpha^\phi$, $w = \beta^\phi$ e $r = \gamma^\phi$. Sob a restrição de que $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$, o aumento total de operações de ponto flutuante (FLOPs) é restrito a aproximadamente $2^\phi$. No contexto da classificação de algodão, essa formulação garante que, ao aumentar a resolução da imagem para detectar micro-impurezas, a rede automaticamente expanda sua profundidade (para ampliar o campo receptivo) e sua largura (para processar a maior densidade de dados), mantendo a eficiência operacional.
+
+        A topologia base da família, a EfficientNet-B0, foi desenvolvida por meio de algoritmos de busca de arquitetura neural (\textit{Neural Architecture Search} - NAS). Seu bloco fundamental é o gargalo invertido móvel (\textit{Mobile Inverted Bottleneck} - MBConv), que emprega convoluções separáveis em profundidade (\textit{depthwise separable convolutions}) para reduzir drasticamente o número de operações em comparação com convoluções densas. Adicionalmente, o bloco incorpora o mecanismo de compressão e excitação (\textit{Squeeze-and-Excitation} - SE), um módulo de atenção que recalibra dinamicamente a importância de cada canal, permitindo que o modelo isole características discriminativas da fibra. O processamento não linear é garantido pela função de ativação Swish ($f(x) = x \cdot \sigma(x)$), cuja característica suave e não monotônica auxilia na mitigação da degradação de gradientes.
+
+        Apesar de sua eficiência teórica, a primeira geração apresentava limitações de \textit{hardware}. A evolução para a EfficientNetV2 \cite{tan2021efficientnetv2} solucionou esses gargalos focando na velocidade de treinamento. Nas camadas iniciais, onde a convolução \textit{depthwise} subutiliza a arquitetura dos aceleradores modernos (GPUs), a versão V2 introduz o bloco Fused-MBConv. Essa estrutura funde a expansão de $1 \times 1$ e a convolução de $3 \times 3$ em uma única operação convolucional padrão de $3 \times 3$. Essa alteração resulta em convergência até 11 vezes mais rápida e em modelos parametricamente menores, consolidando a rede como uma solução de altíssimo desempenho.
+
+        % \input{tables/tab_efficientnet}
+
+    \subsubsection{A Arquitetura ConvNeXt}
+
+        A arquitetura ConvNeXt, proposta por \citeonline{liu2022convnext}, surgiu como uma resposta direta à ascensão dos \textit{Vision Transformers} (ViTs). O objetivo do projeto foi investigar se a superioridade dos modelos baseados em atenção residia intrinsecamente no paradigma de autoatenção ou em avanços de \textit{design} macroarquitetural. Por meio de um processo metódico de modernização de uma ResNet padrão, os autores demonstraram que redes puramente convolucionais, quando desenhadas com heurísticas contemporâneas, ainda podem superar os \textit{Transformers} em precisão e eficiência.
+
+        A ConvNeXt integra esses princípios de arquitetura em uma topologia convolucional por meio de alterações fundamentais. No macro \textit{design}, a rede substitui o bloco inicial (\textit{stem}) de processamento pesado por uma camada fragmentadora não sobreposta (\textit{patchify}), operada por uma convolução de $4 \times 4$ com \textit{stride} 4. Além de ajustar a distribuição de blocos por estágio para emular a hierarquia de \textit{Transformers} modernos, a arquitetura adota a estrutura de gargalo invertido (\textit{inverted bottleneck}). Essa topologia expande a dimensão oculta, permitindo que as convoluções espaciais operem em uma dimensionalidade maior antes da projeção final de canais. Aliado a isso, o campo receptivo foi significativamente ampliado com a substituição dos filtros tradicionais de $3 \times 3$ por \textit{kernels} de $7 \times 7$. Para o escopo do algodão, esse campo receptivo extenso é de suma importância: ele permite capturar a continuidade geométrica de fibras longas e mapear a morfologia de impurezas maiores dispersas na pluma.
+
+        No nível do micro \textit{design}, a rede simplifica componentes internos para otimizar o fluxo de gradiente e a estabilidade. As funções de ativação e normalização foram atualizadas e aplicadas de forma esparsa: a tradicional ReLU foi substituída pela função GELU (\textit{Gaussian Error Linear Unit}), e a \textit{Batch Normalization} deu lugar à \textit{Layer Normalization}, utilizadas apenas uma vez por bloco para reduzir a redundância computacional. Na evolução para a ConvNeXt V2 \cite{woo2023convnext}, introduziu-se a camada de Normalização de Resposta Global (\textit{Global Response Normalization} - GRN). Esse mecanismo foi projetado para evitar o colapso de características (\textit{feature collapse}), um problema crônico em treinamentos autossupervisionados, aumentando a competição entre os canais e garantindo que cada filtro aprenda características estritamente únicas da textura do algodão.
+
+        % \input{tables/tab_convnext.tex}
+
+\subsection{Mecanismos de atenção: ViT e Swin Transformer)}
+
+    O limite da engenharia baseada em convoluções abriu espaço para um paradigma radicalmente diferente na extração de características: os mecanismos de autoatenção (\textit{self-attention}). Em vez de processar a imagem por meio de varreduras locais de \textit{pixels}, essa nova geração de modelos analisa a informação globalmente, estabelecendo correlações diretas e simultâneas entre todas as partes da amostra. As subseções a seguir detalham a arquitetura pioneira desse movimento, o \textit{Vision Transformer} (ViT), e a sua evolução hierárquica para o processamento de alta resolução, o \textit{Swin Transformer}.
+
+    \subsubsection{A Arquitetura ViT}
+
+        A introdução do \textit{Vision Transformer} (ViT) por \citeonline{dosovitskiy2021vit} desafiou a soberania das redes convolucionais ao transpor a arquitetura \textit{Transformer}, originalmente projetada para o processamento de linguagem natural (PLN), para o domínio da visão computacional. A premissa fundamental da topologia é tratar uma imagem não como uma grade contínua de \textit{pixels}, mas como uma sequência de \textit{tokens} visuais. Para isso, a imagem original é particionada em uma grade de \textit{patches} não sobrepostos, tipicamente com resolução de $16 \times 16$ \textit{pixels}. Cada \textit{patch} é achatado e mapeado para um espaço latente unidimensional por meio de uma projeção linear.
+
+        Como a arquitetura \textit{Transformer} processa os \textit{tokens} em paralelo e carece de um viés indutivo (\textit{inductive bias}) espacial nativo, vetores de posição (\textit{positional embeddings}) são adicionados às projeções para preservar o arranjo geométrico original. O processamento subsequente é regido pelo mecanismo de autoatenção global (\textit{global self-attention}). Diferentemente das operações convolucionais, cujo campo receptivo é inicialmente restrito às dimensões do filtro, a autoatenção permite que cada fragmento interaja matematicamente com todos os outros desde a primeira camada. No contexto da classificação, essa característica confere ao modelo a capacidade de correlacionar fibras situadas em extremidades opostas da amostra, capturando uma representação semântica global que define a qualidade da pluma de algodão.
+
+        Apesar de seu alto poder de representação, o ViT atua como um modelo de propósito geral, desprovido das premissas matemáticas de localidade e invariância à translação inerentes às CNNs. Consequentemente, quando treinado a partir do zero em conjuntos de dados restritos, o modelo tende a apresentar desempenho inferior às redes convolucionais devido à ausência de noções inatas sobre a vizinhança dos \textit{pixels}. Contudo, ao ser pré-treinado em volumes massivos de dados, sua capacidade de generalização suplanta a das arquiteturas tradicionais. Para a aplicação no escopo desta dissertação, em que o conjunto de imagens de plumas de algodão é naturalmente limitado, a utilização do ViT torna-se estritamente dependente de técnicas de \textit{transfer learning}, permitindo que o modelo herde a compreensão espacial universal obtida nos pré-treinos.
+
+        % \input{tables/tab_vit.tex}
+
+    \subsubsection{A Arquitetura Swin-T}
+
+        A arquitetura \textit{Swin Transformer} (\textit{Shifted Window Transformer}), proposta por \citeonline{liu2021swin}, solucionou as duas principais limitações do ViT original: a complexidade computacional quadrática e a ausência de uma estrutura multiescala. Para isso, a topologia reintroduziu o conceito de pirâmide de características (\textit{feature pyramid}), um pilar clássico das redes convolucionais, no paradigma da autoatenção. Diferentemente do ViT, que mantém uma resolução isotrópica e imutável em toda a rede, o \textit{Swin} emprega camadas de fusão de fragmentos (\textit{patch merging}) para reduzir progressivamente a resolução espacial enquanto aumenta a profundidade dimensional dos canais.
+
+        Para contornar o gargalo computacional, o modelo particiona a imagem em janelas locais não sobrepostas (por exemplo, contendo $7 \times 7$ \textit{patches}) e restringe o cálculo da autoatenção exclusivamente ao interior dessas regiões. Essa estratégia reduz a complexidade assintótica de $O(N^2)$ para $O(N)$, viabilizando o processamento de imagens em altíssima definição. Contudo, para evitar que a rede fique limitada a visões isoladas e perca a coerência global, a arquitetura introduz o mecanismo de Atenção Multicabeça com Janelas Deslocadas (\textit{Shifted Window Multi-Head Self-Attention} - SW-MSA).
+
+        Esse mecanismo opera alternando entre um particionamento de grade regular e um particionamento deslocado nas camadas consecutivas. O deslocamento espacial da grade introduz conexões transversais matemáticas entre \textit{patches} que pertenciam a janelas distintas na iteração anterior. No escopo da classificação de plumas de algodão, essa dinâmica é fundamental: ela permite que o modelo correlacione fibras contínuas ou micro-impurezas que cruzam as fronteiras artificiais das janelas. Dessa forma, o \textit{Swin Transformer} garante uma compreensão estrutural ininterrupta da amostra, aliando a eficiência de memória das hierarquias convolucionais à expressividade superior da atenção global.
+
+        % \input{tables/tab_swin.tex}
+

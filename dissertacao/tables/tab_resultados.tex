@@ -1,0 +1,27 @@
+% \begin{tabular}{lcc|cc|cc}
+%     \hline
+%         \multirow{3}{*}{\textbf{Modelo}} & \multirow{3}{*}{\shortstack{\textbf{Duração do} \\ \textbf{treinamento}}} & \multirow{3}{*}{\shortstack{\textbf{Número de} \\ \textbf{parâmetros}}} & \multicolumn{2}{c|}{\textbf{Validação}} & \multicolumn{2}{c}{\textbf{Treinamento}} \\
+%         & & & \textbf{Acurácia} & \shortstack{\textbf{Função} \\ \textbf{de Perda}} & \textbf{Acurácia} & \shortstack{\textbf{Função} \\ \textbf{de Perda}} \\
+%     \hline
+%  EfficientNet           & 53:24:58                 & 9.2M         &        85.6432 &     0.8791 &          93.7278 &       0.5509 \\
+%  Inception              & 46:28:43                 & 31.2M        &        81.1656 &     0.8425 &          96.7217 &       0.6772 \\
+%  ResNet                 & 34:30:59                 & 24.4M        &        76.6525 &     1.0710 &          96.0821 &       0.4351 \\
+%  VGGNet                 & 76:18:38                 & 73.5M        &        74.8401 &     1.0214 &          92.6173 &       0.3333 \\
+% \hline
+% \end{tabular}
+ 
+
+
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcc|cc|cc@{}}
+    \hline
+        \multirow{3}{*}{\textbf{Modelo}} & \multirow{3}{*}{\makecell[c]{\textbf{Duração do} \\ \textbf{treinamento}}} & \multirow{3}{*}{\makecell[c]{\textbf{Número de} \\ \textbf{parâmetros}}} & \multicolumn{2}{c|}{\textbf{Validação}} & \multicolumn{2}{c}{\textbf{Treinamento}} \\
+        & & & \makecell[c]{\textbf{Acurácia}} & \makecell[c]{\textbf{Função} \\ \textbf{de Perda}} & \makecell[c]{\textbf{Acurácia}} & \makecell[c]{\textbf{Função} \\ \textbf{de Perda}} \\
+    \hline
+ EfficientNet           & 53:24:58                 & 9.2M         & 85.6432 & 0.8791 & 93.7278 & 0.5509 \\
+ Inception              & 46:28:43                 & 31.2M        & 81.1656 & 0.8425 & 96.7217 & 0.6772 \\
+ ResNet                 & 34:30:59                 & 24.4M        & 76.6525 & 1.0710 & 96.0821 & 0.4351 \\
+ VGGNet                 & 76:18:38                 & 73.5M        & 74.8401 & 1.0214 & 92.6173 & 0.3333 \\
+\hline
+\end{tabular}
+

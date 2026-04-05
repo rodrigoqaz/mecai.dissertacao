@@ -1,0 +1,44 @@
+augmentation_config:
+  batch_level_aug_method: cutmix
+  mix_alpha: 0.7238727449452813
+  per_image_aug_method: none
+  use_augmentation: true
+global_config:
+  batch_size: 32
+  dataset_name: v9
+  device: auto
+  experiment_name: ELITE_EVAL_v9_vit
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: vit
+params:
+  architecture: vit_b_16
+  augmentations: '{}'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_vit.pth'', ''monitor'': ''val_loss'', ''save_best_only'':
+    True}}]'
+  data_dir: data/gold/datasets/v9/train_val
+  device: auto
+  dropout: '0.055851031868980563'
+  experiment_name: ViT
+  global_config: '{''data_dir'': ''data/gold/datasets/v9/train_val'', ''experiment_name'':
+    ''ViT'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v9'', ''max_epochs'':
+    30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto'', ''seed'': 42}'
+  hidden_units: '256'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.04337131989605923}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 4.781535674236615e-05, ''weight_decay'':
+    0.010323707893701895}}'
+  params: '{''architecture'': ''vit_b_16'', ''pretrained'': True, ''unfreeze_layers'':
+    4, ''hidden_units'': 256, ''dropout'': 0.055851031868980563, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    4, ''factor'': 0.2678237540231452, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '4'
+  weights: IMAGENET1K_V1

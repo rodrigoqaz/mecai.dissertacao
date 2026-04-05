@@ -1,0 +1,34 @@
+%Revisado
+
+Para garantir a reprodutibilidade e a execução sistemática dos experimentos, desenvolveu-se um ambiente automatizado de treinamento. A plataforma foi implementada na linguagem Python, utilizando o \textit{framework} PyTorch \cite{paszke2017automatic} devido à sua flexibilidade na manipulação de tensores e suporte nativo a grafos computacionais dinâmicos. O processamento foi acelerado em \textit{hardware} Apple Silicon (Mac M3), explorando o \textit{backend} MPS (\textit{Metal Performance Shaders}) para otimização da execução em GPU local. A gestão do ciclo de vida dos experimentos foi conduzida por meio da plataforma MLflow \cite{mlflow}, permitindo o rastreamento automatizado dos pesos das redes, hiperparâmetros testados e a evolução das métricas a cada época (\textit{epoch}), assegurando a transparência e rastreabilidade total do processo.
+
+\subsection{Regularização e Aumento de Dados Dinâmico)}
+
+    Como o conjunto de dados original foi particionado sem a aplicação de superamostragem estática, a mitigação do viés de classes e a prevenção de sobreajuste (\textit{overfitting}) foram tratadas de forma dinâmica durante o carregamento dos lotes (\textit{batches}). Para isso, implementou-se um \textit{pipeline} de aumento de dados estruturado em duas frentes complementares: transformações espaciais fotométricas intra-imagem e regularização avançada em nível de lote.
+
+    A primeira frente foi orquestrada pela biblioteca Albumentations \cite{buslaev2020albumentations}. A cada época de treinamento, as imagens do conjunto de treino foram submetidas estocasticamente a rotações afins (até $45^\circ$), espelhamentos horizontais e verticais, além de variações de brilho e contraste. Essa abordagem garante a invariância rotacional do modelo, forçando-o a reconhecer a textura da pluma independentemente da sua orientação física na esteira de classificação. A segunda frente introduziu técnicas avançadas de regularização, especificamente o MixUp \cite{zhang2018mixup} e o CutMix \cite{yun2019cutmix}. Ao contrário do aumento tradicional, o MixUp realiza uma interpolação linear entre os \textit{pixels} e os rótulos de duas imagens aleatórias, enquanto o CutMix extrai um fragmento retangular de uma amostra e o sobrepõe em outra, mesclando as proporções de suas respectivas classes.
+
+    A união dessas arquiteturas de aumento de dados com a técnica de suavização de rótulos (\textit{Label Smoothing}) \cite{szegedy2016rethinking} na função de perda de entropia cruzada (\textit{Cross-Entropy}) provou-se fundamental para o domínio agrícola estudado. Esse conjunto de restrições penaliza a formulação de predições superconfiantes e suaviza as fronteiras de decisão topológicas, incentivando as redes a focarem estritamente nas características morfológicas da pluma em vez de memorizarem ruídos esparsos ou artefatos de fundo.
+
+\subsection{Otimização Bayesiana com Optuna}
+
+    As arquiteturas modernas de \textit{deep learning} são altamente sensíveis à escolha de hiperparâmetros, cujo ajuste manual empírico é ineficiente e propenso a subotimizações. Para solucionar isso, o ajuste fino (\textit{fine-tuning}) foi conduzido por meio de Otimização Bayesiana \cite{shahriari2016taking} utilizando o \textit{framework} Optuna. Empregou-se o algoritmo TPE (\textit{Tree-structured Parzen Estimator}) \cite{bergstra2011algorithms}, que modela a probabilidade condicional das métricas de desempenho dado um conjunto de hiperparâmetros, concentrando a busca em regiões promissoras do espaço paramétrico.
+
+    O espaço de busca foi customizado dinamicamente para cada família de arquiteturas, abrangendo restrições específicas para as peculiaridades de cada rede. O detalhamento completo dos hiperparâmetros testados para cada modelo, bem como os seus respectivos limites de busca, encontra-se sumarizado no Apêndice \ref{apendice:optuna_search_spaces}. As variáveis otimizadas incluíram:
+    
+    \begin{itemize}
+        \item \textbf{Profundidade do \textit{Fine-Tuning}:} O número de camadas descongeladas (\textit{unfreeze layers}) para retreinamento, variando de acordo com a profundidade da rede (ex: poucas camadas para \textit{Vision Transformers} para preservar a extração genérica, e camadas mais profundas para CNNs tradicionais).
+        \item \textbf{Taxa de Aprendizado (\textit{Learning Rate}):} Procura em escala logarítmica (entre $10^{-5}$ e $10^{-2}$), acoplada a agendadores de decaimento (\textit{Schedulers}) como \textit{Cosine Annealing Warm Restarts} \cite{loshchilov2017sgdr} e \textit{ReduceLROnPlateau}.
+        \item \textbf{Decaimento de Peso (\textit{Weight Decay}):} Ajuste da regularização L2 para controle de complexidade dos pesos.
+        \item \textbf{Otimizadores:} Alternância adaptativa entre SGD (com \textit{momentum}) para redes como ResNet, e AdamW \cite{loshchilov2019decoupled}, mandatório para a convergência de \textit{Transformers} e \textit{ConvNeXt}.
+    \end{itemize}
+
+\subsection{Função Objetivo Robusta para Desbalanceamento}
+
+    No contexto algorítmico do estimador TPE, a formulação matemática da função objetivo dita o comportamento de toda a busca computacional. Minimizar diretamente a função de perda (\textit{loss}) ou maximizar a acurácia global em um \textit{dataset} de pluma de algodão desbalanceado enviesaria o otimizador em favor dos hiperparâmetros que apenas classificam corretamente as classes majoritárias (como o Tipo 31.2). Para contornar essa subotimização latente, adotou-se a técnica de escalarização multiobjetivo \cite{knowles2006parego, paria2020escalarizacao}, estruturando-se uma função objetivo composta que funde a correlação estatística interclasses com a estabilidade geométrica do gradiente.
+
+    A métrica base escolhida para ancorar a discriminação global da rede foi o Coeficiente de Correlação de Matthews (MCC) \cite{matthews1975comparison}, em virtude de sua robustez matemática inata perante o desequilíbrio de classes. O valor escalar $\mathcal{O}$, retornado ao Optuna para maximização ao final de cada iteração (\textit{trial}), foi calculado matematicamente pela expressão:
+
+    $$ \mathcal{O} = \lambda_1 \left( \frac{\text{MCC} + 1}{2} \right) + \lambda_2 \left( e^{-\mathcal{L}_{val}} \right) $$
+
+    em que a primeira parcela normaliza o MCC original (de $[-1, 1]$ para $[0, 1]$), ponderado pelo fator prioritário de classificação $\lambda_1 = 0,7$. A segunda parcela introduz um termo de qualidade baseado na perda de validação ($\mathcal{L}_{val}$), aplicando uma decadência exponencial ponderada por $\lambda_2 = 0,3$. Essa formulação garantiu que a busca Bayesiana priorizasse hiperparâmetros capazes de distinguir assertivamente todas as 10 classes de pluma, utilizando a suavidade da curva de perda apenas como critério de desempate técnico e estabilidade geométrica.
