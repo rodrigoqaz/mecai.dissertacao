@@ -4,7 +4,7 @@ models = [
     # 'vit',
     # 'swin',
     # 'convnext',
-    'efficientnet',
+    # 'efficientnet',
     'resnet',
     'densenet',
     'inception',
