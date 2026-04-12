@@ -1,3 +1,4 @@
+%Revisado
 \section{Análise Comparativa Global e Benchmarking (Fase 1)}
 
 \label{sec:benchmark_v1}
@@ -35,17 +36,3 @@ Em seguida, para estabelecer a hierarquia no topo da tabela, contrastaram-se os 
 
 Dado o empate estatístico na fronteira preditiva, o critério de desempate para a coroação da arquitetura base recaiu obrigatoriamente sobre a eficiência computacional (\textit{trade-off} de recursos). Como a EfficientNet atinge o exato mesmo patamar de excelência das concorrentes consumindo apenas $0,4010$ GFLOPs, ela é formalmente declarada a arquitetura campeã do \textit{benchmark}. Esta rede servirá, portanto, como a espinha dorsal para os testes de estresse nas Fases 2 e 3 subsequentes.
 
-
-
-% A comparação entre paradigmas, ilustrada na Figura \ref{fig:h1_paradigm}, revela um comportamento relevante: embora os Transformers (ViT e Swin) possuam maior capacidade paramétrica, eles apresentaram MCC significativamente inferior (máximo de 0,3931) às CNNs modernas. Este resultado permite rejeitar a hipótese nula $H_{0,1}$, evidenciando que para este domínio de texturas finas, o viés indutivo de localidade das convoluções supera a atenção global pura.
-
-% Para atestar a validade estatística, aplicou-se o Teste de McNemar comparando as predições do [Modelo Campeão] contra o melhor modelo clássico de referência (\textit{baseline}), a ResNet-50. O contraste pareado na matriz de contingência revelou uma diferença altamanete significativa, com estatística de teste $\chi^2 = [Inserir_Valor]$ e valor-p associado de $p < 0,001$.
-
-% Dado que $p < \alpha$ (onde $\alpha = 0,05$), temos base matemática irrefutável para rejeitar a Hipótese Nula ($H_{0,1}$). Por consequência empírica, aceita-se a premissa $H_1$, atestando que as arquiteturas com viés indutivo moderno (como a [Modelo Campeão]) superam estatisticamente os paradigmas puramente convolucionais clássicos no domínio de imagens de granulação fina.
-
-% % \begin{figure}[h!]
-% %   \centering
-% %   \includegraphics[width=0.8\textwidth]{images/h1_paradigm_comparison.pdf}
-% %   \caption{Comparação de Paradigmas ($H_1$): CNNs vs. Transformers no dataset V1. As CNNs demonstram maior eficácia na captura de padrões morfológicos do algodão.}
-% %   \label{fig:h1_paradigm}
-% % \end{figure}

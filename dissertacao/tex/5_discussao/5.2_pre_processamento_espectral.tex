@@ -1,5 +1,0 @@
-\section{Impacto do Pré-processamento e Expansão Espectral}
-
-O insucesso da versão experimental V8, que incorporou uma expansão para 15 canais utilizando filtros de Gabor e limiarização de Otsu, fornece um \textit{insight} valioso sobre a engenharia de \textit{features} em Deep Learning. A queda drástica de desempenho em todos os modelos nesta versão evidencia o fenômeno da ``Maldição da Dimensionalidade''.
-
-Ao aumentar o espaço de entrada sem um aumento proporcional no volume de dados, elevou-se a complexidade do processo de otimização, inserindo possivelmente ruído artesanal que mascarou as representações latentes naturais dos pixels RGB. Este resultado valida a tese de que, para classificadores profundos modernos, o aprendizado \textit{end-to-end} (ponta a ponta) diretamente sobre os dados brutos tende a ser superior à tentativa de pré-induzir conhecimento através de filtros de visão computacional clássica, que podem não capturar a variabilidade estocástica inerente às fibras naturais de algodão.
