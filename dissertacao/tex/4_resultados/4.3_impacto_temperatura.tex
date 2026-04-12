@@ -1,11 +1,30 @@
-4.3 Fase 2: Impacto Fotométrico e Sinal Físico ($H_2$)
+\section{Fase 2: Impacto Fotométrico e Sinal Físico ($H_2$)}
+\label{sec:impacto_fotometrico}
 
-O que o texto vai argumentar:
+Nesta fase, o efeito das condições de captura física é isolado para validar a Hipótese $H_2$. O objetivo é demonstrar que a otimização da temperatura de cor da iluminação atua como um catalisador de performance, independentemente da arquitetura utilizada.
 
-Aqui você tira o foco das linhas de código e volta para a caixa de captura física. O texto argumentará que a otimização da luz (AB para AM para BR) eleva a performance de todo mundo, rejeitando a $H_{0,2}$. Você usa o Teste de Friedman para dar peso estatístico a essa afirmação, mostrando que a física importou tanto quanto a matemática.
+A evolução do MCC através das diferentes fontes de luz (AB, AM, BR) é ilustrada na Figura \ref{fig:h2_lighting}. Observa-se um crescimento consistente na performance de praticamente todos os classificadores à medida que a iluminação é otimizada para a luz branca (\textit{Cool White} 6000K), culminando nos melhores resultados absolutos na versão \textbf{V10}. Este fenômeno sugere que a qualidade do sinal físico de entrada é um preditor de sucesso mais forte que o ajuste fino algorítmico isolado. Além disso, corrobora as recomendaçÕes da IN 24 que dita o cenário necessário para classificação visual do algodão
 
-Artefatos gerados pelo seu script Python:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/h2_lighting_impact.pdf}
+  \caption{Impacto da Iluminação ($H_2$): Evolução do MCC para cada arquitetura conforme a fonte de luz é otimizada fisicamente (AB para AM para BR).}
+  \label{fig:h2_lighting}
+\end{figure}
 
-Gráfico de Linha de Evolução (h2_lighting_impact.pdf): Eixo X são as luzes (AB, AM, BR). Eixo Y é o MCC. Cada linha é uma arquitetura. O script vai mostrar o agrupamento das linhas subindo à medida que a luz melhora para 6000K (Luz Branca).
+Para conferir rigor estatístico a esta observação, aplicou-se o teste de \textbf{Friedman} sobre o ranking dos modelos nas três fontes de luz. Conforme apresentado na Tabela \ref{tab:friedman_detailed}, a cor ``fria'' \textbf{BR} (Luz Branca) obteve o melhor posto médio ($1,25$), sendo estatisticamente superior à versão ruidosa AM ($2,62$). O $p$-value de $2,08 \times 10^{-2}$ permite rejeitar a hipótese nula $H_{0,2}$, confirmando que a temperatura de cor da luz impacta significativamente a acurácia diagnóstica da visão computacional no algodão.
 
-Tabela de Postos de Friedman: O Python extrai o ranking médio de cada versão de luz rodando o scipy.stats.friedmanchisquare.Diagrama de Diferença Crítica (CD): O script gera o diagrama provando que a Luz Branca pertence a um grupo de significância isolado na liderança (critical_difference_friedman.pdf).
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Resultado do teste de Friedman e postos médios por versão de iluminação.}
+    \label{tab:friedman_detailed}
+    \input{tables/friedman_test.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor (2026).
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+A análise conjunta dos dados indica que a estabilização do cenário físico superou os ganhos obtidos pela simples troca de arquiteturas, reforçando a necessidade de ambientes controlados em aplicações de \textit{Edge AI} para o agronegócio.

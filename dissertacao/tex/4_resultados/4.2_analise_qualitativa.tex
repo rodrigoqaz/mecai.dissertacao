@@ -1,12 +1,41 @@
-4.2 Análise Qualitativa e Significância Interclasses
+\section{Análise Qualitativa e Significância Interclasses}
+\label{sec:analise_qualitativa}
 
-O que o texto vai argumentar:
-Você fará um mergulho profundo nos melhores modelos da Fase 1 (ex: DenseNet e ConvNeXt). O texto explicará onde o classificador se confunde (geralmente entre as classes limítrofes do MAPA, como 41.4 e 41.5) e usará o p-value do McNemar para cravar quem é o vencedor matemático do benchmark.
+Embora as métricas globais atestem a superioridade estrutural da EfficientNet no \textit{dataset} V1, a validação de sua aplicabilidade industrial exige uma inspeção pormenorizada dos erros interclasses. A avaliação cruzada das métricas detalhadas (Tabela \ref{tab:best_class_metrics}) com a Matriz de Confusão Normalizada (Figura \ref{fig:matriz_confusao_v1}) permite diagnosticar o comportamento fenotípico da rede frente ao ruído fotométrico da iluminação mista.
 
-Artefatos gerados pelo seu script Python:
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Métricas detalhadas por classe para o modelo EfficientNet no dataset V1.}
+    \label{tab:best_class_metrics}
+    \input{tables/best_model_class_metrics.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor (2026).
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
 
-Matriz de Confusão Normalizada (Heatmap Seaborn): Um mapa de calor limpo, paleta "Blues", do modelo campeão na Luz AM + RGB (best_model_confusion_matrix.pdf). O script deve colocar os rótulos reais no eixo Y e as predições no eixo X.
+Inicialmente, observa-se que o modelo estabeleceu pilares de confiança robustos em extratos específicos. As classes 44.4 e 41.5 despontam com os melhores equilíbrios gerais, apresentando Escores F1 de 0,732 e 0,724, respectivamente. A classe 31.2 também merece destaque por registrar a maior taxa de retenção verdadeira da distribuição (Revocação de 0,744). Nestas categorias, a EfficientNet demonstra alta capacidade de isolar características de granulação fina, garantindo o reconhecimento de quase todas as amostras reais, ainda que sob o custo marginal de falsos positivos na classe 31.2 (Precisão de 0,628).
 
-Matriz de McNemar (Heatmap Triangular): Aquele seu gráfico de p_values_v10.pdf, mas gerado para os dados da Fase 1. O Python deve calcular o p-value pareado entre os modelos top 5 e pintar de cinza (ou colocar "ns") o que não for estatisticamente significante ($p > 0,05$).
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/best_model_confusion_matrix.pdf}
+  \caption{Matriz de confusão normalizada do modelo EfficientNet (V1). Observa-se a concentração de erros em classes com sobreposição visual.}
+  \label{fig:matriz_confusao_v1}
+\end{figure}
 
-Mapas de Ativação Visual (Explainable AI - Grad-CAM): O famoso mapa de calor sobre a imagem original, mostrando para onde a rede neural estava "olhando" quando tomou a decisão. O pacote pytorch-grad-cam gera isso em 5 linhas de código.
+Entretanto, o comportamento do modelo degrada-se em zonas de sobreposição de características visuais, revelando três fenômenos estruturais críticos na classificação:
+
+\begin{itemize}
+    \item \textbf{Efeito de Absorção (Falsos Positivos):} A classe 31.4 registra a pior Precisão do estudo (0,492), atuando como um "buraco negro" preditivo. A matriz de confusão evidencia que a rede utiliza esta classe como um palpite de segurança diante de padrões ambíguos: 36\% das amostras reais da 41.4, 25\% da 31.3 e 19\% da 32.4 são erroneamente classificadas como 31.4. As características espaciais extraídas para este rótulo carecem de exclusividade morfológica.
+    
+    \item \textbf{Paradoxo do Conservadorismo (Falsos Negativos):} Em oposição ao fenômeno anterior, a classe 32.4 apresenta a maior Precisão da tabela (0,778), mas a pior Revocação (0,406). O modelo adota uma postura excessivamente conservadora: raramente classifica um \textit{patch} como 32.4 por engano, mas falha em reconhecer 59\% das amostras reais dessa classe, dispersando-as primordialmente para as categorias 33.3 (26\%) e 31.4 (19\%).
+    
+    \item \textbf{Confusões Intra-Grupo vs. Saltos Semânticos:} As falhas da rede dividem-se entre erros compreensíveis de granularidade fina (ex: a classe 31.3 vazando para suas vizinhas diretas 31.4 e 31.2) e erros graves de salto semântico. O caso mais crítico ocorre com a classe 44.4, que, apesar do bom desempenho geral, despeja 30\% de seus erros em uma categoria visualmente e comercialmente distante: a 33.3.
+\end{itemize}
+
+Esta análise morfológica profunda revela o limite da topologia convolucional quando submetida a um sinal físico ruidoso. Os "saltos semânticos" (como confundir a classe 44 com a 33) e as absorções massivas não são falhas matemáticas da EfficientNet, mas sim sintomas diretos do \textit{dataset} V1. A mistura de iluminação quente (2700 K) e fria (6500 K) no momento da captura corrompe a percepção de amarelamento e refletância da pluma, induzindo a rede a enxergar padrões macro idênticos onde não existem. 
+
+A constatação de que a melhor arquitetura do \textit{benchmark} tem o seu aprendizado sabotado pelo viés fotométrico estabelece a premissa fundamental para a Fase 2 deste estudo: a necessidade de otimização física do sinal luminoso de entrada antes de qualquer nova iteração algorítmica.
+

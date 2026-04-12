@@ -1,11 +1,45 @@
-4.5 Viabilidade Industrial e Trade-off Computacional ($H_4$)
+\section{Viabilidade Industrial e Trade-off Computacional ($H_4$)}
+\label{sec:viabilidade_industrial}
 
-O que o texto vai argumentar:
+O grande desafio desta pesquisa consiste em equilibrar o rigor estatístico com a viabilidade operacional para o setor agroindustrial. Embora a \textbf{DenseNet (V10)} tenha alcançado a liderança em termos de MCC absoluto ($0,6461$), um modelo industrial deve ser avaliado também por seu custo computacional e latência de inferência em tempo real.
 
-O grande fechamento. A DenseNet pode até ter ganhado no MCC puro, mas é pesada demais para o chão de fábrica. O texto coroará a ConvNeXt como a arquitetura suprema para o seu domínio (o Sweet Spot), por entregar quase a mesma acurácia com uma fração da latência, validando a $H_4$ e entregando valor prático para a parceira agroindustrial.
+A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do dataset (V10). A análise revela um compromisso crítico entre precisão e velocidade: enquanto a DenseNet lidera no eixo Y (MCC), ela apresenta uma latência de inferência (\textbf{$18,66$ ms}) significativamente superior à da \textbf{ConvNext} (\textbf{$6,97$ ms}).
 
-Artefatos gerados pelo seu script Python:
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Ranking de Eficiência Industrial (Dataset V10).}
+    \label{tab:industrial_ranking}
+    \input{tables/h4_industrial_ranking.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor (2026).
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
 
-Gráfico de Bolhas (efficiency_tradeoff_full.pdf): Eixo Y é o MCC. Eixo X é a Latência/Tempo de Inferência (usar escala logarítmica, dependendo dos outliers de tempo). O tamanho da bolha é o número de parâmetros ou GFLOPs. As bolhas devem ser coloridas por família (CNN Clássica, CNN Moderna, Transformer).
+Para validar a robustez destes resultados, a Figura \ref{fig:p_values_v10} apresenta a matriz de significância estatística (McNemar) entre todos os modelos na versão V10. Observa-se que a superioridade da DenseNet e da ConvNext sobre arquiteturas clássicas como ResNet e Inception é estatisticamente significante ($p < 0,01$). Contudo, o teste revela que a diferença entre as líderes DenseNet e ConvNext, embora numericamente favorável à primeira, apresenta um nível de confiança que permite considerar ambas como pertencentes à elite de desempenho para este domínio.
 
-Tabela de Ranking Industrial: Uma tabela sumarizando o modelo, MCC, Tamanho do Modelo (MB) e Tempo de Inferência (ms/imagem), ideal para sistemas computacionais de borda.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/p_value_heatmap_v10.pdf}
+  \caption{Matriz de significância estatística (McNemar) no dataset V10. O sufixo (ns) indica ausência de diferença estatística significante ($p > 0,05$).}
+  \label{fig:p_values_v10}
+\end{figure}
+
+Para visualizar o compromisso final (\textit{trade-off}), a Figura \ref{fig:efficiency_tradeoff} correlaciona o MCC com a latência de inferência. A análise permite identificar três perfis tecnológicos:
+
+\begin{enumerate}
+    \item \textbf{Alta Precisão (Elite):} A \textbf{DenseNet} ocupa o topo do gráfico, mas seu custo computacional mais elevado pode limitar sua adoção em esteiras de classificação ultra-velozes.
+    \item \textbf{Sweet Spot Industrial:} A \textbf{ConvNext} emerge como a arquitetura suprema para o domínio, oferecendo performance estatisticamente equivalente à líder com a menor latência entre os modelos de alta performance. Sua agilidade valida categoricamente a hipótese $H_4$.
+    \item \textbf{Baixa Eficiência:} Os modelos baseados em \textbf{Transformers} (bolhas maiores e mais à direita) demonstram baixa eficiência relativa, apresentando alta latência sem superar a barreira de performance das CNNs modernas.
+\end{enumerate}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
+  \caption{Trade-off Industrial: MCC vs. Latência (ms). O tamanho das bolhas representa a complexidade em GFLOPs. A ConvNext destaca-se no quadrante superior esquerdo (Sweet Spot).}
+  \label{fig:efficiency_tradeoff}
+\end{figure}
+
+Conclui-se que a \textbf{ConvNext (V10)} representa a solução de maior valor prático para a automação da tipagem do algodão, entregando o melhor balanço entre assertividade diagnóstica e rendimento operacional.

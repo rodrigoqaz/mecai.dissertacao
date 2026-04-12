@@ -1,9 +1,30 @@
-4.4 Fase 3: Expansão Espectral e Engenharia de Características ($H_3$)
+\section{Fase 3: Expansão Espectral e Engenharia de Características ($H_3$)}
+\label{sec:expansao_espectral}
 
-O que o texto vai argumentar:
+Nesta fase, avaliou-se a Hipótese $H_3$, que propunha que a expansão digital do espectro (15 canais gerados via filtros de Gabor) auxiliaria as redes a extrair texturas mais ricas da fibra. O experimento consistiu no treinamento paralelo de modelos nos datasets \textbf{AB}, \textbf{AM} e \textbf{BR}, comparando-os aos seus equivalentes RGB sob as mesmas condições de iluminação.
 
-Aqui entra a desconstrução do filtro de Gabor. O texto vai argumentar que as redes treinadas no dataset de 15 canais tiveram uma degradação severa em relação ao RGB puro, falhando em rejeitar $H_{0,3}$. A discussão girará em torno do conceito de "ruído paramétrico" e de como redes profundas preferem descobrir suas próprias features diretamente do RGB a receberem features "engessadas" classicamente.
+O contraste de desempenho, ilustrado na Figura \ref{fig:h3_spectral}, revela uma queda drástica e generalizada no MCC para todas as versões com expansão espectral. Este fenômeno refuta categoricamente a hipótese $H_3$, indicando que para modelos de \textit{Deep Learning} modernos, a inserção de \textit{features} artesanais ruidosas ou redundantes atua como um mecanismo de confusão no aprendizado \textit{end-to-end}.
 
-Artefatos gerados pelo seu script Python:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/h3_spectral_impact.pdf}
+  \caption{Falha da Expansão Espectral ($H_3$): O contraste entre o RGB puro (3ch) e os 15-canais Gabor mostra a severa degradação da performance em todos os cenários de luz.}
+  \label{fig:h3_spectral}
+\end{figure}
 
-Gráfico de Queda (Barplot Agrupado): Eixo X com os modelos campeões. Duas barras lado a lado para cada modelo: uma barra para o MCC em RGB e uma barra menor/caída para o MCC em 15 Canais Gabor (h3_spectral_impact.pdf). Isso ilustrará perfeitamente o impacto negativo.
+Para validar se esta queda de performance foi estatisticamente relevante, aplicou-se o teste de \textbf{McNemar} pareado por arquitetura no cenário de melhor iluminação (Luz Branca BR). Conforme apresentado na Tabela \ref{tab:mcnemar_gabor}, a degradação foi severa para todos os modelos. A \textbf{DenseNet}, por exemplo, sofreu uma redução de MCC de $0,6461$ para $0,1577$, enquanto a \textbf{ConvNext} caiu de $0,6153$ para $0,1282$.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Teste de McNemar comparando RGB (V10) e Gabor (V12) sob Luz Branca.}
+    \label{tab:mcnemar_gabor}
+    \input{tables/mcnemar_gabor_vs_rgb.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor (2026).
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+Os $p$-values extremamente baixos (todos na ordem de $10^{-51}$ ou menores) confirmam que a diferença de performance não é fruto do acaso, mas sim de uma incapacidade sistemática dos modelos em lidar com a dimensionalidade ruidosa dos filtros de Gabor. Conclui-se que, para este domínio, a simplicidade do sinal bruto de entrada é superior à complexidade algorítmica de pré-processamento clássico, validando a preferência por aprendizado profundo puramente orientado a dados.
