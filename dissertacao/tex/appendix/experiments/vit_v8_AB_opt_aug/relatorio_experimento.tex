@@ -9,7 +9,7 @@
                 \hline
                 \multicolumn{2}{c|}{\textbf{Hiperparâmetros}} & \multicolumn{4}{c}{\textbf{Métricas por Classe}} \\ \hline
                 \textbf{Parâmetro} & \textbf{Valor} & \textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
-    Agendador ($T_0$) & 15 & 31.2 & 0.3298 & 0.5442 & 0.4107 \\ 
+    Agendador (\$T\_0\$) & 15 & 31.2 & 0.3298 & 0.5442 & 0.4107 \\ 
 Agendador de LR & CosineAnnealingWarmRestarts & 31.3 & 0.2885 & 0.0743 & 0.1181 \\ 
 Architecture & vit\_b\_16 & 31.4 & 0.2434 & 0.2190 & 0.2306 \\ 
 Augmentation (Método) & None & 32.3 & 0.2711 & 0.4745 & 0.3451 \\ 
@@ -30,20 +30,8 @@ Unfreeze Layers & 3 &  & & &  \\
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.9\textwidth]{tex/appendix/experiments/vit_v8_AB_opt_aug/dashboard_consolidado.pdf}
+        \includegraphics[width=0.85\textwidth]{tex/appendix/experiments/vit_v8_AB_opt_aug/dashboard_consolidado.pdf}
         \caption{Histórico de Otimização, Curvas de Aprendizado e Matriz de Confusão - vit\_v8\_AB\_opt\_aug}
     \end{figure}
 \end{minipage}
-
 \clearpage
-\pdfpagewidth=297mm \pdfpageheight=210mm
-\newgeometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm} 
-\begin{figure}[H]
-    \centering
-    \makebox[\textwidth][l]{\includegraphics[width=1.7\textwidth]{tex/appendix/experiments/vit_v8_AB_opt_aug/optuna_parallel.pdf}}
-    \caption{Coordenadas Paralelas dos principais hiperparâmetros para vit\_v8\_AB\_opt\_aug}
-\end{figure}
-\clearpage
-\pdfpagewidth=210mm \pdfpageheight=297mm
-\restoregeometry
-\newpage

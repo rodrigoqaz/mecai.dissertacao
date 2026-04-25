@@ -9,7 +9,7 @@
                 \hline
                 \multicolumn{2}{c|}{\textbf{Hiperparâmetros}} & \multicolumn{4}{c}{\textbf{Métricas por Classe}} \\ \hline
                 \textbf{Parâmetro} & \textbf{Valor} & \textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
-    Agendador ($T_0$) & 7 & 31.2 & 0.4261 & 0.6637 & 0.5190 \\ 
+    Agendador (\$T\_0\$) & 7 & 31.2 & 0.4261 & 0.6637 & 0.5190 \\ 
 Agendador de LR & CosineAnnealingWarmRestarts & 31.3 & 0.2667 & 0.0990 & 0.1444 \\ 
 Architecture & efficientnet\_b2 & 31.4 & 0.2686 & 0.2238 & 0.2442 \\ 
 Augmentation (Método) & None & 32.3 & 0.4793 & 0.2959 & 0.3659 \\ 
@@ -30,20 +30,8 @@ Unfreeze Layers & 7 &  & & &  \\
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.9\textwidth]{tex/appendix/experiments/efficientnet_v8_AB_opt_aug/dashboard_consolidado.pdf}
+        \includegraphics[width=0.85\textwidth]{tex/appendix/experiments/efficientnet_v8_AB_opt_aug/dashboard_consolidado.pdf}
         \caption{Histórico de Otimização, Curvas de Aprendizado e Matriz de Confusão - efficientnet\_v8\_AB\_opt\_aug}
     \end{figure}
 \end{minipage}
-
 \clearpage
-\pdfpagewidth=297mm \pdfpageheight=210mm
-\newgeometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm} 
-\begin{figure}[H]
-    \centering
-    \makebox[\textwidth][l]{\includegraphics[width=1.7\textwidth]{tex/appendix/experiments/efficientnet_v8_AB_opt_aug/optuna_parallel.pdf}}
-    \caption{Coordenadas Paralelas dos principais hiperparâmetros para efficientnet\_v8\_AB\_opt\_aug}
-\end{figure}
-\clearpage
-\pdfpagewidth=210mm \pdfpageheight=297mm
-\restoregeometry
-\newpage

@@ -6,8 +6,6 @@ import seaborn as sns
 import mlflow
 from mlflow.tracking import MlflowClient
 import optuna
-from optuna.visualization import plot_parallel_coordinate
-import plotly.io as pio
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 import ast
@@ -18,10 +16,8 @@ OPTUNA_DB_URI = "sqlite:///optuna_dissertacao.db"
 MLFLOW_TRACKING_URI = "file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns"
 PATH_DIR = "tex/appendix/experiments"
 OUTPUT_DIR = Path("dissertacao/"+PATH_DIR)
+INDEX_FILE_PATH = Path("dissertacao/tex/appendix/appendice_2.tex")
 PLOT_FONT_SIZE = 18
-
-# Configurar Plotly para salvar PDF (requer kaleido)
-pio.renderers.default = "pdf"
 
 class AppendixGenerator:
     def __init__(self, optuna_uri: str, mlflow_uri: str, output_path: Path):
@@ -32,11 +28,13 @@ class AppendixGenerator:
         mlflow.set_tracking_uri(mlflow_uri)
         
         self.output_path.mkdir(parents=True, exist_ok=True)
+        self.processed_experiments = []
 
     def get_all_experiments(self) -> List[Any]:
         exps = self.client.search_experiments()
         ignore_list = ["Default", "test_experiment"]
-        return [e for e in exps if e.name not in ignore_list]
+        # Ordenar alfabeticamente pelo nome para consistência no índice
+        return sorted([e for e in exps if e.name not in ignore_list], key=lambda x: x.name)
 
     def find_champion_run(self, experiment_id: str) -> Optional[Any]:
         try:
@@ -51,7 +49,6 @@ class AppendixGenerator:
             return None
 
     def plot_optimization_history_matplotlib(self, study: optuna.study.Study, ax: plt.Axes):
-        """Plota o histórico de otimização no estilo Optuna usando Matplotlib."""
         trials = study.trials
         completed_trials = [t for t in trials if t.state == optuna.trial.TrialState.COMPLETE]
         
@@ -82,7 +79,6 @@ class AppendixGenerator:
         ax.grid(True, linestyle='--', alpha=0.6)
 
     def generate_combined_dashboard(self, study_name: str, run_id: str, target_path: Path):
-        """Gera uma única imagem PDF com History, Learning Curve e Confusion Matrix."""
         try:
             study = optuna.load_study(study_name=study_name, storage=self.optuna_uri)
             train_loss = self.client.get_metric_history(run_id, "train/loss")
@@ -118,80 +114,10 @@ class AppendixGenerator:
             plt.tight_layout(pad=4.0)
             plt.savefig(target_path / "dashboard_consolidado.pdf", bbox_inches='tight')
             plt.close()
-            print(f"    - Dashboard consolidado gerado (Fonte {PLOT_FONT_SIZE}).")
+            print(f"    - Dashboard consolidado gerado.")
 
         except Exception as e:
             print(f"    [ERRO] Falha ao gerar dashboard para {study_name}: {e}")
-
-    def export_parallel_coordinates(self, study_name: str, target_path: Path):
-        """Mantém o gráfico de coordenadas paralelas nativo do Optuna em um arquivo separado."""
-        try:
-            study = optuna.load_study(study_name=study_name, storage=self.optuna_uri)
-            complete_trials = [t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE and t.value is not None]
-            if not complete_trials: return
-
-            try:
-                importance = optuna.importance.get_param_importances(study)
-                params_to_plot = list(importance.keys())[:10]
-            except:
-                all_trial_params = [t.params for t in complete_trials if t.params]
-                df_params = pd.DataFrame(all_trial_params)
-                params_to_plot = [col for col in df_params.columns if df_params[col].nunique() > 1][:10]
-            
-            if params_to_plot:
-                fig_parallel = plot_parallel_coordinate(study, params=params_to_plot)
-                new_dims = []
-                annotations = []
-                
-                if fig_parallel.data and hasattr(fig_parallel.data[0], 'dimensions'):
-                    dimensions = fig_parallel.data[0].dimensions
-                    num_dims = len(dimensions)
-                    for i, dim in enumerate(dimensions):
-                        dim_dict = dim.to_plotly_json()
-                        truncated_label = dim_dict.get('label', '')
-                        full_label = truncated_label
-                        if truncated_label != 'Objective Value':
-                            if '...' in truncated_label:
-                                prefix = truncated_label.replace('...', '')
-                                for param_name in params_to_plot:
-                                    if param_name.startswith(prefix):
-                                        full_label = param_name
-                                        break
-                            else:
-                                for param_name in params_to_plot:
-                                    if param_name == truncated_label:
-                                        full_label = param_name
-                                        break
-                        
-                        label = full_label
-                        if label != 'Objective Value':
-                            for prefix in ['convnext_', 'swin_', 'vit_', 'resnet_', 'efficientnet_', 'vgg_', 'inception_', 'densenet_']:
-                                if label.startswith(prefix): label = label[len(prefix):]
-                            label = label.replace('_', ' ').title()
-                            label = label.replace('Learning Rate', 'LR').replace('Architecture', 'Model')
-                            label = label.replace('Label Smoothing', 'Smoothing').replace('Weight Decay', 'W. Decay')
-                        
-                        if len(label) > 10 and ' ' in label:
-                            words = label.split(' ')
-                            mid = len(words) // 2
-                            label = " ".join(words[:mid]) + "<br>" + " ".join(words[mid:])
-                        
-                        dim_dict['label'] = " " * (i + 1)
-                        new_dims.append(dim_dict)
-                        x_pos = i / (num_dims - 1) if num_dims > 1 else 0.5
-                        annotations.append(dict(
-                            x=x_pos, y=-0.08, xref='paper', yref='paper',
-                            text=label, showarrow=False, xanchor='center', yanchor='top', font=dict(size=PLOT_FONT_SIZE, color="black")
-                        ))
-                    
-                    fig_parallel.update_traces(dimensions=new_dims)
-                    fig_parallel.update_traces(labelfont=dict(color='white', size=1))
-
-                fig_parallel.update_layout(title=None, annotations=annotations, margin=dict(l=60, r=60, t=40, b=160), font=dict(size=PLOT_FONT_SIZE))
-                fig_parallel.write_image(str(target_path / "optuna_parallel.pdf"), width=1600, height=800)
-                print(f"    - Coordenadas Paralelas exportadas (Fonte {PLOT_FONT_SIZE}).")
-        except Exception as e:
-            print(f"    [AVISO] Falha em Parallel Coordinates: {e}")
 
     def latex_escape(self, text: str) -> str:
         if not isinstance(text, str): text = str(text)
@@ -223,7 +149,7 @@ class AppendixGenerator:
                 sched_type = v.get('type', 'N/A')
                 clean_params['Agendador de LR'] = sched_type
                 if 'params' in v:
-                    if sched_type == 'CosineAnnealingWarmRestarts': clean_params['Agendador (MARKERTZERO)'] = str(v['params'].get('T_0', ''))
+                    if sched_type == 'CosineAnnealingWarmRestarts': clean_params['Agendador ($T_0$)'] = str(v['params'].get('T_0', ''))
                     elif sched_type == 'ReduceLROnPlateau': clean_params['Agendador (Patience)'] = str(v['params'].get('patience', ''))
             elif k == 'loss' and isinstance(v, dict):
                 clean_params['Função de Perda'] = v.get('type', 'CrossEntropyLoss')
@@ -233,7 +159,7 @@ class AppendixGenerator:
                     clean_params['Augmentation (Método)'] = str(v.get('per_image_aug_method', '')).title()
                     if 'basic_params' in v:
                         bp = v['basic_params']
-                        clean_params['Aug (Rotação)'] = f"{bp.get('rotation_range', 0)}MARKERDEGREE"
+                        clean_params['Aug (Rotação)'] = f"{bp.get('rotation_range', 0)}$^\\circ$"
                         clean_params['Aug (Prob. Espelhamento)'] = f"{bp.get('horizontal_flip_prob', 0):.2f}"
                         clean_params['Aug (Brilho / Contraste)'] = f"{bp.get('brightness_range', 0):.2f} / {bp.get('contrast_range', 0):.2f}"
                 else: clean_params['Data Augmentation'] = "False"
@@ -244,8 +170,8 @@ class AppendixGenerator:
         left_rows = []
         for key in sorted(clean_params.keys()):
             val = clean_params[key]
-            safe_k = self.latex_escape(key).replace('MARKERTZERO', '$T_0$')
-            safe_v = self.latex_escape(str(val)).replace('MARKERDEGREE', '$^\\circ$')
+            safe_k = self.latex_escape(key)
+            safe_v = self.latex_escape(str(val))
             left_rows.append(f"{safe_k} & {safe_v}")
 
         right_rows = []
@@ -283,27 +209,33 @@ class AppendixGenerator:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.9\textwidth]{<PATH_DIR>/<RAW_EXP_NAME>/dashboard_consolidado.pdf}
+        \includegraphics[width=0.85\textwidth]{<PATH_DIR>/<RAW_EXP_NAME>/dashboard_consolidado.pdf}
         \caption{Histórico de Otimização, Curvas de Aprendizado e Matriz de Confusão - <EXP_NAME>}
     \end{figure}
 \end{minipage}
-
 \clearpage
-\pdfpagewidth=297mm \pdfpageheight=210mm
-\newgeometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm} 
-\begin{figure}[H]
-    \centering
-    \makebox[\textwidth][l]{\includegraphics[width=1.7\textwidth]{<PATH_DIR>/<RAW_EXP_NAME>/optuna_parallel.pdf}}
-    \caption{Coordenadas Paralelas dos principais hiperparâmetros para <EXP_NAME>}
-\end{figure}
-\clearpage
-\pdfpagewidth=210mm \pdfpageheight=297mm
-\restoregeometry
-\newpage
 """
         content = latex_template.replace("<EXP_NAME>", safe_exp_name).replace("<RAW_EXP_NAME>", exp_name).replace("<COMBINED_ROWS>", combined_rows).replace("<PATH_DIR>", PATH_DIR)
         with open(target_path / "relatorio_experimento.tex", "w") as f: f.write(content)
-        print(f"    - Snippet LaTeX gerado (Tabela e Dashboard na mesma página).")
+        print(f"    - Snippet LaTeX gerado.")
+
+    def generate_index_file(self):
+        print(f"\n>>> Gerando arquivo de índice: {INDEX_FILE_PATH}")
+        content = r"""\chapter{Experimentos}
+\label{apendice:experimentos}
+
+Este apêndice apresenta os detalhes técnicos, hiperparâmetros otimizados e resultados de desempenho para cada experimento realizado durante a fase de busca bayesiana. Cada página detalha o comportamento de uma arquitetura sob uma configuração específica de dataset.
+
+\clearpage
+"""
+        for exp_name in self.processed_experiments:
+            clean_name = exp_name.replace('_', ' ').title()
+            content += f"\n\\section*{{{clean_name}}}\n"
+            content += f"    \\input{{tex/appendix/experiments/{exp_name}/relatorio_experimento.tex}}\n"
+        
+        with open(INDEX_FILE_PATH, "w") as f:
+            f.write(content)
+        print("    - Arquivo de índice gerado com sucesso.")
 
     def run(self):
         experiments = self.get_all_experiments()
@@ -311,12 +243,11 @@ class AppendixGenerator:
         for exp in experiments:
             print(f"\n>>> Processando: {exp.name}")
             exp_dir = self.output_path / exp.name
-            exp_dir.mkdir(exist_ok=True)
+            exp_dir.mkdir(parents=True, exist_ok=True)
             champion = self.find_champion_run(exp.experiment_id)
             if not champion: continue
             
             self.generate_combined_dashboard(exp.name, champion.info.run_id, exp_dir)
-            self.export_parallel_coordinates(exp.name, exp_dir)
             
             classes = []
             try:
@@ -325,6 +256,9 @@ class AppendixGenerator:
             except: pass
             
             self.generate_latex_snippet(exp.name, champion, classes, exp_dir)
+            self.processed_experiments.append(exp.name)
+        
+        self.generate_index_file()
 
 if __name__ == "__main__":
     generator = AppendixGenerator(OPTUNA_DB_URI, MLFLOW_TRACKING_URI, OUTPUT_DIR)

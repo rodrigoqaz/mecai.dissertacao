@@ -1,23 +1,27 @@
-Esta dissertação apresentou o desenvolvimento e a avaliação de um sistema de visão computacional voltado à classificação automatizada da pluma de algodão, comparando paradigmas de redes convolucionais e baseados em atenção. A pesquisa demonstrou que a automação desse processo, historicamente subjetivo e logisticamente oneroso, é tecnicamente viável e estatisticamente robusta quando fundamentada em protocolos rígidos de aquisição física e modelos de aprendizado profundo de última geração.
 
-\section{Contribuições e Principais Achados}
+Esta dissertacão propôs-se a investigar e otimizar a aplicação de modelos de \textit{Deep Learning} para a classificação automática da qualidade da pluma de algodão, um problema clássico de Classificação de Granulação Fina com impacto direto na balança comercial do agronegócio. A pesquisa foi estruturada para avaliar não apenas a capacidade preditiva bruta de diferentes arquiteturas neurais, mas também a influência crítica do sinal fotométrico de entrada e a viabilidade de implantação em ambientes industriais restritos. 
 
+As evidências empíricas e estatísticas obtidas ao longo do fluxo experimental permitiram responder de forma categórica às quatro hipóteses de pesquisa norteadoras deste estudo.
 
-As evidências experimentais permitiram validar as hipóteses propostas, resultando nas seguintes conclusões:
+\input{tex/6_conclusao/6.1_sintese_resultados.tex}
 
-\begin{itemize}
-    \item Primazia da Iluminação (H2): A transição da versão V1 para a V10 do dataset confirmou que a otimização física da iluminação (uso de luz fria de 6000K para realce morfológico) é um fator de impacto superior ao ajuste fino de hiperparâmetros isoladamente.
-    \item Superioridade das CNNs sobre Transformers (H1): Contrariando tendências de domínios genéricos, as arquiteturas convolucionais superaram os Vision Transformers (ViT). O viés indutivo de localidade das CNNs mostrou-se essencial para capturar as micro-texturas da fibra de algodão, especialmente em conjuntos de dados de domínio específico onde a convergência de mecanismos de atenção global é dificultada pela escassez de dados massivos.
-    \item Inviabilidade da Engenharia de Features Manual (H3): A tentativa de expansão espectral via filtros de Gabor (V8) resultou em degradação de performance, ratificando que o aprendizado end-to-end sobre dados brutos é mais eficaz para modelar a variabilidade estocástica de fibras naturais.
-    \item Eficiência Industrial (H4): Embora a DenseNet-121 tenha obtido a maior precisão estatística (MCC de 0,646), a ConvNeXt-T foi identificada como a solução de maior viabilidade prática. Sua latência de 6,8 ms permite uma integração fluida em esteiras de alta velocidade, atendendo ao requisito de tempo real exigido pelo fluxo logístico das algodoeiras.
-\end{itemize}
+\section{Contribuições da Pesquisa}
+\label{sec:contribuicoes}
 
-\section{Limitações e Trabalhos Futuros}
+As contribuições desta dissertação estendem-se à academia e à agroindústria. Cientificamente, o estudo fornece um \textit{benchmark} rigoroso que mapeia o comportamento espectral e paramétrico das principais topologias de visão computacional em texturas orgânicas complexas. Industrialmente, o trabalho entrega um protocolo de engenharia validado, contemplando desde a calibragem do \textit{hardware} óptico até a escolha do modelo matemático (ConvNeXt) capaz de automatizar a esteira de classificação de algodão, mitigando o fator de subjetividade humana e respeitando os padrões de conformidade do MAPA.
 
-Apesar do sucesso na classificação das 10 classes comerciais mais prevalentes, o estudo encontrou limites físicos de discriminabilidade visual em classes adjacentes. Como desdobramentos desta pesquisa, sugerem-se:
+\section{Limitações do Estudo}
+\label{sec:limitacoes}
 
-\begin{itemize}
-    \item Integração de Metadados Físicos: Combinar a análise visual com dados instrumentais do HVI (como Micronaire e Resistência) em uma arquitetura multimodal para reduzir a confusão entre tipos vizinhos.
-    \item Edge Computing e IoT: Implementar o modelo ConvNeXt em dispositivos de borda integrados diretamente nos pontos de recepção de fardos e portos, permitindo uma auditoria de qualidade distribuída ao longo da cadeia logística.
-    \item Detecção de Contaminantes Não-Botânicos: Expandir o dataset para incluir materiais estranhos críticos (plásticos e óleos), explorando técnicas de segmentação de instância para quantificação precisa de impurezas.
-\end{itemize}
+Apesar do rigor metodológico, reconhecem-se limitações intrínsecas ao desenho da pesquisa. O \textit{dataset} construído, embora representativo, reflete as condições fenotípicas de safras e cultivares de uma região específica, podendo exigir calibração de \textit{fine-tuning} se submetido a fibras de origens geomorfológicas radicalmente distintas. Além disso, a simulação fotométrica (Fase 2) operou sob condições estáticas de laboratório, não encapsulando a totalidade das variações de degradação luminosa que ocorrem ao longo de turnos de trabalho contínuos em usinas de beneficiamento reais.
+
+\section{Trabalhos Futuros}
+\label{sec:trabalhos_futuros}
+
+Como desdobramento natural dos achados consolidados nesta dissertação, propõe-se para investigações futuras:
+\begin{enumerate}
+    \item \textbf{Compressão Algorítmica:} A aplicação de técnicas de quantização de pesos (e.g., FP32 para INT8) e poda paramétrica (\textit{pruning}) sobre a arquitetura ConvNeXt, visando a sua compilação otimizada para microcontroladores restritos ou FPGAs diretamente nas máquinas de fiação.
+    \item \textbf{Modelagem Multimodal:} A expansão do tensor de entrada de dados para integrar variáveis não visuais, fundindo o sinal de imagem (RGB) com dados de espectroscopia no infravermelho próximo (NIR) e variáveis climáticas de colheita, através de arquiteturas de fusão inicial.
+    \item \textbf{Aprendizado Auto-Supervisionado:} A exploração de abordagens como o \textit{Contrastive Learning} para treinar modelos base a partir de grandes volumes de imagens de algodão não rotuladas, diminuindo a dependência histórica do setor por especialistas de classificação manual (HVI) durante a fase de anotação de dados.
+    \item \textbf{Síntese Fotorealista e Aumento de Dados (\textit{Data Augmentation}):} A exploração de modelos generativos avançados, como Redes Adversárias Generativas (GANs) e Modelos de Difusão (\textit{Diffusion Models}), para a geração de dados sintéticos. A criação de amostras artificiais pode mitigar o desbalanceamento intrínseco das classes de qualidade agrícola e simular cenários extremos de ruído fotométrico, expandindo a fronteira de aprendizado e viabilizando o treinamento de topologias com alta demanda amostral, como os \textit{Vision Transformers} (ViT).
+\end{enumerate}
