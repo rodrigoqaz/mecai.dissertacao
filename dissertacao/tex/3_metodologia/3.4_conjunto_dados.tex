@@ -2,14 +2,14 @@
 
 O escopo desta dissertação foi direcionado às 10 classes comerciais de algodão em pluma mais prevalentes na produção local, em estrita conformidade com os padrões oficiais de classificação estabelecidos pela Instrução Normativa nº 24/2016 do Ministério da Agricultura, Pecuária e Abastecimento (MAPA). A rotulagem de cada amostra (\textit{ground truth}) foi estabelecida com base no laudo de classificação visual humano, adotado pela própria unidade de beneficiamento parceira. Esse procedimento assegurou que os rótulos atribuídos aos tensores de imagem correspondessem aos parâmetros utilizados nas operações reais de comercialização, conferindo validade industrial ao problema de classificação.
 
-Após a etapa de pré-processamento (Camada \textit{Gold}), o \textit{dataset} final consolidou-se em 7.908 \textit{patches} de imagem. Para a condução rigorosa dos experimentos, realizou-se a divisão do conjunto de dados utilizando uma proporção de 80\% para treinamento/validação (6.326 amostras) e 20\% para teste retido isoladamente (1.582 amostras). 
+Após a etapa de pré-processamento (Camada \textit{Gold}), o conjunto de dados final consolidou-se em 7.908 \textit{patches} de imagem. Para a condução rigorosa dos experimentos, realizou-se a divisão dos dados utilizando uma proporção de 80\% para treinamento/validação (6.326 amostras) e 20\% para teste retido isoladamente (1.582 amostras).
 
 É necessário destacar que essa divisão foi realizada de forma estratificada por classe, utilizando uma semente aleatória fixa (\textit{random seed} = 42). A estratificação garantiu que a proporção original de cada classe fosse preservada em ambas as partições. A distribuição quantitativa exata dos dados particionados é detalhada na Tabela \ref{tab:distribuicao_classes}.
 
 \begin{table}[ht!]
     \centering
     \begin{threeparttable}
-    \caption{Distribuição de amostras (\textit{patches}) por classe e partição do \textit{dataset}.}
+    \caption{Distribuição de amostras (\textit{patches}) por classe e partição do conjunto de dados.}
     \label{tab:distribuicao_classes}
     \begin{tabular}{c c c c}
         \hline

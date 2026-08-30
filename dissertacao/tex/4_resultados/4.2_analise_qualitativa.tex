@@ -2,12 +2,12 @@
 \section{Análise Qualitativa e Significância Interclasses}
 \label{sec:analise_qualitativa}
 
-Embora as métricas globais atestem a superioridade estrutural da EfficientNet no \textit{dataset} V1, a validação de sua aplicabilidade industrial exige uma inspeção pormenorizada dos erros interclasses. A avaliação cruzada das métricas detalhadas (Tabela \ref{tab:best_class_metrics}) com a Matriz de Confusão Normalizada (Figura \ref{fig:matriz_confusao_v1}) permite diagnosticar o comportamento fenotípico da rede frente ao ruído fotométrico da iluminação mista.
+Embora as métricas globais atestem a superioridade estrutural da EfficientNet no conjunto de dados V1, a validação de sua aplicabilidade industrial exige uma inspeção pormenorizada dos erros interclasses. A avaliação cruzada das métricas detalhadas (Tabela \ref{tab:best_class_metrics}) com a Matriz de Confusão Normalizada (Figura \ref{fig:matriz_confusao_v1}) permite diagnosticar o comportamento fenotípico da rede frente ao ruído fotométrico da iluminação mista.
 
 \begin{table}[!h]
     \centering
     \begin{threeparttable}
-    \caption{Métricas detalhadas por classe para o modelo EfficientNet no dataset V1.}
+    \caption{Métricas detalhadas por classe para o modelo EfficientNet no conjunto de dados V1.}
     \label{tab:best_class_metrics}
     \input{tables/best_model_class_metrics.tex}
     \begin{tablenotes}
@@ -36,7 +36,7 @@ Entretanto, o comportamento do modelo degrada-se em zonas de sobreposição de c
     \item \textbf{Confusões Intra-Grupo vs. Saltos Semânticos:} As falhas da rede dividem-se entre erros compreensíveis de granularidade fina (ex: a classe 31.3 vazando para suas vizinhas diretas 31.4 e 31.2) e erros graves de salto semântico. O caso mais crítico ocorre com a classe 44.4, que, apesar do bom desempenho geral, despeja 30\% de seus erros em uma categoria visualmente e comercialmente distante: a 33.3.
 \end{itemize}
 
-Esta análise morfológica profunda revela o limite da topologia convolucional quando submetida a um sinal físico ruidoso. Os "saltos semânticos" (como confundir a classe 44 com a 33) e as absorções massivas não são falhas matemáticas da EfficientNet, mas sim sintomas diretos do \textit{dataset} V1. A mistura de iluminação quente (2700 K) e fria (6500 K) no momento da captura corrompe a percepção de amarelamento e refletância da pluma, induzindo a rede a enxergar padrões macro idênticos onde não existem. 
+Esta análise morfológica profunda revela o limite da topologia convolucional quando submetida a um sinal físico ruidoso. Os "saltos semânticos" (como confundir a classe 44 com a 33) e as absorções massivas não são falhas matemáticas da EfficientNet, mas sim sintomas diretos do conjunto de dados V1. A mistura de iluminação quente (2700 K) e fria (6500 K) no momento da captura corrompe a percepção de amarelamento e refletância da pluma, induzindo a rede a enxergar padrões macro idênticos onde não existem. 
 
 A constatação de que a melhor arquitetura do \textit{benchmark} tem o seu aprendizado sabotado pelo viés fotométrico estabelece a premissa fundamental para a Fase 2 deste estudo: a necessidade de otimização física do sinal luminoso de entrada antes de qualquer nova iteração algorítmica.
 

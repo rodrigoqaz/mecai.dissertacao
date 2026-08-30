@@ -3,14 +3,14 @@
 
 \label{sec:benchmark_v1}
 
-Nesta fase inicial, os modelos foram avaliados utilizando o dataset baseline (\textbf{V1}), composto por imagens RGB capturadas sob iluminação amarela (2700 K) e branca (6500 K) misturadas. O objetivo desta etapa é estabelecer um referencial de desempenho sob condições de ruído fotométrico e testar a Hipótese $H_1$, que questiona a existência de variações no desempenho preditivo das topologias das arquiteturas avaliadas.
+Nesta fase inicial, os modelos foram avaliados utilizando o conjunto de dados \textit{baseline} (\textbf{V1}), composto por imagens RGB capturadas sob iluminação amarela (2700 K) e branca (6000 K) misturadas. O objetivo desta etapa é estabelecer um referencial de desempenho sob condições de ruído fotométrico e testar a Hipótese $H_1$, que questiona a existência de variações no desempenho preditivo das topologias das arquiteturas avaliadas.
 
 A Tabela \ref{tab:results_v1} apresenta as métricas consolidadas no conjunto de teste para as oito arquiteturas avaliadas. Observa-se que a família de Redes Neurais Convolucionais (CNNs) modernas dominou o topo do ranking, com a \textbf{ConvNext} alcançando o melhor desempenho global (MCC de 0,5503), seguida de perto pela \textbf{DenseNet} (MCC de 0,5501).
 
 \begin{table}[!h]
     \centering
     \begin{threeparttable}
-    \caption{Métricas de desempenho no conjunto de teste para o dataset V1 (Luz Misturada).}
+    \caption{Métricas de desempenho no conjunto de teste para o conjunto de dados V1 (Luz Misturada).}
     \label{tab:results_v1}
     \input{tables/metrics_table.tex}
     \begin{tablenotes}

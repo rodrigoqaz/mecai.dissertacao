@@ -1,0 +1,29 @@
+\section{O Protótipo Industrial Entregue}
+\label{sec:resultado_prototipo}
+
+Para além do desempenho das arquiteturas neurais, o desenvolvimento do \textit{hardware} de captura constitui um resultado central desta dissertação. O protótipo final, ilustrado nas fotografias da Figura \ref{fig:caixa_real}, provou ser resiliente ao ambiente de colheita, mantendo a estabilidade fotométrica necessária para que o modelo ConvNeXt operasse com a precisão reportada. 
+
+A autonomia do equipamento permitiu a digitalização de mais de 1.200 amostras reais com zero índice de falha mecânica, demonstrando que a integração entre a câmara de luz controlada e a unidade de processamento de borda é tecnicamente viável para a escala industrial do cerrado brasileiro.
+
+\begin{figure}[H]
+    \centering
+    % Primeira imagem (Caixa em detalhe) - Recortada embaixo para remover espaço vazio
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[trim={20 140 20 30}, clip, width=0.93\textwidth]{img_caixa}
+        \caption{Detalhe do hardware e compartimento interno.}
+        \label{fig:caixa_detalhe}
+    \end{subfigure}
+    \hfill
+    % Segunda imagem (Operação) - Recortada apenas embaixo para manter o enquadramento superior
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[trim={0 200 0 50}, clip, width=\textwidth]{img_caixa_operacao}
+        \caption{Protótipo em operação real na algodoeira.}
+        \label{fig:caixa_operacao}
+    \end{subfigure}
+    
+    \caption{Fotografias reais do protótipo industrial: (a) visão detalhada do hardware e (b) demonstração de uso no fluxo de trabalho industrial.}
+    \label{fig:caixa_real}
+    \legend{Fonte: Do Autor}
+\end{figure}

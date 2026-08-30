@@ -1,15 +1,15 @@
 %Revisado
-\section{Viabilidade Industrial e Trade-off Computacional ($H_4$)}
+\section{Viabilidade Industrial e \textit{Trade-off} Computacional ($H_4$)}
 \label{sec:viabilidade_industrial}
 
 Um dos desafios desta dissertação reside em equilibrar o rigor estatístico com a viabilidade operacional para o setor agroindustrial. Embora a \textbf{DenseNet (RGB/BR)} tenha alcançado a liderança em termos de MCC absoluto ($0,6461$), um modelo destinado à produção deve ser avaliado também por seu custo computacional, demanda energética e latência de inferência em tempo real.
 
-A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do \textit{dataset} (RGB/BR). A análise revela um compromisso crítico (\textit{trade-off}) entre precisão e velocidade: enquanto a DenseNet lidera no eixo preditivo (MCC), ela apresenta uma latência de inferência de $18,66$ ms, significativamente superior à da \textbf{ConvNeXt} ($6,97$ ms). Adicionalmente, nota-se que a \textbf{EfficientNet} apresenta a maior eficiência algorítmica bruta, com apenas $0,6813$ GFLOPs, tornando-a uma candidata primorosa para dispositivos de borda (\textit{edge computing}) com extrema restrição de \textit{hardware}, ainda que com um MCC marginalmente inferior ($0,5915$).
+A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do conjunto de dados (RGB/BR). A análise revela um compromisso crítico (\textit{trade-off}) entre precisão e velocidade: enquanto a DenseNet lidera no eixo preditivo (MCC), ela apresenta uma latência de inferência de $18,66$ ms, significativamente superior à da \textbf{ConvNeXt} ($6,97$ ms). Adicionalmente, nota-se que a \textbf{EfficientNet} apresenta a maior eficiência algorítmica bruta, com apenas $0,6813$ GFLOPs, tornando-a uma candidata primorosa para dispositivos de borda (\textit{edge computing}) com extrema restrição de \textit{hardware}, ainda que com um MCC marginalmente inferior ($0,5915$).
 
 \begin{table}[!h]
     \centering
     \begin{threeparttable}
-    \caption{Ranking de Eficiência Industrial (Dataset RGB/BR).}
+    \caption{Ranking de Eficiência Industrial (Conjunto de Dados RGB/BR).}
     \label{tab:industrial_ranking}
     \input{tables/h4_industrial_ranking.tex}
     \begin{tablenotes}
@@ -24,7 +24,7 @@ Para validar a robustez destes resultados, a Figura \ref{fig:p_values_v10} apres
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{images/p_value_heatmap_v10.pdf}
-  \caption{Matriz de significância estatística (McNemar) no dataset RGB/BR. O sufixo (ns) indica ausência de diferença estatística significante ($p > 0,05$).}
+  \caption{Matriz de significância estatística (McNemar) no conjunto de dados RGB/BR. O sufixo (ns) indica ausência de diferença estatística significante ($p > 0,05$).}
   \label{fig:p_values_v10}
 \end{figure}
 
@@ -39,7 +39,7 @@ Diante do empate na predição, o critério de seleção segue obrigatoriamente 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
-  \caption{Trade-off Industrial: MCC vs. Latência (ms). O tamanho das bolhas representa a complexidade em GFLOPs. A ConvNext destaca-se no quadrante superior esquerdo (Sweet Spot).}
+  \caption{\textit{Trade-off} Industrial: MCC vs. Latência (ms). O tamanho das bolhas representa a complexidade em GFLOPs. A ConvNext destaca-se no quadrante superior esquerdo (Sweet Spot).}
   \label{fig:efficiency_tradeoff}
 \end{figure}
 

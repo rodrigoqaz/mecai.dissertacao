@@ -1,7 +1,7 @@
 %Revisado
 \subsection{Arquiteturas Fundacionais: VGG e Inception}
 
-    A VGG estabeleceu o uso sistemático de filtros $3 \times 3$, demonstrando que a profundidade é o componente chave para a extração de hierarquias de características. Embora fundamental, sua ineficiência paramétrica e o uso de camadas densas massivas servem hoje como baseline histórico. A família Inception introduziu a ideia de processamento multiescala paralelo, capturando texturas em diferentes frequências espaciais, o que pavimentou o caminho para redes com campos receptivos mais inteligentes.
+    A VGG estabeleceu o uso sistemático de filtros $3 \times 3$, demonstrando que a profundidade é o componente chave para a extração de hierarquias de características. Embora fundamental, sua ineficiência paramétrica e o uso de camadas densas massivas servem hoje como \textit{baseline} histórico. A família Inception introduziu a ideia de processamento multiescala paralelo, capturando texturas em diferentes frequências espaciais, o que pavimentou o caminho para redes com campos receptivos mais inteligentes.
 
     \subsubsection{A Arquitetura VGG Net}
 
@@ -25,7 +25,7 @@
 
         As versões subsequentes (v2 e v3) refinaram a arquitetura por meio de princípios de fatoração. Seguindo o objetivo de eficiência matemática, \textit{kernels} grandes ($5 \times 5$) foram substituídos por sequências de $3 \times 3$. Além disso, convoluções quadradas $n \times n$ foram fatoradas em operações assimétricas de $1 \times n$ e $n \times 1$ (ex.: $1 \times 7$ seguido de $7 \times 1$), reduzindo drasticamente as operações em ponto flutuante sem perda de campo receptivo. 
 
-        Esse paradigma de fatoração foi levado ao limite na Xception (\textit{Extreme Inception}) \cite{chollet2017xception}. Essa arquitetura utiliza convoluções separáveis em profundidade (\textit{depthwise separable convolutions}), isolando totalmente a busca por correlações espaciais das correlações entre canais. Dada a sua eficiência paramétrica, consolidou-se como um dos \textit{backbones} mais eficazes para tarefas que exigem alta precisão em texturas finas.
+        Esse paradigma de fatoração foi levado ao limite na Xception (\textit{Extreme Inception}) \cite{chollet2017xception}. Essa arquitetura utiliza convoluções separáveis em profundidade (\textit{depthwise separable convolutions}), isolando totalmente a busca por correlações espaciais das correlações entre canais. Dada a sua eficiência paramétrica, consolidou-se como uma das arquiteturas base mais eficazes para tarefas que exigem alta precisão em texturas finas.
 
         % \input{tables/tab_inception.tex}
 
