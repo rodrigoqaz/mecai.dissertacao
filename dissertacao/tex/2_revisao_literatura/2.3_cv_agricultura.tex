@@ -5,7 +5,7 @@
 
     \subsubsection{Aquisição de imagens}
 
-        A aquisição da imagem é o primeiro estágio do processo, no qual a radiação eletromagnética refletida pelo objeto é convertida em dados digitais. Embora existam sensores baseados em ultrassom, raios-X e espectroscopia NIR, as câmeras digitais operando no espectro visível são os dispositivos predominantes na agricultura de precisão \cite{brosnan2004improving}.
+        A aquisição da imagem é o primeiro estágio do processo, no qual a radiação eletromagnética refletida pelo objeto é convertida em dados digitais. Embora existam sensores baseados em ultrassom, raios-X e espectroscopia no infravermelho próximo (\textit{Near Infrared} --- NIR), as câmeras digitais operando no espectro visível são os dispositivos predominantes na agricultura de precisão \cite{brosnan2004improving}.
 
         No núcleo dessas câmeras, a captura é realizada por dois tipos principais de sensores: CCD (\textit{Charge-Coupled Device}) e CMOS (\textit{Complementary Metal-Oxide-Semiconductor}).
 
@@ -22,7 +22,7 @@
         
         \item \textbf{Resolução Espacial:} A detecção de impurezas milimétricas impõe um desafio de amostragem. \citeonline{li2025cottonyolo} argumentam que métodos tradicionais falham em detectar esses pequenos objetos devido à complexidade do fundo e à mistura de pixels. O uso de sensores de alta resolução, aliados a redes neurais profundas, torna-se mandatório para distinguir contaminantes minúsculos que, em resoluções menores, seriam invisíveis ou confundidos com ruído.
         
-        \item \textbf{Fidelidade de Cor:} A classificação comercial depende estritamente dos parâmetros de Amarelamento (+b) e Reflectância (Rd). Segundo \citeonline{li2023novel}, a simples captura RGB não garante a correlação com o padrão HVI. É necessária uma calibração rigorosa e a conversão para espaços de cor perceptuais (como CIE $L^*a^*b^*$ ou Hunter) para que o sistema de visão atinja coeficientes de determinação superiores a 0,88 quando comparado aos colorímetros industriais, evitando erros de graduação que resultam em prejuízo financeiro.
+        \item \textbf{Fidelidade de Cor:} A classificação comercial depende estritamente dos parâmetros de Amarelamento (+b) e Reflectância (Rd). Segundo \citeonline{li2023novel}, a simples captura RGB (\textit{Red, Green, Blue}) não garante a correlação com o padrão HVI. É necessária uma calibração rigorosa e a conversão para espaços de cor perceptuais (como CIE $L^*a^*b^*$ ou Hunter) para que o sistema de visão atinja coeficientes de determinação superiores a 0,88 quando comparado aos colorímetros industriais, evitando erros de graduação que resultam em prejuízo financeiro.
     \end{enumerate}
 
 
@@ -50,7 +50,7 @@
 
         O componente de \textit{software} atua como o cérebro do sistema de visão computacional, responsável não apenas por orquestrar o \textit{hardware} de captura e iluminação, mas principalmente por implementar os algoritmos de interpretação visual. Historicamente, o desenvolvimento baseava-se em bibliotecas de processamento de imagem clássico (ou \textit{rule-based}), como o OpenCV (\textit{Open Source Computer Vision Library}). Essas ferramentas exigiam que o engenheiro definisse manualmente os descritores matemáticos para extrair bordas, cores ou formas geométricas \cite{opencv_library}.
 
-        No entanto, o estado da arte na agricultura de precisão sofreu uma mudança de paradigma com a consolidação do aprendizado profundo (\textit{Deep Learning}). Conforme revisado por \citeonline{mustofa2023comprehensive}, o foco do desenvolvimento de \textit{software} migrou da engenharia de características manual (\textit{feature engineering}) para a curadoria de dados e o treinamento de redes neurais convolucionais (CNNs). Nesse novo cenário, o \textit{software} não segue mais regras lógicas rígidas baseadas em limiares de cor, mas aprende padrões complexos a partir de exemplos, exigindo \textit{frameworks} robustos para o treinamento e inferência dos modelos.
+        No entanto, o estado da arte na agricultura de precisão sofreu uma mudança de paradigma com a consolidação do aprendizado profundo (\textit{Deep Learning}). Conforme revisado por \citeonline{mustofa2023comprehensive}, o foco do desenvolvimento de \textit{software} migrou da engenharia de características manual (\textit{feature engineering}) para a curadoria de dados e o treinamento de redes neurais convolucionais (\textit{Convolutional Neural Networks} --- CNNs). Nesse novo cenário, o \textit{software} não segue mais regras lógicas rígidas baseadas em limiares de cor, mas aprende padrões complexos a partir de exemplos, exigindo \textit{frameworks} robustos para o treinamento e inferência dos modelos.
 
         Atualmente, dois ecossistemas dominam o desenvolvimento de \textit{software} para visão agrícola:
 

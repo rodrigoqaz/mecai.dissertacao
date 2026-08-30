@@ -45,7 +45,7 @@ Para consolidar o rigor científico desta pesquisa e permitir uma avaliação ob
         
         \item \textbf{Coeficiente Kappa de Cohen ($\kappa$):} Estatística que mensura a concordância entre as predições do classificador e os rótulos reais, compensando a probabilidade de essa concordância ocorrer puramente ao acaso. É uma métrica crucial para o domínio agrícola, pois penaliza severamente modelos enviesados que adotam a estratégia de prever apenas a classe dominante.
         
-        \item \textbf{Área Sob a Curva ROC Macro (\textit{macro ROC AUC}):} Mensura a capacidade discriminativa do modelo na separação das classes de qualidade, independentemente do limiar de decisão adotado pela função \textit{softmax}. Para o problema multiclasse, o cálculo foi realizado utilizando a abordagem Um-Contra-Todos (\textit{One-vs-Rest} - OvR) para cada tipo de algodão, extraindo-se em seguida a média não ponderada (\textit{macro}).
+        \item \textbf{Área Sob a Curva ROC (\textit{Receiver Operating Characteristic}), na média macro (\textit{macro ROC AUC}):} Mensura a capacidade discriminativa do modelo na separação das classes de qualidade, independentemente do limiar de decisão adotado pela função \textit{softmax}. Para o problema multiclasse, o cálculo foi realizado utilizando a abordagem Um-Contra-Todos (\textit{One-vs-Rest} - OvR) para cada tipo de algodão, extraindo-se em seguida a média não ponderada (\textit{macro}).
         
         \item \textbf{Matriz de Confusão:} Utilizada para a análise qualitativa detalhada dos erros interclasses. Permite diagnosticar se os modelos estão confundindo amostras de algodão vizinhas no espectro de qualidade (ex: classificar o Tipo 31.2 como 31.3 devido a variações sutis de amarelamento).
         
