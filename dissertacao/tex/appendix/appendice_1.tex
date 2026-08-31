@@ -20,11 +20,11 @@ As Tabelas \ref{tab:space_transformers}, \ref{tab:space_modern_cnn} e \ref{tab:s
         Tamanho do \textit{Batch} & $\{16, 32\}$ & $\{16, 32\}$ \\
         Camadas Descongeladas & $[1, 4]$ & $[1, 4]$ \\
         Unidades Ocultas (Head) & $\{256, 512\}$ & $\{256, 512\}$ \\
-        Taxa de \textit{Dropout} & $[0.0, 0.3]$ & $[0.0, 0.3]$ \\
+        Taxa de \textit{Dropout} & $[0,0; 0,3]$ & $[0,0; 0,3]$ \\
         Otimizador & AdamW & AdamW \\
         \textit{Learning Rate} (log) & $[1 \times 10^{-5}, 2 \times 10^{-4}]$ & $[1 \times 10^{-5}, 2 \times 10^{-4}]$ \\
-        \textit{Weight Decay} (log) & $[0.01, 0.1]$ & $[0.01, 0.1]$ \\
-        \textit{Label Smoothing} & $[0.0, 0.1]$ & $[0.0, 0.1]$ \\
+        \textit{Weight Decay} (log) & $[0,01; 0,1]$ & $[0,01; 0,1]$ \\
+        \textit{Label Smoothing} & $[0,0; 0,1]$ & $[0,0; 0,1]$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -41,11 +41,11 @@ As Tabelas \ref{tab:space_transformers}, \ref{tab:space_modern_cnn} e \ref{tab:s
         Tamanho do \textit{Batch} & $\{16, 32\}$ & $\{16, 32, 48\}$ \\
         Camadas Descongeladas & $[2, 6]$ & $[2, 8]$ \\
         Unidades Ocultas (Head) & $\{512, 1024\}$ & $\{256, 512\}$ \\
-        Taxa de \textit{Dropout} & $[0.2, 0.5]$ & $[0.2, 0.5]$ \\
+        Taxa de \textit{Dropout} & $[0,2; 0,5]$ & $[0,2; 0,5]$ \\
         Otimizador & AdamW & Adam, AdamW \\
         \textit{Learning Rate} (log) & $[1 \times 10^{-4}, 4 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
-        \textit{Weight Decay} (log) & $[1 \times 10^{-3}, 0.05]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ \\
-        \textit{Label Smoothing} & $[0.1, 0.2]$ & Fixo em $0.1$ \\
+        \textit{Weight Decay} (log) & $[1 \times 10^{-3}; 0,05]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ \\
+        \textit{Label Smoothing} & $[0,1; 0,2]$ & Fixo em $0,1$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -63,7 +63,7 @@ As Tabelas \ref{tab:space_transformers}, \ref{tab:space_modern_cnn} e \ref{tab:s
         Tamanho do \textit{Batch} & $\{32, 64\}$ & $\{32, 64\}$ & $\{16, 32\}$ & $\{16, 32\}$ \\
         Camadas Descongeladas & $[1, 3]$ & $[2, 6]$ & $[2, 6]$ & $[2, 6]$ \\
         Unidades Ocultas (Head) & $\{256, 512\}$ & $\{512, 1024\}$ & $\{256, 512\}$ & $\{256, 512\}$ \\
-        Taxa de \textit{Dropout} & $[0.3, 0.6]$ & $[0.3, 0.6]$ & $[0.2, 0.5]$ & $[0.4, 0.7]$ \\
+        Taxa de \textit{Dropout} & $[0,3; 0,6]$ & $[0,3; 0,6]$ & $[0,2; 0,5]$ & $[0,4; 0,7]$ \\
         Otimizador & SGD, AdamW & AdamW & AdamW & SGD, AdamW \\
         \textit{Learning Rate} (log) & $[1 \times 10^{-4}, 1 \times 10^{-1}]^*$ & $[1 \times 10^{-4}, 1 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
         \textit{Weight Decay} (log) & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-5}, 1 \times 10^{-3}]$ & $[1 \times 10^{-4}, 1 \times 10^{-2}]$ \\
@@ -76,7 +76,7 @@ As Tabelas \ref{tab:space_transformers}, \ref{tab:space_modern_cnn} e \ref{tab:s
 
 \section*{A.2. Parâmetros de \textit{Data Augmentation} e \textit{Schedulers}}
 
-Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \textit{Data Augmentation} foram testados no espaço de busca. A regularização em nível de lote avaliou estocasticamente o uso de \textit{CutMix} e \textit{MixUp} (com parâmetro $\alpha \in [0.2, 1.0]$) contra o treinamento padrão. As transformações intra-imagem (via Albumentations) seguiram os limites detalhados na Tabela \ref{tab:space_aug}. Os hiperparâmetros que regem os Agendadores de Taxa de Aprendizado (\textit{LR Schedulers}) estão documentados na Tabela \ref{tab:space_schedulers}.
+Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \textit{Data Augmentation} foram testados no espaço de busca. A regularização em nível de lote avaliou estocasticamente o uso de \textit{CutMix} e \textit{MixUp} (com parâmetro $\alpha \in [0,2; 1,0]$) contra o treinamento padrão. As transformações intra-imagem (via Albumentations) seguiram os limites detalhados na Tabela \ref{tab:space_aug}. Os hiperparâmetros que regem os Agendadores de Taxa de Aprendizado (\textit{LR Schedulers}) estão documentados na Tabela \ref{tab:space_schedulers}.
 
 \begin{table}[ht!]
     \centering
@@ -88,11 +88,11 @@ Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \
         \midrule
         \textbf{Parâmetro} & \textbf{Intervalo} & \textbf{Parâmetro} & \textbf{Intervalo} \\
         \midrule
-        Nº de Transformações & $[1, 3]$ & Prob. Distorção Geométrica & $[0.2, 0.5]$ \\
-        Graus de Rotação & $[0^\circ, 45^\circ]$ & Prob. Inserção de Ruído & $[0.1, 0.4]$ \\
-        Prob. Espelhamento (H) & $[0.0, 1.0]$ & Prob. \textit{Coarse Dropout} & $[0.1, 0.3]$ \\
-        Variação de Brilho & $[0.0, 0.3]$ & Quantidade de Furos (\textit{Holes}) & $[4, 12]$ \\
-        Variação de Contraste & $[0.0, 0.3]$ & Fator de Corte (\textit{Zoom Min}) & $[0.6, 0.8]$ \\
+        Nº de Transformações & $[1, 3]$ & Prob. Distorção Geométrica & $[0,2; 0,5]$ \\
+        Graus de Rotação & $[0^\circ, 45^\circ]$ & Prob. Inserção de Ruído & $[0,1; 0,4]$ \\
+        Prob. Espelhamento (H) & $[0,0; 1,0]$ & Prob. \textit{Coarse Dropout} & $[0,1; 0,3]$ \\
+        Variação de Brilho & $[0,0; 0,3]$ & Quantidade de Furos (\textit{Holes}) & $[4, 12]$ \\
+        Variação de Contraste & $[0,0; 0,3]$ & Fator de Corte (\textit{Zoom Min}) & $[0,6; 0,8]$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -101,6 +101,7 @@ Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \
     \centering
     \caption{Espaço de busca para agendadores de taxa de aprendizado (\textit{LR Schedulers}).}
     \label{tab:space_schedulers}
+    \resizebox{\textwidth}{!}{%
     \begin{tabular}{l c c}
         \toprule
         \textbf{Estratégia do \textit{Scheduler}} & \textbf{Parâmetro} & \textbf{Intervalo de Busca} \\
@@ -109,9 +110,10 @@ Para garantir a invariância e reduzir o \textit{overfitting}, dois níveis de \
                                                         & $\eta_{min}$ (LR mínimo) & $1 \times 10^{-6}$ (Fixo) \\
         \midrule
         \multirow{2}{*}{Reduce LR On Plateau} & \textit{Patience} (\textit{Epochs} sem melhora) & $[3, 8]$ \\
-                                              & Fator de Decaimento (\textit{Factor}) & $[0.1, 0.5]$ \\
+                                              & Fator de Decaimento (\textit{Factor}) & $[0,1; 0,5]$ \\
         \midrule
         Step LR & \textit{Step Size} (\textit{Epochs}) & $[5, 15]$ \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
