@@ -44,6 +44,27 @@
         Apesar da padronização dos critérios, a classificação visual possui limitações inerentes à percepção humana. \citeonline{matusiak2010important} argumentam que a análise sensorial é fortemente influenciada por fatores como cansaço visual, experiência do técnico e condições de iluminação. Essa subjetividade gera variabilidade nos resultados, tanto entre diferentes avaliadores quanto nas decisões do mesmo técnico em momentos distintos. Além disso, a dificuldade natural do olho humano em distinguir nuances sutis de cor ou quantificar impurezas milimétricas reforça a necessidade de sistemas de Visão Computacional, que oferecem a reprodutibilidade e a precisão objetiva exigidas pela indústria.
 
         \input{tables/tipo_cor}
+
+    \subsubsection{O Impacto do Viés Subjetivo Humano na Definição do Padrão de Referência (\textit{Ground Truth})}
+    \label{sec:vies_humano_gt}
+
+        A qualidade preditiva de qualquer sistema de visão computacional profundo é intrinsecamente
+        limitada pela fidelidade do sinal de rotulagem utilizado como padrão de referência
+        (\textit{ground truth}). Para além dos fatores já discutidos --- cansaço visual, experiência
+        do técnico e condições de iluminação --- a subjetividade da tipagem visual regida pela
+        Instrução Normativa nº 24/2016 do MAPA é também influenciada por um viés cognitivo-comercial
+        do avaliador, resultando em uma concordância entre classificadores humanos experientes que é
+        historicamente instável, tanto entre diferentes avaliadores quanto nas decisões do mesmo
+        técnico em momentos distintos \cite{matusiak2010important, fisher2023aiassisted}.
+
+        Uma vez que o conjunto de dados de referência utilizado nesta dissertação foi rotulado a
+        partir dos laudos de classificação visual humana da algodoeira parceira em Sapezal, Mato
+        Grosso (Seção \ref{sec:conjunto_dados}), as inconsistências inerentes ao julgamento humano
+        atuam como um ruído estocástico incorporado aos próprios rótulos de treinamento. Esse fator
+        impõe um limite superior (\textit{upper bound}) ao desempenho teórico absoluto das redes
+        neurais avaliadas, uma vez que os modelos são forçados a mapear fronteiras de decisão
+        qualitativas e fluidas que, por vezes, carecem de consistência física estrita.
+
         \clearpage
 
     \subsubsection{A Classificação Instrumental (HVI)}
