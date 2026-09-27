@@ -2,7 +2,7 @@
 
 Para garantir a reprodutibilidade e a execução sistemática dos experimentos, desenvolveu-se um ambiente automatizado de treinamento. A plataforma foi implementada na linguagem Python, utilizando o \textit{framework} PyTorch \cite{paszke2017automatic} devido à sua flexibilidade na manipulação de tensores e suporte nativo a grafos computacionais dinâmicos. O processamento foi acelerado em \textit{hardware} Apple Silicon (Mac M3), explorando o \textit{backend} MPS (\textit{Metal Performance Shaders}) para otimização da execução em GPU local. A gestão do ciclo de vida dos experimentos foi conduzida por meio da plataforma MLflow \cite{mlflow}, permitindo o rastreamento automatizado dos pesos das redes, hiperparâmetros testados e a evolução das métricas a cada época (\textit{epoch}), assegurando a transparência e rastreabilidade total do processo.
 
-\subsection{Regularização e Aumento de Dados Dinâmico)}
+\subsection{Regularização e Aumento de Dados Dinâmico}
 
     Como o conjunto de dados original foi particionado sem a aplicação de superamostragem estática, a mitigação do viés de classes e a prevenção de sobreajuste (\textit{overfitting}) foram tratadas de forma dinâmica durante o carregamento dos lotes (\textit{batches}). Para isso, implementou-se um \textit{pipeline} de aumento de dados estruturado em duas frentes complementares: transformações espaciais fotométricas intra-imagem e regularização avançada em nível de lote.
 

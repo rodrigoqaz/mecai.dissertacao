@@ -8,9 +8,10 @@ O contraste de desempenho, ilustrado na Figura \ref{fig:h3_spectral}, revela uma
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/h3_spectral_impact.pdf}
   \caption{Falha da Expansão Espectral (QP3): O contraste entre o RGB puro (3ch) e os 15-canais Gabor mostra a severa degradação da performance em todos os cenários de luz.}
   \label{fig:h3_spectral}
+  \includegraphics[width=0.8\textwidth]{images/h3_spectral_impact.pdf}
+  \legend{Fonte: Do autor (2026).}
 \end{figure}
 
 Para validar se esta queda de performance foi estatisticamente relevante, aplicou-se o teste de \textbf{McNemar} pareado por arquitetura no cenário de melhor iluminação (Luz Branca BR). Conforme apresentado na Tabela \ref{tab:mcnemar_gabor}, a degradação foi severa para todos os modelos. A \textbf{DenseNet}, por exemplo, sofreu uma redução de MCC de $0,6461$ para $0,1577$, enquanto a \textbf{ConvNext} caiu de $0,6153$ para $0,1282$.

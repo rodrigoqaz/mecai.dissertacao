@@ -23,9 +23,10 @@ Para validar a robustez destes resultados, a Figura \ref{fig:p_values_v10} apres
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/p_value_heatmap_v10.pdf}
   \caption{Matriz de significância estatística (McNemar) no conjunto de dados RGB/BR. O sufixo (ns) indica ausência de diferença estatística significante ($p > 0,05$).}
   \label{fig:p_values_v10}
+  \includegraphics[width=0.8\textwidth]{images/p_value_heatmap_v10.pdf}
+  \legend{Fonte: Do autor (2026).}
 \end{figure}
 
 Diante do empate na predição, o critério de seleção segue obrigatoriamente sobre as métricas de engenharia. Para visualizar este cenário, a Figura \ref{fig:efficiency_tradeoff} correlaciona o MCC com a latência de inferência, permitindo a identificação de três perfis tecnológicos distintos:
@@ -38,9 +39,10 @@ Diante do empate na predição, o critério de seleção segue obrigatoriamente 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
   \caption{\textit{Trade-off} Industrial: MCC vs. Latência (ms). O tamanho das bolhas representa a complexidade em GFLOPs. A ConvNext destaca-se no quadrante superior esquerdo (Sweet Spot).}
   \label{fig:efficiency_tradeoff}
+  \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
+  \legend{Fonte: Do autor (2026).}
 \end{figure}
 
 Conclui-se, portanto, que a \textbf{ConvNeXt (RGB/BR)} representa a solução de maior valor prático e viabilidade corporativa para a automação da classificação do algodão, entregando o balanço definitivo entre assertividade diagnóstica e rendimento operacional.
