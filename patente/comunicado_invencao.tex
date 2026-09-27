@@ -1,0 +1,67 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{booktabs}
+
+\geometry{margin=2.5cm}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
+
+\title{
+    \textbf{Comunicado de Invenção para Proposta de Patente} \\
+    \large Sistema e Método para Classificação Automatizada de Pluma de Algodão via Visão Computacional e Protocolo de Iluminação Multiespectral
+}
+
+\author{
+    \textbf{Inventor:} Rodrigo de Souza Oliveira \\
+    \textbf{Orientadora:} Profa. Dra. Gleici da Silva Castro Perdoná \\
+    \textit{Instituto de Ciências Matemáticas e de Computação (ICMC-USP)}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Identificação da Invenção}
+A presente invenção refere-se a um sistema integrado de \textit{hardware} e método de processamento de sinais ópticos (\textit{software}) projetado para a tipagem automatizada da pluma de algodão (\textit{Gossypium hirsutum L.}) em conformidade com as normas internacionais do USDA e a Instrução Normativa n. 24/2016 do MAPA.
+
+\section{Problema Técnico Resolvido}
+Atualmente, a classificação do algodão enfrenta um dilema logístico e técnico:
+\begin{enumerate}
+    \item \textbf{Subjetividade:} A classificação visual humana depende da acuidade e experiência do classificador, resultando em variabilidade e disputas comerciais.
+    \item \textbf{Gargalo Temporal:} A classificação instrumental (HVI) exige controle de umidade por 24h, tornando-a inviável para a tomada de decisão no momento do "emblocamento" (formação de lotes comerciais na saída da prensa).
+    \item \textbf{Custo de Automação:} Sistemas existentes para inspeção industrial de fibras ou são proibitivamente caros ou não atendem às especificações morfológicas exigidas pela tipagem oficial.
+\end{enumerate}
+
+\section{Descrição da Solução (A Invenção)}
+A solução proposta consiste na integração de uma câmara de luz controlada com um motor de inteligência artificial de alta eficiência.
+
+\subsection{Componente de Hardware (Câmara de Captura)}
+Um protótipo de isolamento óptico construído para garantir a estabilidade fotométrica, equipado com:
+\begin{itemize}
+    \item \textbf{Sistema de Iluminação Dual:} Matrizes de LED configuradas em temperaturas de cor quente (2800K) e fria (6000K), permitindo o realce alternado de parâmetros de reflectância (cor) e detecção de impurezas vegetais.
+    \item \textbf{Geometria de Captura:} Posicionamento centralizado do sensor CMOS com lente grande-angular, permitindo a amostragem de uma área representativa da face do fardo sem distorções cromáticas.
+\end{itemize}
+
+\subsection{Componente de Software (Método de Processamento)}
+O método proprietário executa as seguintes etapas sequenciais:
+\begin{enumerate}
+    \item \textbf{Segmentação Adaptativa:} Uso de arquitetura de rede neural dicotômica (BiRefNet) para isolar a pluma de algodão do fundo ruidoso e etiquetas de rastreamento.
+    \item \textbf{Extração de AOI (Area of Interest):} Algoritmo de maior retângulo interno (LIR) para garantir que apenas pixels de fibra pura sejam submetidos à análise.
+    \item \textbf{Classificação via Deep Learning de Borda:} Emprego da arquitetura \textit{ConvNeXt} otimizada para latência inferior a 7ms, viabilizando a operação em tempo real no fluxo de produção.
+\end{enumerate}
+
+\section{Diferenciais e Inovação}
+Diferente de abordagens puramente digitais, esta invenção ancora-se no \textbf{Protocolo Fotométrico de 6000K}, que provou-se estatisticamente superior à aplicação de filtros matemáticos clássicos (como Gabor). O sistema alcança um \textit{Matthews Correlation Coefficient} (MCC) de 0.64 em um problema de granulação fina de 10 classes, operando com agilidade superior a classificadores laboratoriais.
+
+\section{Aplicação Industrial e Estágio de Desenvolvimento}
+A invenção encontra aplicação direta em usinas de beneficiamento de algodão e fiações têxteis. O protótipo atingiu o nível \textbf{TRL 5} (\textit{Technology Readiness Level}), tendo sido validado com dados reais em uma unidade de beneficiamento no estado de Mato Grosso, processando mais de 1.200 amostras com sucesso operacional total.
+
+\end{document}
