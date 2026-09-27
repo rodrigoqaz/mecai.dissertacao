@@ -232,18 +232,32 @@ class AppendixGenerator:
 
     def generate_index_file(self):
         print(f"\n>>> Gerando arquivo de índice: {INDEX_FILE_PATH}")
+        # Decisão editorial: os relatórios individuais (curvas de convergência, métricas por
+        # época, logs do MLflow) ficam de fora do documento impresso, por extensão, e são
+        # apenas referenciados no repositório oficial do projeto. Os \input ficam comentados
+        # abaixo (não removidos) para permitir reativação pontual se algum relatório for citado
+        # explicitamente no texto; os arquivos continuam sendo gerados/versionados normalmente.
         content = r"""\chapter{Experimentos}
 \label{apendice:experimentos}
 
-Este apêndice apresenta os detalhes técnicos, hiperparâmetros otimizados e resultados de desempenho para cada experimento realizado durante a fase de busca bayesiana. Cada página detalha o comportamento de uma arquitetura sob uma configuração específica de dataset.
+Este apêndice apresenta os detalhes técnicos, hiperparâmetros otimizados e resultados de desempenho para cada experimento realizado durante a fase de busca bayesiana. Cada página detalha o comportamento de uma arquitetura sob uma configuração específica de conjunto de dados. O Coeficiente de Correlação de Matthews (MCC) é adotado como métrica principal de desempenho nos relatórios.
 
-\clearpage
+Devido à extensão e ao detalhamento técnico dos 52 experimentos realizados nesta pesquisa (abrangendo diversas combinações de arquiteturas, condições de iluminação e técnicas de aumento de dados), os relatórios individuais de treinamento, contendo curvas de convergência, métricas por época e logs detalhados do MLflow, foram movidos para o repositório oficial do projeto.
+
+Esta decisão visa manter a concisão deste documento, priorizando a análise dos modelos de melhor desempenho discutidos nos Capítulos 4 e 5. Os relatórios completos de cada \textit{trial} da otimização bayesiana podem ser consultados e auditados no seguinte endereço:
+
+\begin{center}
+    \url{https://github.com/rodrigoqaz/mecai.dissertacao/tree/main/results/analysis}
+\end{center}
+
+
+% \clearpage
 """
         for exp_name in self.processed_experiments:
             clean_name = exp_name.replace('_', ' ').title()
-            content += f"\n\\section*{{{clean_name}}}\n"
-            content += f"    \\input{{tex/appendix/experiments/{exp_name}/relatorio_experimento.tex}}\n"
-        
+            content += f"\n% \\section*{{{clean_name}}}\n"
+            content += f"%     \\input{{tex/appendix/experiments/{exp_name}/relatorio_experimento.tex}}\n"
+
         with open(INDEX_FILE_PATH, "w") as f:
             f.write(content)
         print("    - Arquivo de índice gerado com sucesso.")
