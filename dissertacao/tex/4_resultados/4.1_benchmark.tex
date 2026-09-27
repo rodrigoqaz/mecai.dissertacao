@@ -3,7 +3,7 @@
 
 \label{sec:benchmark_v1}
 
-Nesta fase inicial, os modelos foram avaliados utilizando o conjunto de dados \textit{baseline} (\textbf{V1}), composto por imagens RGB (\textit{Red, Green, Blue}) capturadas sob iluminação amarela (2700 K) e branca (6000 K) misturadas. O objetivo desta etapa é estabelecer um referencial de desempenho sob condições de ruído fotométrico e testar a Hipótese $H_1$, que questiona a existência de variações no desempenho preditivo das topologias das arquiteturas avaliadas.
+Nesta fase inicial, os modelos foram avaliados utilizando o conjunto de dados \textit{baseline} (\textbf{V1}), composto por imagens RGB (\textit{Red, Green, Blue}) capturadas sob iluminação amarela (2700 K) e branca (6000 K) misturadas. O objetivo desta etapa é estabelecer um referencial de desempenho sob condições de ruído fotométrico e responder à Questão de Pesquisa QP1, que questiona a existência de variações no desempenho preditivo das topologias das arquiteturas avaliadas.
 
 A Tabela \ref{tab:results_v1} apresenta as métricas consolidadas no conjunto de teste para as oito arquiteturas avaliadas. Observa-se que a família de Redes Neurais Convolucionais (CNNs) modernas dominou o topo do ranking, com a \textbf{ConvNext} alcançando o melhor Coeficiente de Correlação de Matthews (MCC) global (0,5503), seguida de perto pela \textbf{DenseNet} (0,5501).
 
@@ -30,9 +30,9 @@ Para atestar o rigor científico desses achados e coroar a arquitetura campeã, 
 \end{figure}
 
 
-O primeiro contraste avaliou o pelotão de elite empírico contra a ResNet (\textit{baseline} convolucional clássico). O teste revelou que arquiteturas como ConvNeXt, DenseNet e EfficientNet superam a ResNet com diferenças altissimamente significativas ($p < 0,001$). Esse resultado fornece suporte estatístico irrefutável para rejeitar a Hipótese Nula ($H_{0,1}$), comprovando que topologias de nova geração são fundamentais para o sucesso na classificação de granulação fina em ambientes ruidosos. Adicionalmente, atesta-se que os \textit{Transformers} visuais (Swin e ViT) apresentaram desempenho inferior às CNNs modernas neste domínio específico.
+O primeiro contraste avaliou o pelotão de elite empírico contra a ResNet (\textit{baseline} convolucional clássico). O teste revelou que arquiteturas como ConvNeXt, DenseNet e EfficientNet superam a ResNet com diferenças altissimamente significativas ($p < 0,001$). Esse resultado fornece suporte estatístico robusto para rejeitar a Hipótese Nula ($H_{0,1}$), comprovando que topologias de nova geração são fundamentais para o sucesso na classificação de granulação fina em ambientes ruidosos. Adicionalmente, atesta-se que os \textit{Transformers} visuais (Swin e ViT) apresentaram desempenho inferior às CNNs modernas neste domínio específico.
 
-Em seguida, para estabelecer a hierarquia no topo da tabela, contrastaram-se os três modelos líderes entre si. Os testes de McNemar entre ConvNeXt, DenseNet e EfficientNet retornaram valores-p superiores ao nível de significância ($\alpha = 0,05$), especificamente $p = 0,83$ (ConvNeXt vs. DenseNet) e $p = 0,11$ (ConvNeXt vs. EfficientNet). Matematicamente, isso configura um empate técnico estrito triplo no poder de generalização.
+Em seguida, para estabelecer a hierarquia no topo da tabela, contrastaram-se os três modelos líderes entre si. Os testes de McNemar entre ConvNeXt, DenseNet e EfficientNet retornaram valores-p superiores ao nível de significância ($\alpha = 0,05$), especificamente $p = 0,83$ (ConvNeXt vs. DenseNet) e $p = 0,11$ (ConvNeXt vs. EfficientNet). Estatisticamente, isso indica um desempenho semelhante entre as três arquiteturas no poder de generalização.
 
 Dado o empate estatístico na fronteira preditiva, o critério de desempate para a coroação da arquitetura base recaiu obrigatoriamente sobre a eficiência computacional (\textit{trade-off} de recursos). Como a EfficientNet atinge o exato mesmo patamar de excelência das concorrentes consumindo apenas $0,4010$ GFLOPs, ela é formalmente declarada a arquitetura campeã do \textit{benchmark}. Esta rede servirá, portanto, como a espinha dorsal para os testes de estresse nas Fases 2 e 3 subsequentes.
 

@@ -1,5 +1,5 @@
 %Revisado
-\section{Viabilidade Industrial e \textit{Trade-off} Computacional ($H_4$)}
+\section{Viabilidade Industrial e \textit{Trade-off} Computacional (QP4)}
 \label{sec:viabilidade_industrial}
 
 Um dos desafios desta dissertação reside em equilibrar o rigor estatístico com a viabilidade operacional para o setor agroindustrial. Embora a \textbf{DenseNet (RGB/BR)} tenha alcançado a liderança em termos de MCC absoluto ($0,6461$), um modelo destinado à produção deve ser avaliado também por seu custo computacional, demanda energética e latência de inferência em tempo real.
@@ -19,7 +19,7 @@ A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade 
         \end{threeparttable}
 \end{table}
 
-Para validar a robustez destes resultados, a Figura \ref{fig:p_values_v10} apresenta a matriz de significância estatística (McNemar) entre todos os modelos na versão RGB/BR. Observa-se que a superioridade da DenseNet e da ConvNext sobre arquiteturas clássicas como ResNet e Inception é estatisticamente significante ($p < 0,01$). ontudo, o teste revela que a diferença de performance entre as líderes DenseNet e ConvNeXt não é estatisticamente significativa ($p > 0,05$). Matematicamente, isso configura um empate técnico no poder de generalização de ambas as redes para este domínio.
+Para validar a robustez destes resultados, a Figura \ref{fig:p_values_v10} apresenta a matriz de significância estatística (McNemar) entre todos os modelos na versão RGB/BR. Observa-se que a superioridade da DenseNet e da ConvNext sobre arquiteturas clássicas como ResNet e Inception é estatisticamente significante ($p < 0,01$). ontudo, o teste revela que a diferença de performance entre as líderes DenseNet e ConvNeXt não é estatisticamente significativa ($p > 0,05$). Estatisticamente, isso indica um desempenho semelhante no poder de generalização de ambas as redes para este domínio.
 
 \begin{figure}[h!]
   \centering
@@ -32,7 +32,7 @@ Diante do empate na predição, o critério de seleção segue obrigatoriamente 
 
 \begin{itemize}
     \item \textbf{Alta Precisão (Elite):} A \textbf{DenseNet} ocupa o topo do gráfico e surpreende pelo menor consumo de armazenamento (\textbf{$29,12$ MB}), mas seu deslocamento para a direita no eixo de latência pode limitar sua adoção em esteiras de classificação de fluxo contínuo ultra-veloz.
-    \item \textbf{Sweet Spot Industrial:} A \textbf{ConvNext} emerge como a arquitetura suprema para o domínio, oferecendo performance estatisticamente equivalente à líder com a menor latência entre os modelos de alta performance. Sua agilidade, aliada a uma complexidade de \textbf{$4,47$ GFLOPs}, valida categoricamente a hipótese $H_4$.
+    \item \textbf{Sweet Spot Industrial:} A \textbf{ConvNext} emerge como a arquitetura suprema para o domínio, oferecendo performance estatisticamente equivalente à líder com a menor latência entre os modelos de alta performance. Sua agilidade, aliada a uma complexidade de \textbf{$4,47$ GFLOPs}, responde à Questão de Pesquisa QP4.
     \item \textbf{Baixa Eficiência:} Os modelos baseados em \textbf{Transformers} (bolhas maiores e mais à direita) demonstram baixa eficiência relativa, com o ViT demandando massivos \textbf{$328,24$ MB} de memória paramétrica e \textbf{$16,86$ GFLOPs} para entregar um MCC de apenas $0,4328$.
 \end{itemize}
 

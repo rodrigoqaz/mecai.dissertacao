@@ -2,9 +2,9 @@
 
 Para consolidar o rigor científico desta pesquisa e permitir uma avaliação objetiva das arquiteturas selecionadas, formalizou-se um desenho experimental focado em responder às lacunas identificadas na literatura, especificamente quanto ao \textit{trade-off} entre o poder de extração de características de granulação fina (\textit{fine-grained}) e a eficiência computacional.
 
-\subsection{Fases da Experimentação e Hipóteses do Estudo}
+\subsection{Fases da Experimentação e Questões de Pesquisa do Estudo}
 
-    Em vez de concentrar a avaliação em um único teste estático, o desenho metodológico desta pesquisa foi estruturado como uma sequência lógica de experimentos. A experimentação foi conduzida em três fases progressivas, cada qual desenhada para responder a hipóteses formalmente estabelecidas.
+    Em vez de concentrar a avaliação em um único teste estático, o desenho metodológico desta pesquisa foi estruturado como uma sequência lógica de experimentos. A experimentação foi conduzida em três fases progressivas, cada qual desenhada para responder a uma Questão de Pesquisa (QP), testada estatisticamente por meio de uma hipótese nula correspondente.
 
     \subsubsection{Fase 1: Benchmark Global}
 
@@ -12,7 +12,7 @@ Para consolidar o rigor científico desta pesquisa e permitir uma avaliação ob
 
         \begin{itemize}
             \item\textbf{$H_{0,1}$ (Hipótese Nula):} Não existe diferença estatisticamente significativa no poder de generalização entre as diferentes famílias de arquiteturas avaliadas.
-            \item\textbf{$H_1$ (Alternativa 1):} Existe uma variação estatisticamente significativa no desempenho preditivo entre as topologias.
+            \item\textbf{QP1:} Existe uma variação estatisticamente significativa no desempenho preditivo entre as topologias.
         \end{itemize}
 
     \subsubsection{Fase 2: Impacto da Temperatura de Cor}
@@ -21,7 +21,7 @@ Para consolidar o rigor científico desta pesquisa e permitir uma avaliação ob
 
         \begin{itemize}
             \item\textbf{$H_{0,2}$ (Hipótese Nula):} A alteração física da iluminação no momento da captura não produz variação estatisticamente significativa no desempenho preditivo dos modelos.
-            \item\textbf{$H_2$ (Alternativa 2):} A otimização espectral da iluminação exerce um impacto positivo e estatisticamente significativo no desempenho preditivo universal.
+            \item\textbf{QP2:} A otimização espectral da iluminação exerce um impacto positivo e estatisticamente significativo no desempenho preditivo universal.
         \end{itemize}
 
     \subsubsection{Fase 3: Expansão Espectral}
@@ -30,8 +30,18 @@ Para consolidar o rigor científico desta pesquisa e permitir uma avaliação ob
 
         \begin{itemize}
             \item\textbf{$H_{0,3}$ (Hipótese Nula):} A expansão espectral por meio de \textit{feature engineering} não altera de forma estatisticamente significativa a capacidade discriminativa dos classificadores em relação ao aprendizado sobre matrizes RGB puras.
-            \item\textbf{$H_3$ (Alternativa 3):} A injeção de características morfológicas pré-computadas eleva de forma estatisticamente significativa a precisão dos classificadores, mostrando-se mais eficiente do que o aprendizado \textit{end-to-end} estrito.
+            \item\textbf{QP3:} A injeção de características morfológicas pré-computadas eleva de forma estatisticamente significativa a precisão dos classificadores, mostrando-se mais eficiente do que o aprendizado \textit{end-to-end} estrito.
         \end{itemize}
+
+    \subsubsection{Análise de Viabilidade Industrial}
+
+        Complementarmente às três fases anteriores, avaliou-se ainda a seguinte questão:
+
+        \begin{itemize}
+            \item\textbf{QP4:} Qual arquitetura, dentre as avaliadas, oferece o melhor equilíbrio entre desempenho preditivo (MCC) e eficiência computacional (latência, FLOPs e \textit{footprint} de memória) para viabilizar a implantação em ambiente industrial de alta cadência?
+        \end{itemize}
+
+        Diferentemente de QP1--QP3, a QP4 não é testada por meio de uma hipótese nula formal, pois não se trata de uma comparação estatística binária entre dois grupos, mas de uma análise descritiva e comparativa de ranking multicritério (Seção \ref{sec:viabilidade_industrial}).
 
 
 \subsection{Métricas de Avaliação}
