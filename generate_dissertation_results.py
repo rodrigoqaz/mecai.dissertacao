@@ -17,6 +17,8 @@ from matplotlib.lines import Line2D
 import glob
 import cv2
 
+from src.utils.latex_fmt import br_num, br_sci
+
 # --- CONFIGURAÇÕES ---
 PREDICTIONS_DIR = "results/predictions"
 ARTIFACTS_DIR = "dissertacao/tables"
@@ -52,7 +54,9 @@ def run_mcnemar(y_true, y_pred_a, y_pred_b):
     table[0, 1] = np.sum(correct_a & ~correct_b)
     table[1, 0] = np.sum(~correct_a & correct_b)
     table[1, 1] = np.sum(~correct_a & ~correct_b)
-    return mcnemar(table, exact=True).pvalue
+    b, c = int(table[0, 1]), int(table[1, 0])
+    pvalue = mcnemar(table, exact=True).pvalue
+    return {"pvalue": pvalue, "b": b, "c": c, "n_disc": b + c}
 
 def bold_best(df, metrics):
     df_tex = df.copy()
@@ -62,7 +66,7 @@ def bold_best(df, metrics):
                 best_val = df_tex[m].min()
             else:
                 best_val = df_tex[m].max()
-            df_tex[m] = df_tex[m].apply(lambda x: f"\\textbf{{{x:.4f}}}" if x == best_val else f"{x:.4f}")
+            df_tex[m] = df_tex[m].apply(lambda x: f"\\textbf{{{br_num(x, 4)}}}" if x == best_val else br_num(x, 4))
     return df_tex
 
 def generate_full_metrics(predictions_data, summary_df):
@@ -133,7 +137,8 @@ def main():
     report = classification_report(y_true_v1, y_pred_v1, target_names=classes_v1, output_dict=True)
     report_df = pd.DataFrame(report).transpose().drop(['accuracy', 'macro avg', 'weighted avg'])
     report_df = report_df.rename(columns={'precision': 'Precisão', 'recall': 'Revocação', 'f1-score': 'Escore F1'})
-    report_df[['Precisão', 'Revocação', 'Escore F1']].to_latex(os.path.join(ARTIFACTS_DIR, "best_model_class_metrics.tex"), index=True, float_format="%.3f")
+    report_df_fmt = report_df[['Precisão', 'Revocação', 'Escore F1']].map(lambda x: br_num(x, 3))
+    report_df_fmt.to_latex(os.path.join(ARTIFACTS_DIR, "best_model_class_metrics.tex"), index=True)
 
     # --- FASE 3: LUZ (H2) ---
     print("\n[Fase 3] Gerando Impacto da Iluminação...")
@@ -151,8 +156,8 @@ def main():
     ranks = pivot_h2.rank(axis=1, ascending=False).mean().sort_values()
     with open(os.path.join(ARTIFACTS_DIR, "friedman_test.tex"), "w") as f:
         f.write("\\begin{tabular}{lc}\n\\toprule\nFonte de Luz & Posto Médio \\\\\n\\midrule\n")
-        for v, r in ranks.items(): f.write(f"{v} & {r:.2f} \\\\\n")
-        f.write(f"\\midrule\n\\multicolumn{{2}}{{l}}{{Friedman $\\chi^2={stat:.2f}$ ($p={p_f:.2e}$)}} \\\\\n\\bottomrule\n\\end{{tabular}}")
+        for v, r in ranks.items(): f.write(f"{v} & {br_num(r, 2)} \\\\\n")
+        f.write(f"\\midrule\n\\multicolumn{{2}}{{l}}{{Friedman $\\chi^2={br_num(stat, 2)}$ ($p = {br_sci(p_f, 2)}$)}} \\\\\n\\bottomrule\n\\end{{tabular}}")
 
     # --- FASE 4: ESPECTRO (H3) ---
     print("\n[Fase 4] Gerando Impacto Espectral...")
@@ -171,11 +176,14 @@ def main():
     for m in df['Model'].unique():
         k1, k2 = f"{m.lower()}_v10", f"{m.lower()}_v12"
         if k1 in preds_data and k2 in preds_data:
-            p = run_mcnemar(preds_data[k1]['y_true'], preds_data[k1]['y_pred'], preds_data[k2]['y_pred'])
+            res = run_mcnemar(preds_data[k1]['y_true'], preds_data[k1]['y_pred'], preds_data[k2]['y_pred'])
             m1 = df[(df['Model']==m) & (df['Version']=='V10')]['MCC'].values[0]
             m2 = df[(df['Model']==m) & (df['Version']=='V12')]['MCC'].values[0]
-            mcnemar_results.append({'Modelo': m, 'MCC (RGB)': m1, 'MCC (Gabor)': m2, 'p-value': p})
-    pd.DataFrame(mcnemar_results).to_latex(os.path.join(ARTIFACTS_DIR, "mcnemar_gabor_vs_rgb.tex"), index=False, float_format="%.4f")
+            mcnemar_results.append({
+                'Modelo': m, 'MCC (RGB)': br_num(m1, 4), 'MCC (Gabor)': br_num(m2, 4),
+                'b': res['b'], 'c': res['c'], 'p-value': f"${br_sci(res['pvalue'], 2)}$",
+            })
+    pd.DataFrame(mcnemar_results).to_latex(os.path.join(ARTIFACTS_DIR, "mcnemar_gabor_vs_rgb.tex"), index=False, escape=False)
 
     # --- FASE 5: VIABILIDADE (H4) ---
     print("\n[Fase 5] Gerando Scatter Plot Geral e Tabela Industrial...")
@@ -244,7 +252,7 @@ def main():
     # Tabela Industrial V10
     v10_df = df[df['Version'] == 'V10'].sort_values('MCC', ascending=False)
     h4_tex = bold_best(v10_df[['Model', 'MCC', 'Params (M)', 'Size (MB)', 'Latency (ms)', 'GFLOPs']].copy(), ['MCC', 'Latency (ms)', 'Size (MB)', 'GFLOPs'])
-    h4_tex['Params (M)'] = h4_tex['Params (M)'].apply(lambda x: f"{float(x):.4f}")
+    h4_tex['Params (M)'] = h4_tex['Params (M)'].apply(lambda x: br_num(float(x), 4))
     h4_tex = h4_tex.rename(columns={'Model': 'Modelo', 'Params (M)': 'Parâmetros (M)', 'Size (MB)': 'Tamanho (MB)', 'Latency (ms)': 'Latência (ms)', 'GFLOPs': 'GFLOPs'})
     h4_tex.to_latex(os.path.join(ARTIFACTS_DIR, "h4_industrial_ranking.tex"), index=False, escape=False)
 
@@ -255,7 +263,7 @@ def main():
     for i, m1 in enumerate(top_v10):
         r_ann = []
         for j, m2 in enumerate(top_v10):
-            p = run_mcnemar(preds_data[f"{m1.lower()}_v10"]['y_true'], preds_data[f"{m1.lower()}_v10"]['y_pred'], preds_data[f"{m2.lower()}_v10"]['y_pred'])
+            p = run_mcnemar(preds_data[f"{m1.lower()}_v10"]['y_true'], preds_data[f"{m1.lower()}_v10"]['y_pred'], preds_data[f"{m2.lower()}_v10"]['y_pred'])['pvalue']
             p_mat[i,j] = p
             r_ann.append("-" if i==j else (f"{p:.2f}\n(ns)" if p>0.05 else f"{p:.2e}"))
         ann.append(r_ann)

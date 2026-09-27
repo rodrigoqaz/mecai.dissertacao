@@ -11,6 +11,8 @@ from typing import Dict, List, Any, Optional
 import ast
 import numpy as np
 
+from src.utils.latex_fmt import br_num
+
 # --- CONFIGURAÇÕES ---
 OPTUNA_DB_URI = "sqlite:///optuna_dissertacao.db"
 MLFLOW_TRACKING_URI = "file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns"
@@ -32,7 +34,14 @@ class AppendixGenerator:
 
     def get_all_experiments(self) -> List[Any]:
         exps = self.client.search_experiments()
-        ignore_list = ["Default", "test_experiment"]
+        # "*_Optimization" são execuções exploratórias antigas, anteriores à varredura
+        # sistemática v1-v12 (MCC=0, sem confusion_matrix/dashboard na maioria) - nunca
+        # fizeram parte do índice do Apêndice B e não devem ser regeneradas.
+        ignore_list = [
+            "Default", "test_experiment",
+            "EfficientNet_Optimization", "Inception_Optimization",
+            "ResNet_Optimization", "VGGNet_Optimization",
+        ]
         # Ordenar alfabeticamente pelo nome para consistência no índice
         return sorted([e for e in exps if e.name not in ignore_list], key=lambda x: x.name)
 
@@ -143,8 +152,10 @@ class AppendixGenerator:
                 clean_params['Otimizador'] = v.get('type', 'AdamW')
                 if 'params' in v:
                     lr, wd = v['params'].get('lr', 0.0), v['params'].get('weight_decay', 0.0)
-                    clean_params['Taxa de Aprendizado (LR)'] = f"{lr:.2e}" if lr < 0.01 else f"{lr:.4f}"
-                    clean_params['Decaimento de Peso (WD)'] = f"{wd:.4f}"
+                    # Notação exponencial em texto simples (sem \times LaTeX): o valor passa
+                    # por latex_escape() logo abaixo, que mutilaria comandos LaTeX crus.
+                    clean_params['Taxa de Aprendizado (LR)'] = f"{lr:.2e}".replace(".", ",") if lr < 0.01 else br_num(lr, 4)
+                    clean_params['Decaimento de Peso (WD)'] = br_num(wd, 4)
             elif k == 'scheduler' and isinstance(v, dict):
                 sched_type = v.get('type', 'N/A')
                 clean_params['Agendador de LR'] = sched_type
@@ -153,19 +164,19 @@ class AppendixGenerator:
                     elif sched_type == 'ReduceLROnPlateau': clean_params['Agendador (Patience)'] = str(v['params'].get('patience', ''))
             elif k == 'loss' and isinstance(v, dict):
                 clean_params['Função de Perda'] = v.get('type', 'CrossEntropyLoss')
-                if 'params' in v and 'label_smoothing' in v['params']: clean_params['Label Smoothing'] = f"{v['params']['label_smoothing']:.4f}"
+                if 'params' in v and 'label_smoothing' in v['params']: clean_params['Label Smoothing'] = br_num(v['params']['label_smoothing'], 4)
             elif k in ['augmentation config', 'augmentation_config'] and isinstance(v, dict):
                 if v.get('use_augmentation'):
                     clean_params['Augmentation (Método)'] = str(v.get('per_image_aug_method', '')).title()
                     if 'basic_params' in v:
                         bp = v['basic_params']
                         clean_params['Aug (Rotação)'] = f"{bp.get('rotation_range', 0)}$^\\circ$"
-                        clean_params['Aug (Prob. Espelhamento)'] = f"{bp.get('horizontal_flip_prob', 0):.2f}"
-                        clean_params['Aug (Brilho / Contraste)'] = f"{bp.get('brightness_range', 0):.2f} / {bp.get('contrast_range', 0):.2f}"
+                        clean_params['Aug (Prob. Espelhamento)'] = br_num(bp.get('horizontal_flip_prob', 0), 2)
+                        clean_params['Aug (Brilho / Contraste)'] = f"{br_num(bp.get('brightness_range', 0), 2)} / {br_num(bp.get('contrast_range', 0), 2)}"
                 else: clean_params['Data Augmentation'] = "False"
             else:
                 key_name = str(k).replace('_', ' ').title()
-                clean_params[key_name] = f"{v:.4f}" if isinstance(v, float) else str(v)
+                clean_params[key_name] = br_num(v, 4) if isinstance(v, float) else str(v)
         
         left_rows = []
         for key in sorted(clean_params.keys()):
@@ -177,11 +188,11 @@ class AppendixGenerator:
         right_rows = []
         for cls in classes:
             f1, prec, rec = metrics.get(f"class/f1_{cls}", 0), metrics.get(f"class/precision_{cls}", 0), metrics.get(f"class/recall_{cls}", 0)
-            right_rows.append(f"{self.latex_escape(cls)} & {prec:.4f} & {rec:.4f} & {f1:.4f}")
+            right_rows.append(f"{self.latex_escape(cls)} & {br_num(prec, 4)} & {br_num(rec, 4)} & {br_num(f1, 4)}")
 
         macro_prec, macro_rec, macro_f1, mcc = metrics.get('final/macro avg_precision', 0), metrics.get('final/macro avg_recall', 0), metrics.get('final/macro avg_f1-score', 0), metrics.get('final/matthews_corrcoef', 0)
-        right_rows.append(f"\\textbf{{Média (Macro)}} & {macro_prec:.4f} & {macro_rec:.4f} & {macro_f1:.4f}")
-        right_rows.append(f"\\textbf{{MCC}} & \\multicolumn{{3}}{{c}}{{{mcc:.4f}}}")
+        right_rows.append(f"\\textbf{{Média (Macro)}} & {br_num(macro_prec, 4)} & {br_num(macro_rec, 4)} & {br_num(macro_f1, 4)}")
+        right_rows.append(f"\\textbf{{MCC}} & \\multicolumn{{3}}{{c}}{{{br_num(mcc, 4)}}}")
 
         max_len = max(len(left_rows), len(right_rows))
         combined_rows = ""

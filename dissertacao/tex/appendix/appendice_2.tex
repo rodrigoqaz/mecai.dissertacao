@@ -1,170 +1,159 @@
 \chapter{Experimentos}
 \label{apendice:experimentos}
 
-Este apêndice apresenta os detalhes técnicos, hiperparâmetros otimizados e resultados de desempenho para cada experimento realizado durante a fase de busca bayesiana. Cada página detalha o comportamento de uma arquitetura sob uma configuração específica de conjunto de dados. O Coeficiente de Correlação de Matthews (MCC) é adotado como métrica principal de desempenho nos relatórios.
+Este apêndice apresenta os detalhes técnicos, hiperparâmetros otimizados e resultados de desempenho para cada experimento realizado durante a fase de busca bayesiana. Cada página detalha o comportamento de uma arquitetura sob uma configuração específica de dataset.
 
-Devido à extensão e ao detalhamento técnico dos 52 experimentos realizados nesta pesquisa (abrangendo diversas combinações de arquiteturas, condições de iluminação e técnicas de aumento de dados), os relatórios individuais de treinamento, contendo curvas de convergência, métricas por época e logs detalhados do MLflow, foram movidos para o repositório oficial do projeto.
+\clearpage
 
-Esta decisão visa manter a concisão deste documento, priorizando a análise dos modelos de melhor desempenho discutidos nos Capítulos 4 e 5. Os relatórios completos de cada \textit{trial} da otimização bayesiana podem ser consultados e auditados no seguinte endereço:
+\section*{Convnext V10 Br Opt Aug}
+    \input{tex/appendix/experiments/convnext_v10_BR_opt_aug/relatorio_experimento.tex}
 
-\begin{center}
-    \url{https://github.com/rodrigoqaz/mecai.dissertacao/tree/main/results/analysis}
-\end{center}
+\section*{Convnext V11 Am Opt Aug}
+    \input{tex/appendix/experiments/convnext_v11_AM_opt_aug/relatorio_experimento.tex}
 
+\section*{Convnext V12 Br Opt Aug}
+    \input{tex/appendix/experiments/convnext_v12_BR_opt_aug/relatorio_experimento.tex}
 
+\section*{Convnext V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/convnext_v1_AB_opt_aug/relatorio_experimento.tex}
 
+\section*{Convnext V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/convnext_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \clearpage
+\section*{Convnext V9 Am Opt Aug}
+    \input{tex/appendix/experiments/convnext_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V10 Br Opt Aug}
+    \input{tex/appendix/experiments/densenet_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V11 Am Opt Aug}
+    \input{tex/appendix/experiments/densenet_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V12 Br Opt Aug}
+    \input{tex/appendix/experiments/densenet_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/densenet_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/densenet_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Convnext V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/convnext_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Densenet V9 Am Opt Aug}
+    \input{tex/appendix/experiments/densenet_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V10 Br Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V11 Am Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V12 Br Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Densenet V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/densenet_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Efficientnet V9 Am Opt Aug}
+    \input{tex/appendix/experiments/efficientnet_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Inception V10 Br Opt Aug}
+    \input{tex/appendix/experiments/inception_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Inception V11 Am Opt Aug}
+    \input{tex/appendix/experiments/inception_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Inception V12 Br Opt Aug}
+    \input{tex/appendix/experiments/inception_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Inception V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/inception_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Inception V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/inception_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Efficientnet V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/efficientnet_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Inception V9 Am Opt Aug}
+    \input{tex/appendix/experiments/inception_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/inception_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V10 Br Opt Aug}
+    \input{tex/appendix/experiments/resnet_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/inception_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V11 Am Opt Aug}
+    \input{tex/appendix/experiments/resnet_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/inception_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V12 Br Opt Aug}
+    \input{tex/appendix/experiments/resnet_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/inception_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/resnet_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/inception_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/resnet_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Inception V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/inception_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Resnet V9 Am Opt Aug}
+    \input{tex/appendix/experiments/resnet_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Resnet V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Swin V10 Br Opt Aug}
+    \input{tex/appendix/experiments/swin_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Resnet V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Swin V11 Am Opt Aug}
+    \input{tex/appendix/experiments/swin_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Resnet V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Swin V12 Br Opt Aug}
+    \input{tex/appendix/experiments/swin_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Resnet V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Swin V1 Ab Opt}
+    \input{tex/appendix/experiments/swin_v1_AB_opt/relatorio_experimento.tex}
 
-% \section*{Resnet V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Swin V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/swin_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Resnet V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/resnet_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Swin V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/swin_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/swin_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Swin V9 Am Opt Aug}
+    \input{tex/appendix/experiments/swin_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/swin_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Vgg V10 Br Opt Aug}
+    \input{tex/appendix/experiments/vgg_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/swin_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Vgg V11 Am Opt Aug}
+    \input{tex/appendix/experiments/vgg_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V1 Ab Opt}
-%     \input{tex/appendix/experiments/swin_v1_AB_opt/relatorio_experimento.tex}
+\section*{Vgg V12 Br Opt Aug}
+    \input{tex/appendix/experiments/vgg_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/swin_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Vgg V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/vgg_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/swin_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Vgg V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/vgg_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Swin V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/swin_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Vgg V9 Am Opt Aug}
+    \input{tex/appendix/experiments/vgg_v9_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vgg V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Vit V10 Br Opt Aug}
+    \input{tex/appendix/experiments/vit_v10_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vgg V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v11_AM_opt_aug/relatorio_experimento.tex}
+\section*{Vit V11 Am Opt Aug}
+    \input{tex/appendix/experiments/vit_v11_AM_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vgg V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v12_BR_opt_aug/relatorio_experimento.tex}
+\section*{Vit V12 Br Opt Aug}
+    \input{tex/appendix/experiments/vit_v12_BR_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vgg V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v1_AB_opt_aug/relatorio_experimento.tex}
+\section*{Vit V1 Ab Opt}
+    \input{tex/appendix/experiments/vit_v1_AB_opt/relatorio_experimento.tex}
 
-% \section*{Vgg V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v8_AB_opt_aug/relatorio_experimento.tex}
+\section*{Vit V1 Ab Opt Aug}
+    \input{tex/appendix/experiments/vit_v1_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vgg V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/vgg_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Vit V8 Ab Opt}
+    \input{tex/appendix/experiments/vit_v8_AB_opt/relatorio_experimento.tex}
 
-% \section*{Vit V10 Br Opt Aug}
-%     \input{tex/appendix/experiments/vit_v10_BR_opt_aug/relatorio_experimento.tex}
+\section*{Vit V8 Ab Opt Aug}
+    \input{tex/appendix/experiments/vit_v8_AB_opt_aug/relatorio_experimento.tex}
 
-% \section*{Vit V11 Am Opt Aug}
-%     \input{tex/appendix/experiments/vit_v11_AM_opt_aug/relatorio_experimento.tex}
-
-% \section*{Vit V12 Br Opt Aug}
-%     \input{tex/appendix/experiments/vit_v12_BR_opt_aug/relatorio_experimento.tex}
-
-% \section*{Vit V1 Ab Opt}
-%     \input{tex/appendix/experiments/vit_v1_AB_opt/relatorio_experimento.tex}
-
-% \section*{Vit V1 Ab Opt Aug}
-%     \input{tex/appendix/experiments/vit_v1_AB_opt_aug/relatorio_experimento.tex}
-
-% \section*{Vit V8 Ab Opt}
-%     \input{tex/appendix/experiments/vit_v8_AB_opt/relatorio_experimento.tex}
-
-% \section*{Vit V8 Ab Opt Aug}
-%     \input{tex/appendix/experiments/vit_v8_AB_opt_aug/relatorio_experimento.tex}
-
-% \section*{Vit V9 Am Opt Aug}
-%     \input{tex/appendix/experiments/vit_v9_AM_opt_aug/relatorio_experimento.tex}
+\section*{Vit V9 Am Opt Aug}
+    \input{tex/appendix/experiments/vit_v9_AM_opt_aug/relatorio_experimento.tex}
