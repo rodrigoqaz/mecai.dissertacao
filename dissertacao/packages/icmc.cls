@@ -1072,7 +1072,7 @@
                     \begin{otherlanguage}{brazil}
                     \IfEndWith{\ABNTautorreferencia}{.}{\MakeUppercase{\ABNTautorreferencia}}{\MakeUppercase{\ABNTautorreferencia}.}~%
                     \textbf{\IfEq{\imprimirlanguage}{english}{\imprimirtituloEN}{\imprimirtituloPT}}. %
-                    \@year. \pageref{LastPage} p. \imprimirtipotrabalho~(\tipodocurso~\imprimirespecialidade) -- Instituto de Ci{\^e}ncias Matem{\'a}ticas e de Computa{\c c}{\~a}o, Universidade de S\~ao Paulo, \imprimirlocal, \@year.
+                    \@year. 125 p. \imprimirtipotrabalho~(\tipodocurso~\imprimirespecialidade) -- Instituto de Ci{\^e}ncias Matem{\'a}ticas e de Computa{\c c}{\~a}o, Universidade de S\~ao Paulo, \imprimirlocal, \@year.
                     \end{otherlanguage}
                 \end{SingleSpace}
                 
