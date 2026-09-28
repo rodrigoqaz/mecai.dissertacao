@@ -12,7 +12,6 @@ from sklearn.metrics import (
     accuracy_score, confusion_matrix, classification_report
 )
 from statsmodels.stats.contingency_tables import mcnemar
-from scipy.stats import friedmanchisquare
 from matplotlib.lines import Line2D
 import glob
 import cv2
@@ -151,13 +150,8 @@ def main():
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.savefig(os.path.join(IMG_DIR, "h2_lighting_impact.pdf"), bbox_inches='tight')
 
-    pivot_h2 = h2_df.pivot(index='Model', columns='Light', values='MCC').dropna()
-    stat, p_f = friedmanchisquare(pivot_h2['AB'], pivot_h2['AM'], pivot_h2['BR'])
-    ranks = pivot_h2.rank(axis=1, ascending=False).mean().sort_values()
-    with open(os.path.join(ARTIFACTS_DIR, "friedman_test.tex"), "w") as f:
-        f.write("\\begin{tabular}{lc}\n\\toprule\nFonte de Luz & Posto Médio \\\\\n\\midrule\n")
-        for v, r in ranks.items(): f.write(f"{v} & {br_num(r, 2)} \\\\\n")
-        f.write(f"\\midrule\n\\multicolumn{{2}}{{l}}{{Friedman $\\chi^2={br_num(stat, 2)}$ ($p = {br_sci(p_f, 2)}$)}} \\\\\n\\bottomrule\n\\end{{tabular}}")
+    # O Teste de Friedman da Fase 2 (dissertacao/tables/friedman_test.tex) é gerado por
+    # friedman_fase2.py (p3.3b, bloco = fardo) - não recalcular/sobrescrever aqui.
 
     # --- FASE 4: ESPECTRO (H3) ---
     print("\n[Fase 4] Gerando Impacto Espectral...")
@@ -271,6 +265,26 @@ def main():
     sns.heatmap(p_mat, annot=ann, fmt="", xticklabels=top_v10, yticklabels=top_v10, cmap='YlGnBu_r', vmax=0.05)
     plt.title("Significância Estatística (McNemar) - Dataset V10")
     plt.savefig(os.path.join(IMG_DIR, "p_value_heatmap_v10.pdf"), bbox_inches='tight')
+
+    # --- FASE 6: DISTRIBUIÇÃO DE LATÊNCIA (V10) ---
+    print("\n[Fase 6] Gerando Tabela de Distribuição de Latência (V10)...")
+    lat_cols = ['latency_avg_ms', 'latency_std_ms', 'latency_min_ms', 'latency_max_ms', 'latency_p95_ms', 'latency_p99_ms']
+    lat_df = summary_df[(summary_df['dataset_version'] == 'v10') & summary_df['latency_p99_ms'].notna()].copy()
+    lat_df = lat_df.sort_values('latency_avg_ms')
+    highlight = {'CONVNEXT', 'DENSENET'}
+    rows = []
+    for _, r in lat_df.iterrows():
+        modelo = r['model_type'].upper()
+        vals = [br_num(r[c], 2) for c in lat_cols]
+        if modelo in highlight:
+            modelo = f"\\textbf{{{modelo}}}"
+            vals = [f"\\textbf{{{v}}}" for v in vals]
+        rows.append(f"{modelo} & {' & '.join(vals)} \\\\")
+    with open(os.path.join(ARTIFACTS_DIR, "latency_distribution.tex"), "w") as f:
+        f.write("\\begin{tabular}{lrrrrrr}\n\\toprule\n")
+        f.write("Arquitetura & Média (ms) & Desvio (ms) & Mín (ms) & Máx (ms) & P95 (ms) & P99 (ms) \\\\\n\\midrule\n")
+        f.write("\n".join(rows))
+        f.write("\n\\bottomrule\n\\end{tabular}")
 
     print("\n>>> ARTEFATOS GERADOS COM SUCESSO!")
 

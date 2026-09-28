@@ -4,7 +4,7 @@
 
 Um dos desafios desta dissertação reside em equilibrar o rigor estatístico com a viabilidade operacional para o setor agroindustrial. Embora a \textbf{DenseNet (RGB/BR)} tenha alcançado a liderança em termos de MCC absoluto ($0,6461$), um modelo destinado à produção deve ser avaliado também por seu custo computacional, demanda energética e latência de inferência em tempo real.
 
-A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do conjunto de dados (RGB/BR). A análise revela um compromisso crítico (\textit{trade-off}) entre precisão e velocidade: enquanto a DenseNet lidera no eixo preditivo (MCC), ela apresenta uma latência de inferência de $18,66$ ms, significativamente superior à da \textbf{ConvNeXt} ($6,97$ ms). Adicionalmente, nota-se que a \textbf{EfficientNet} apresenta a maior eficiência algorítmica bruta, com apenas $0,6813$ GFLOPs, tornando-a uma candidata primorosa para dispositivos de borda (\textit{edge computing}) com extrema restrição de \textit{hardware}, ainda que com um MCC marginalmente inferior ($0,5915$).
+A Tabela \ref{tab:industrial_ranking} consolida os indicadores de produtividade para os modelos treinados na melhor versão do conjunto de dados (RGB/BR). A análise revela um compromisso crítico (\textit{trade-off}) entre precisão e velocidade: enquanto a DenseNet lidera no eixo preditivo (MCC), ela apresenta uma latência de inferência de $19,04$ ms, significativamente superior à da \textbf{ConvNeXt} ($6,44$ ms). Adicionalmente, nota-se que a \textbf{EfficientNet} apresenta a maior eficiência algorítmica bruta, com apenas $0,6813$ GFLOPs, tornando-a uma candidata primorosa para dispositivos de borda (\textit{edge computing}) com extrema restrição de \textit{hardware}, ainda que com um MCC marginalmente inferior ($0,5915$).
 
 \begin{table}[!h]
     \centering
@@ -44,5 +44,23 @@ Diante do empate na predição, o critério de seleção segue obrigatoriamente 
   \includegraphics[width=1.0\textwidth]{images/efficiency_tradeoff_full.pdf}
   \legend{Fonte: Do autor (2026).}
 \end{figure}
+
+Para quantificar com rigor estatístico o \textit{trade-off} observado na Figura \ref{fig:efficiency_tradeoff}, mediu-se a distribuição completa de latência de inferência para as 8 arquiteturas na versão RGB/BR, ao longo de todo o conjunto de teste retido ($N = 1.578$ \textit{patches}), em lote unitário sobre entrada $224 \times 224$ no mesmo hardware (Apple M3, \textit{backend} MPS). A Tabela \ref{tab:latency_distribution} apresenta a média, o desvio padrão e os percentis 95 e 99 (que caracterizam o pior cenário típico, sem serem \textit{outliers} extremos) para cada arquitetura.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Distribuição de Latência de Inferência por Patch (RGB/BR, $N=1.578$).}
+    \label{tab:latency_distribution}
+    \input{tables/latency_distribution.tex}
+    \begin{tablenotes}
+            \small
+            \item[] Fonte: Do autor (2026).
+            \item[] Nota: medições em Apple M3 (\textit{backend} MPS), lote unitário, entrada $224 \times 224$; valores comparativos entre arquiteturas, não uma garantia de latência absoluta em hardware industrial dedicado.
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+A \textbf{ConvNeXt-Tiny} confirma a estabilidade observada na média ($6,44$ ms), mantendo o P99 em apenas $7,09$ ms --- uma margem estreita entre o caso típico e o pior caso, favorável à operação em esteiras de alta cadência. Já a \textbf{DenseNet-121}, apesar do MCC comparável, apresenta P99 de $24,66$ ms, mais de três vezes o pior caso da ConvNeXt, o que reforça sua menor adequação a cenários industriais de fluxo contínuo.
 
 Conclui-se, portanto, que a \textbf{ConvNeXt (RGB/BR)} representa a solução de maior valor prático e viabilidade corporativa para a automação da classificação do algodão, entregando o balanço definitivo entre assertividade diagnóstica e rendimento operacional.

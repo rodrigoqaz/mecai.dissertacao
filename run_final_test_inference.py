@@ -1,3 +1,4 @@
+import argparse
 import os
 import time
 import torch
@@ -70,7 +71,7 @@ def run_benchmarking(model, loader, device) -> Dict:
     latencies = []
 
     print(f"  Benchmarking on {device}...")
-    
+
     with torch.no_grad():
         sample_input, _ = loader.dataset[0]
         dummy_input = sample_input.unsqueeze(0).to(device)
@@ -78,16 +79,16 @@ def run_benchmarking(model, loader, device) -> Dict:
 
         for inputs, labels in tqdm(loader, desc="  Inferência", leave=False):
             inputs = inputs.to(device)
-            
+
             if device.type == 'cuda': torch.cuda.synchronize()
             elif device.type == 'mps': torch.mps.synchronize()
-            
+
             start_time = time.perf_counter()
             outputs = model(inputs)
-            
+
             if device.type == 'cuda': torch.cuda.synchronize()
             elif device.type == 'mps': torch.mps.synchronize()
-            
+
             end_time = time.perf_counter()
             latencies.append(end_time - start_time)
 
@@ -98,12 +99,14 @@ def run_benchmarking(model, loader, device) -> Dict:
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.numpy())
 
+    latencies_ms = np.array(latencies) * 1000
     return {
         'y_true': np.array(all_labels),
         'y_pred': np.array(all_preds),
         'y_probs': np.array(all_probs),
-        'latency_ms': np.mean(latencies) * 1000,
-        'latency_std': np.std(latencies) * 1000
+        'latencies_ms': latencies_ms,
+        'latency_ms': float(np.mean(latencies_ms)),
+        'latency_std': float(np.std(latencies_ms)),
     }
 
 def sanitize_config(d):
@@ -121,12 +124,25 @@ def sanitize_config(d):
     return d
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--versions", type=str, default=None,
+                         help="Versões do dataset a rodar (ex.: v10), separadas por vírgula. Default: todas.")
+    parser.add_argument("--models", type=str, default=None,
+                         help="Arquiteturas a rodar, separadas por vírgula. Default: todas.")
+    args = parser.parse_args()
+
     if not os.path.exists(MANIFEST_PATH):
         print(f"[ERRO] Manifesto não encontrado.")
         return
 
     manifest = pd.read_csv(MANIFEST_PATH)
     manifest = manifest[manifest['weights_path'] != "MISSING"]
+    if args.versions:
+        wanted = {v.strip() for v in args.versions.split(",")}
+        manifest = manifest[manifest['dataset_version'].isin(wanted)]
+    if args.models:
+        wanted = {m.strip() for m in args.models.split(",")}
+        manifest = manifest[manifest['model_type'].isin(wanted)]
     evaluation_results = []
 
     print(f"\n>>> INICIANDO FASE 2: TRIBUNAL DE TESTE ({len(manifest)} modelos)")
@@ -168,29 +184,50 @@ def main():
             
             results = run_benchmarking(model, test_loader, DEVICE)
 
+            os.makedirs("results/latency", exist_ok=True)
+            lat = results['latencies_ms']
+            pd.DataFrame({"latency_ms": lat}).to_csv(
+                f"results/latency/{m_type}_{version}_latencies.csv", index=False)
+
+            y_files = np.array([os.path.basename(p) for p, _ in test_loader.dataset.samples])
             pred_file = f"{m_type}_{version}_preds.npz"
-            np.savez_compressed(os.path.join(PREDICTIONS_DIR, pred_file), 
-                               y_true=results['y_true'], 
-                               y_pred=results['y_pred'], 
-                               y_probs=results['y_probs'], 
-                               class_names=class_names)
+            np.savez_compressed(os.path.join(PREDICTIONS_DIR, pred_file),
+                               y_true=results['y_true'],
+                               y_pred=results['y_pred'],
+                               y_probs=results['y_probs'],
+                               class_names=class_names,
+                               y_files=y_files)
 
             evaluation_results.append({
-                'model_type': m_type, 
+                'model_type': m_type,
                 'dataset_version': version,
                 'accuracy_test': (results['y_true'] == results['y_pred']).mean(),
-                'latency_avg_ms': results['latency_ms'], 
+                'latency_avg_ms': results['latency_ms'],
+                'latency_std_ms': float(np.std(lat)),
+                'latency_min_ms': float(np.min(lat)),
+                'latency_max_ms': float(np.max(lat)),
+                'latency_p50_ms': float(np.percentile(lat, 50)),
+                'latency_p95_ms': float(np.percentile(lat, 95)),
+                'latency_p99_ms': float(np.percentile(lat, 99)),
                 'params_m': params_m,
                 'gflops': gflops,
                 'prediction_file': pred_file
             })
-            print(f"  [OK] Acc: {evaluation_results[-1]['accuracy_test']:.4f} | GFLOPs: {gflops:.4f}")
+            print(f"  [OK] Acc: {evaluation_results[-1]['accuracy_test']:.4f} | GFLOPs: {gflops:.4f} | P99: {evaluation_results[-1]['latency_p99_ms']:.2f}ms")
 
         except Exception as e:
             print(f"  [ERRO] {e}")
 
     if evaluation_results:
-        pd.DataFrame(evaluation_results).to_csv(SUMMARY_PATH, index=False)
+        new_df = pd.DataFrame(evaluation_results)
+        if os.path.exists(SUMMARY_PATH):
+            old_df = pd.read_csv(SUMMARY_PATH)
+            keys = set(zip(new_df['model_type'], new_df['dataset_version']))
+            old_df = old_df[~old_df.apply(lambda r: (r['model_type'], r['dataset_version']) in keys, axis=1)]
+            combined = pd.concat([old_df, new_df], ignore_index=True)
+        else:
+            combined = new_df
+        combined.to_csv(SUMMARY_PATH, index=False)
         print(f"\n>>> FASE 2 CONCLUÍDA.")
 
 if __name__ == "__main__":
