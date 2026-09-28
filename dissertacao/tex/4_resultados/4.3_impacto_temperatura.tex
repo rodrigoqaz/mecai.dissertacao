@@ -14,17 +14,19 @@ A evolução do MCC através das diferentes fontes de luz (AB, AM, BR) é ilustr
   \legend{Fonte: Do autor (2026).}
 \end{figure}
 
-Para conferir rigor estatístico a esta observação, aplicou-se o teste de \textbf{Friedman} sobre o ranking dos modelos nas três fontes de luz. Conforme apresentado na Tabela \ref{tab:friedman_detailed}, a cor ``fria'' \textbf{BR} (Luz Branca) obteve o melhor posto médio ($1,25$), sendo estatisticamente superior à versão ruidosa AM ($2,62$). O $p$-value de $2,08 \times 10^{-2}$ permite rejeitar a hipótese nula $H_{0,2}$, confirmando que a temperatura de cor da luz impacta significativamente a acurácia diagnóstica da visão computacional no algodão.
+Para conferir rigor estatístico a esta observação, redesenhou-se a análise usando cada \textbf{fardo físico de algodão} como bloco de medidas repetidas --- em vez das arquiteturas ---, isolando o efeito da luz da escolha do modelo. Para cada um dos $N=560$ fardos presentes nos três conjuntos de teste, calculou-se a probabilidade Softmax média atribuída pela ConvNeXt-Tiny (arquitetura de referência) à classe verdadeira, entre os patches daquele fardo disponíveis em cada condição de luz (em média, 1,8 patch por fardo por luz --- nem sempre os mesmos recortes exatos nas três condições, apenas do mesmo fardo). Aplicou-se o teste de \textbf{Friedman} sobre os postos resultantes: conforme apresentado na Tabela \ref{tab:friedman_detailed}, a luz \textbf{BR} obteve o maior posto médio ($2,26$), seguida por AM ($1,89$) e AB ($1,85$). O teste rejeita a hipótese nula $H_{0,2}$ ($\chi^2=59,19$, $p=1,41 \times 10^{-13}$), confirmando que a temperatura de cor da luz impacta significativamente a confiança/acurácia diagnóstica da rede.
 
 \begin{table}[!h]
     \centering
     \begin{threeparttable}
-    \caption{Resultado do teste de Friedman e postos médios por versão de iluminação.}
+    \caption{Teste de Friedman por fardo pareado: postos médios por condição de iluminação.}
     \label{tab:friedman_detailed}
     \input{tables/friedman_test.tex}
     \begin{tablenotes}
-            \small 
+            \small
             \item[] Fonte: Do autor (2026).
+            \item[] Nota: Bloco = fardo físico ($N=560$); média de 1,8 patch por fardo por
+            condição de luz (os patches podem diferir entre luzes --- ver texto).
         \end{tablenotes}
         \end{threeparttable}
 \end{table}
