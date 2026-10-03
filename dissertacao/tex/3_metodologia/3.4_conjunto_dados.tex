@@ -2,9 +2,9 @@
 
 O escopo desta dissertação foi direcionado às 10 classes comerciais de algodão em pluma mais prevalentes na produção local, em estrita conformidade com os padrões oficiais de classificação estabelecidos pela Instrução Normativa nº 24/2016 do Ministério da Agricultura, Pecuária e Abastecimento (MAPA). A rotulagem de cada amostra (\textit{ground truth}) foi estabelecida com base no laudo de classificação visual humano, adotado pela própria unidade de beneficiamento parceira. Esse procedimento assegurou que os rótulos atribuídos aos tensores de imagem correspondessem aos parâmetros utilizados nas operações reais de comercialização, conferindo validade industrial ao problema de classificação.
 
-Após a etapa de pré-processamento (Camada \textit{Gold}), o conjunto de dados final consolidou-se em 7.908 \textit{patches} de imagem. Para a condução rigorosa dos experimentos, realizou-se a divisão dos dados utilizando uma proporção de 80\% para treinamento/validação (6.326 amostras) e 20\% para teste retido isoladamente (1.582 amostras).
+Após a etapa de pré-processamento (Camada \textit{Gold}), o conjunto de dados final consolidou-se em 7.908 \textit{patches} de imagem. Para mitigar o risco de vazamento de dados (\textit{data leakage}) e blindar o processo de validação, a partição entre os conjuntos de Treino/Validação (80\%) e Teste Retido (20\%) foi realizada a nível de fardo físico primário, antes da aplicação de qualquer recorte em blocos (\textit{patching}) ou expansão estocástica (\textit{data augmentation}), com estratificação por classe comercial e semente aleatória fixa (\textit{random seed} = 42). Essa restrição garante que nenhum \textit{patch} oriundo de um fardo presente no conjunto de teste seja exibido aos modelos durante o treinamento: o conjunto de teste retido (\textit{holdout}) é composto exclusivamente por fardos inéditos ao sistema, reproduzindo com fidelidade a realidade operacional de uma algodoeira industrial, na qual um lote nunca classificado é a unidade real de decisão.
 
-É necessário destacar que essa divisão foi realizada de forma estratificada por classe, utilizando uma semente aleatória fixa (\textit{random seed} = 42). A estratificação garantiu que a proporção original de cada classe fosse preservada em ambas as partições. A distribuição quantitativa exata dos dados particionados é detalhada na Tabela \ref{tab:distribuicao_classes}.
+A distribuição quantitativa exata dos dados particionados é detalhada na Tabela \ref{tab:distribuicao_classes}.
 
 \begin{table}[ht!]
     \centering
@@ -31,7 +31,7 @@ Após a etapa de pré-processamento (Camada \textit{Gold}), o conjunto de dados 
     \end{tabular}
     \begin{tablenotes}
         \small 
-        \item \textit{Nota:} Divisão estratificada realizada antes da aplicação de técnicas de \textit{Data Augmentation}. Fonte: Do autor (2026).
+        \item \textit{Nota:} Divisão realizada a nível de fardo físico, anterior ao recorte em blocos (\textit{patching}) e às técnicas de \textit{Data Augmentation}. Fonte: Do autor (2026).
     \end{tablenotes}
     \end{threeparttable}
 \end{table}

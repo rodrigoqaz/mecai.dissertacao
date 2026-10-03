@@ -26,7 +26,7 @@ Para garantir a rastreabilidade, reprodutibilidade e governança do experimento,
 
     Cada recorte retangular foi subdividido em múltiplos \textit{patches} quadrados de $256 \times 256$ pixels. Para evitar a perda de informações nas bordas e nas transições de textura, implementou-se uma taxa de sobreposição (\textit{overlap}) entre os \textit{patches} adjacentes. Essa técnica, além de garantir a cobertura integral da AOI, atua como uma forma robusta de aumento de dados (\textit{Data Augmentation}), multiplicando significativamente o volume do conjunto de treinamento e expondo o modelo a uma maior variabilidade de microtexturas locais da fibra.
 
-    Ao final desse processo, os \textit{patches} foram convertidos para matrizes numéricas e vinculados de volta ao seu \textit{ground truth} (a classe de qualidade oficial obtida no laboratório). Os dados foram então particionados de forma estratificada nos subconjuntos de treinamento, validação e teste, formatados de acordo com os padrões dos \textit{DataLoaders} do \textit{framework} PyTorch, consolidando um conjunto de dados otimizado e pronto para a experimentação arquitetural.
+    Ao final desse processo, os \textit{patches} foram convertidos para matrizes numéricas e vinculados de volta ao seu \textit{ground truth} (a classe de qualidade oficial obtida no laboratório), já segregados nos subconjuntos de treinamento, validação e teste definidos pela partição a nível de fardo (Seção \ref{sec:conjunto_dados}), e formatados de acordo com os padrões dos \textit{DataLoaders} do \textit{framework} PyTorch, consolidando um conjunto de dados otimizado e pronto para a experimentação arquitetural.
 
 
     \begin{figure}[H]
