@@ -1,0 +1,32 @@
+%Revisado
+\section{Fase 3: Expansão Espectral e Engenharia de Características (QP3)}
+\label{sec:expansao_espectral}
+
+Nesta fase, avaliou-se a Questão de Pesquisa QP3, que propunha que a expansão digital do espectro (15 canais gerados via filtros de Gabor) auxiliaria as redes a extrair texturas mais ricas da fibra. O experimento consistiu no treinamento paralelo de modelos nos conjuntos de dados AB, AM e BR, comparando-os aos seus equivalentes RGB sob as mesmas condições de iluminação.
+
+O contraste de desempenho, ilustrado na Figura \ref{fig:h3_spectral}, revela uma queda drástica e generalizada no MCC para todas as versões com expansão espectral. Este fenômeno permite rejeitar a hipótese nula $H_{0}$, respondendo negativamente à QP3 e indicando que para modelos de \textit{Deep Learning} modernos, a inserção de \textit{features} artesanais ruidosas ou redundantes atua como um mecanismo de confusão no aprendizado \textit{end-to-end}.
+
+\begin{figure}[h!]
+  \centering
+  \caption{Falha da Expansão Espectral (QP3): O contraste entre o RGB puro (3ch) e os 15-canais Gabor mostra a severa degradação da performance em todos os cenários de luz.}
+  \label{fig:h3_spectral}
+  \includegraphics[width=0.8\textwidth]{images/h3_spectral_impact.pdf}
+  \legend{Fonte: Do autor (2026).}
+\end{figure}
+
+Para validar se esta queda de performance foi estatisticamente relevante, aplicou-se o teste de McNemar (binomial exato, sem a correção de continuidade de Yates) pareado por arquitetura no cenário de melhor iluminação (Luz Branca BR). O teste compara, para cada arquitetura, os \textit{patches} discordantes entre o classificador treinado sobre RGB puro e o seu equivalente treinado sobre o tensor expandido de 15 canais Gabor: $b$ é a contagem de \textit{patches} que o modelo RGB acertou e o modelo Gabor errou, e $c$ é a contagem inversa (Gabor acertou, RGB errou). A hipótese nula $H_{0}$ (Seção \ref{sec:desenho_experimental}) postula que as duas variantes cometem a mesma proporção de erros, isto é, $b = c$ na população. Conforme apresentado na Tabela \ref{tab:mcnemar_gabor}, a degradação foi severa e sistemática para todos os modelos, com $b \gg c$ em todos os pares.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Teste de McNemar comparando RGB e Gabor sob Luz Branca.}
+    \label{tab:mcnemar_gabor}
+    \input{tables/mcnemar_gabor_vs_rgb.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor (2026).
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+Os valores $b$, $c$ e os $p$-\textit{values} reportados na Tabela \ref{tab:mcnemar_gabor} permitem rejeitar $H_{0}$ para os oito pares comparados, confirmando que a diferença de performance não é fruto do acaso, mas sim de uma incapacidade sistemática dos modelos em lidar com a dimensionalidade ruidosa dos filtros de Gabor. Conclui-se que, para este domínio, a simplicidade do sinal bruto de entrada é superior à complexidade algorítmica de pré-processamento clássico, validando a preferência por aprendizado profundo puramente orientado a dados.

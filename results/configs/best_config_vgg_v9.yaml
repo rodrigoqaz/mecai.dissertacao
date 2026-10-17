@@ -1,0 +1,42 @@
+augmentation_config:
+  use_augmentation: false
+global_config:
+  batch_size: 32
+  dataset_name: v9
+  device: auto
+  experiment_name: ELITE_EVAL_v9_vgg
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: vgg
+params:
+  architecture: vgg19_bn
+  augmentations: '[{''type'': ''CutMix'', ''params'': {''alpha'': 1.0, ''prob'': 0.6}},
+    {''type'': ''MixUp'', ''params'': {''alpha'': 0.4, ''prob'': 0.6}}]'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_model_vggnet.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v9/train_val
+  device: auto
+  dropout: '0.5887289187102933'
+  experiment_name: VGGNet
+  global_config: '{''data_dir'': ''data/gold/datasets/v9/train_val'', ''experiment_name'':
+    ''VGGNet'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v9'', ''seed'':
+    42, ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto''}'
+  hidden_units: '512'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.0}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''SGD'', ''params'': {''lr'': 0.002570466482704098, ''weight_decay'':
+    0.005200294032565659, ''momentum'': 0.9}}'
+  params: '{''architecture'': ''vgg19_bn'', ''pretrained'': True, ''unfreeze_layers'':
+    6, ''hidden_units'': 512, ''dropout'': 0.5887289187102933, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    4, ''factor'': 0.3763504989154399, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '6'
+  weights: IMAGENET1K_V1

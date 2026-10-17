@@ -1,0 +1,224 @@
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% ICMC: Modelo de Trabalho Acadêmico (tese de doutorado, dissertação de
+% mestrado e trabalhos monográficos em geral) em conformidade com 
+% ABNT NBR 14724:2011: Informação e documentação - Trabalhos acadêmicos -
+% Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+% Opções: 
+%   Qualificação          = qualificacao 
+% Curso                 = mestrado
+% Situação do trabalho  = pre-defesa
+% Versão para impressão = impressao
+\documentclass[mestrado, pos-defesa]{packages/icmc}
+
+% ---------------------------------------------------------------------------
+% Pacotes Opcionais
+% ---------------------------------------------------------------------------
+\usepackage{rotating}           % Usado para rotacionar o texto
+\usepackage[all,knot,arc,import,poly]{xy}   % Pacote para desenhos gráficos
+\usepackage{afterpage}
+\usepackage{pdflscape}
+\usepackage{tabularray}
+\usepackage{tikz}
+\usepackage{threeparttable}
+\usepackage{booktabs}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{geometry}
+\usepackage{enumitem}
+% \usepackage{natbib}
+% \usetikzlibrary{arrows}
+
+
+
+
+% Este pacote pode conflitar com outros pacotes gráficos como o ``pictex''
+% Então é necessário usar apenas um dos pacotes conflitantes
+\newcommand{\VerbL}{0.52\textwidth}
+\newcommand{\LatL}{0.42\textwidth}
+% ---------------------------------------------------------------------------
+
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+% Tanto na capa quanto nas folhas de rosto apenas a primeira letra da primeira palavra (ou nomes próprios) devem estar em letra maiúscula, todas as demais devem ser em letra minúscula.
+% \tituloPT{Da Convolução à Atenção: Uma Análise Comparativa de Paradigmas de Deep Learning para a Classificação de Algodão}
+% \tituloEN{Da Convolução à Atenção: Uma Análise Comparativa de Paradigmas de Deep Learning para a Classificação de Algodão}
+\tituloPT{Avaliação de Paradigmas de Visão Computacional para a Classificação Industrial de Fibras de Algodão}
+\tituloEN{Evaluation of Computer Vision Paradigms for the Industrial Classification of Cotton Fibers}
+
+\autor[Oliveira, R.]{Rodrigo de Souza Oliveira}
+\genero{M} % Gênero do autor (M = Masculino / F = Feminino)
+\orientador[Orientadora]{Profa. Dra.}{Gleici da Silva Castro Perdoná}
+%\coorientador{Prof. Dr.}{Fulano de Tal}
+\curso{MECAI}
+\data{09}{10}{2026} % Data do depósito
+\idioma{PT} % Idioma principal do documento (PT = português / EN = inglês)
+% ---
+
+
+% ---
+% RESUMOS
+% ---
+
+% Resumo em PORTUGUÊS
+% conter no máximo 500 palavras
+% conter no mínimo 1 e no máximo 5 palavras-chave
+\textoresumo[brazil]{
+    A classificação da qualidade da pluma de algodão é uma etapa crucial para a balança comercial do agronegócio, regida por normativas rigorosas como a IN 24/2016 do MAPA. No entanto, o processo tradicional é suscetível à subjetividade humana e a variações fotométricas no ambiente de classificação. Esta dissertação investiga a aplicação de modelos de \textit{Deep Learning} para a tipagem visual do algodão, estruturando o problema como uma tarefa de Classificação. Para garantir o controle rigoroso sobre o sinal de entrada e a aquisição autoral do \textit{dataset}, projetou-se e construiu-se um protótipo de \textit{hardware} equipado com câmera e iluminação modulável. A partir dessa infraestrutura física, conduziu-se um estudo de ablação empírico em quatro fases para avaliar o impacto da arquitetura de extração (\textit{Transformers} vs. CNNs), do ruído fotométrico (temperatura de cor da iluminação), da injeção explícita de atributos morfológicos (bancos de filtros de Gabor) e da viabilidade industrial (\textit{trade-off} entre latência e precisão). Os resultados estatísticos indicam que Redes Neurais Convolucionais modernas superam modelos de atenção global pura para este domínio, em virtude do viés indutivo de localidade e do volume de amostras. Comprovou-se que a estabilização do sinal luminoso para a luz branca (6000 K) no \textit{hardware} é o preditor de desempenho mais forte do sistema, corrigindo ``saltos semânticos'' causados pela contaminação do grau de amarelamento da fibra, enquanto a injeção clássica de canais de Gabor revelou-se deletéria para o aprendizado de ponta a ponta. Na avaliação corporativa, a arquitetura ConvNeXt emergiu como o \textit{sweet spot} industrial, atingindo o estado da arte em precisão preditiva com uma latência de inferência de apenas 6,44 ms. Conclui-se que a solução validada viabiliza a automação da esteira de classificação através de sistemas de \textit{Edge AI} de alta cadência.
+
+
+    }{Visão Computacional, \textit{Deep Learning}, Classificação de Algodão, ConvNeXt}
+
+
+% resumo em INGLÊS
+% conter no máximo 500 palavras
+% conter no mínimo 1 e no máximo 5 palavras-chave
+\textoresumo[english]{
+    The classification of cotton lint quality is a crucial step for the agribusiness trade balance, governed by strict standards such as the MAPA's IN 24/2016. However, the traditional process is susceptible to human subjectivity and photometric variations in the classification environment. This thesis investigates the application of Deep Learning models for visual cotton typing, structuring the problem as a Visual Categorization task. To ensure rigorous control over the input signal and the authoral acquisition of the dataset, a custom hardware prototype (an enclosed capture chamber) equipped with modular lighting was designed and built. Based on this physical infrastructure, an empirical ablation study was conducted in four phases to evaluate the impact of extraction architecture (Transformers vs. CNNs), photometric noise (lighting color temperature), explicit injection of morphological features (Gabor filter banks), and industrial viability (latency vs. accuracy trade-off). Statistical results indicate that modern Convolutional Neural Networks outperform pure global attention models in this domain due to the inductive bias of locality. It was proven that stabilizing the light signal to white light (6000 K) within the hardware is the system's strongest performance predictor, correcting "semantic leaps" caused by the contamination of the fiber's yellowness degree, while the classical injection of Gabor channels proved deleterious to end-to-end learning. In the corporate assessment, the ConvNeXt architecture emerged as the industrial sweet spot, achieving state-of-the-art predictive accuracy with an inference latency of only 6.44 ms. It is concluded that the validated solution enables the automation of the classification pipeline through high-cadence Edge AI systems.
+    }{Computer Vision, Deep Learning, Cotton Classification, ConvNeXt}
+
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+
+% Inserir a ficha catalográfica
+\incluifichacatalografica{tex/pre-textual/ficha-catalografica.pdf}
+
+% DEDICATÓRIA / AGRADECIMENTO / EPÍGRAFE
+\textodedicatoria*{tex/pre-textual/dedicatoria}
+\textoagradecimentos*{tex/pre-textual/agradecimentos}
+\textoepigrafe*{tex/pre-textual/epigrafe}
+
+% Inclui a lista de figuras
+\incluilistadefiguras
+
+% Inclui a lista de tabelas
+\incluilistadetabelas
+
+% Inclui a lista de quadros
+\incluilistadequadros
+
+% Inclui a lista de algoritmos
+% \incluilistadealgoritmos
+
+% Inclui a lista de códigos
+% \incluilistadecodigos
+
+% Inclui a lista de siglas e abreviaturas
+\incluilistadesiglas
+
+% Inclui a lista de símbolos
+% \incluilistadesimbolos
+
+% ----
+% Início do documento
+% ----
+\tikzset{
+    process/.style    = {rectangle, rounded corners, draw, fill=blue!10, text width=7.5em, text centered, minimum height=2em, node distance=1.5cm},
+    startstop/.style  = {circle, draw, fill=green!20, text centered, minimum height=2em, node distance=0.5cm},
+    arrow/.style      = {-{Stealth[]}, thick}
+  }
+
+\sloppy
+
+\begin{document}
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+\chapter{Introdução}
+\label{chapter:introducao}
+\input{tex/1_introducao}
+
+\chapter{Revisão da Literatura}
+\label{chapter:rev_literatura}
+\input{tex/2_revisao_literatura}
+
+\chapter{Metodologia}
+\label{chapter:metodologia}
+\input{tex/3_metodologia}
+
+\chapter{Resultados}
+\label{chapter:resultados}
+\input{tex/4_resultados}
+
+\chapter{Discussão}
+\label{chapter:discussao}
+\input{tex/5_discussao}
+
+\chapter{Conclusão}
+\label{chapter:conclusao}
+\input{tex/6_conclusao}
+
+
+% ---
+% Finaliza a parte no bookmark do PDF, para que se inicie o bookmark na raiz
+% ---
+\bookmarksetup{startatroot}% 
+% ---
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{references}
+
+% ---------------------------------------------------------------------
+% GLOSSÁRIO
+% ---------------------------------------------------------------------
+
+% Arquivo que contém as definições que vão aparecer no glossário
+\input{tex/glossario}
+% Comando para incluir todas as definições do arquivo glossario.tex
+\glsaddall
+% Impressão do glossário
+\printglossaries
+
+% ----------------------------------------------------------
+% Apêndices
+% ----------------------------------------------------------
+
+% ---
+% Inicia os apêndices
+% ---
+\begin{apendicesenv}
+
+    \input{tex/appendix/appendice_1.tex}
+
+    \input{tex/appendix/appendice_2.tex}
+
+\end{apendicesenv}
+% ---
+
+
+% ----------------------------------------------------------
+% Anexos
+% ----------------------------------------------------------
+
+% ---
+% Inicia os anexos
+% ---
+\begin{anexosenv}
+
+    \chapter{Repositório Git} 
+    \label{chapter:pgithub}
+    \input{tex/annex/repositorio}
+
+\end{anexosenv}
+% ---
+
+\end{document}

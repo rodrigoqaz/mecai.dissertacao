@@ -1,0 +1,47 @@
+augmentation_config:
+  batch_level_aug_method: cutmix
+  mix_alpha: 0.4048728327538645
+  per_image_aug_method: none
+  use_augmentation: true
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_vggnet.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v1/train_val
+  dataset_name: v1
+  device: auto
+  experiment_name: vgg_v1_AB_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: vgg
+optimizer:
+  params:
+    lr: 0.0024503926254677262
+    weight_decay: 0.00524088301810897
+  type: SGD
+params:
+  architecture: vgg19_bn
+  dropout: 0.4441282253824618
+  hidden_units: 256
+  pretrained: true
+  unfreeze_layers: 3
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.1
+    mode: min
+    patience: 3
+  type: ReduceLROnPlateau

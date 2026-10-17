@@ -1,0 +1,49 @@
+
+\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \centering
+        \caption{Hiperparâmetros e Resultados do Melhor Modelo - efficientnet\_v1\_AB\_opt\_aug}
+        \vspace{0.2cm}
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{ll | lrrr}
+                \hline
+                \multicolumn{2}{c|}{\textbf{Hiperparâmetros}} & \multicolumn{4}{c}{\textbf{Métricas por Classe}} \\ \hline
+                \textbf{Parâmetro} & \textbf{Valor} & \textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+    Agendador ($T_0$) & 7 & 31.2 & 0.6829 & 0.7434 & 0.7119 \\ 
+Agendador de LR & CosineAnnealingWarmRestarts & 31.3 & 0.6829 & 0.4158 & 0.5169 \\ 
+Architecture & efficientnet\_b0 & 31.4 & 0.5702 & 0.6571 & 0.6106 \\ 
+Batch Size & 32 & 32.3 & 0.5569 & 0.6990 & 0.6199 \\ 
+Data Augmentation & False & 32.4 & 0.6735 & 0.5690 & 0.6168 \\ 
+Decaimento de Peso (WD) & 0.0000 & 33.3 & 0.6980 & 0.7306 & 0.7139 \\ 
+Dropout & 0.2524 & 41.4 & 0.5349 & 0.5227 & 0.5287 \\ 
+Função de Perda & CrossEntropyLoss & 41.5 & 0.8333 & 0.7692 & 0.8000 \\ 
+Hidden Units & 512 & 42.4 & 0.7407 & 0.5882 & 0.6557 \\ 
+Label Smoothing & 0.1000 & 44.4 & 0.9583 & 0.7931 & 0.8679 \\ 
+\cline{3-6} 
+Otimizador & AdamW & \textbf{Média (Macro)} & 0.6932 & 0.6488 & 0.6642 \\ 
+Taxa de Aprendizado (LR) & 3.85e-04 & \textbf{MCC} & \multicolumn{3}{c}{0.5890} \\ 
+Unfreeze Layers & 3 &  & & &  \\ 
+            \hline
+            \end{tabular}%
+        }
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{results/apendice_gerado/efficientnet_v1_AB_opt_aug/dashboard_consolidado.pdf}
+        \caption{Histórico de Otimização, Curvas de Aprendizado e Matriz de Confusão - efficientnet\_v1\_AB\_opt\_aug}
+    \end{figure}
+\end{minipage}
+
+\clearpage
+\pdfpagewidth=297mm \pdfpageheight=210mm
+\newgeometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2cm} 
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][l]{\includegraphics[width=1.7\textwidth]{results/apendice_gerado/efficientnet_v1_AB_opt_aug/optuna_parallel.pdf}}
+    \caption{Coordenadas Paralelas dos principais hiperparâmetros para efficientnet\_v1\_AB\_opt\_aug}
+\end{figure}
+\clearpage
+\pdfpagewidth=210mm \pdfpageheight=297mm
+\restoregeometry
+\newpage

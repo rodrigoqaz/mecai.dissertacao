@@ -1,0 +1,13 @@
+\begin{table}[ht]
+\centering
+\caption{Comparativo de Eficiência: EfficientNet vs. Família ResNet}
+\label{tab:efficientnet_bench}
+\begin{tabular}{@{}lccc p{5cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Precisão Top-1} & \textbf{Parâmetros} & \textbf{FLOPs} & \textbf{Vantagem na Produção} \\ \midrule
+ResNet-50 & 76,3\% & 26,0M & 4,1B & Padrão de mercado, porém pesado. \\
+EfficientNet-B0 & 77,1\% & 5,3M & 0,39B & 5x menor e superior em acurácia. \\
+EfficientNet-B4 & 82,9\% & 19,0M & 4,2B & Similar à ResNet-50 em custo, mas +6\% de acurácia. \\
+EfficientNetV2-S & 83,9\% & 22,0M & 8,8B & Otimizada para velocidade de treino e inferência. \\ \bottomrule
+\end{tabular}
+\end{table}

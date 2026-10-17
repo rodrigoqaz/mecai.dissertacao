@@ -1,0 +1,44 @@
+augmentation_config:
+  batch_level_aug_method: cutmix
+  mix_alpha: 0.6516917156347651
+  per_image_aug_method: none
+  use_augmentation: true
+global_config:
+  batch_size: 32
+  dataset_name: v1
+  device: auto
+  experiment_name: ELITE_EVAL_v1_densenet
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: densenet
+params:
+  architecture: densenet121
+  augmentations: '{}'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_densenet.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v1/train_val
+  device: auto
+  dropout: '0.20257471438187746'
+  experiment_name: DenseNet
+  global_config: '{''data_dir'': ''data/gold/datasets/v1/train_val'', ''experiment_name'':
+    ''DenseNet'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v1'', ''seed'':
+    42, ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto''}'
+  hidden_units: '512'
+  input_channels: '3'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.1}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 0.00015095353478001785, ''weight_decay'':
+    0.0009040896735815648}}'
+  params: '{''architecture'': ''densenet121'', ''pretrained'': True, ''unfreeze_layers'':
+    2, ''hidden_units'': 512, ''dropout'': 0.20257471438187746, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    7, ''factor'': 0.20360573622512274, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '2'
+  weights: IMAGENET1K_V1

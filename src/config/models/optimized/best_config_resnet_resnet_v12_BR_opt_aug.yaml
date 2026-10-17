@@ -1,0 +1,43 @@
+augmentation_config:
+  use_augmentation: false
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_restnet.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 64
+  data_dir: data/gold/datasets/v12/train_val
+  dataset_name: v12
+  device: auto
+  experiment_name: resnet_v12_BR_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: resnet
+optimizer:
+  params:
+    lr: 0.0003108340811537489
+    weight_decay: 0.00029335065665822574
+  type: AdamW
+params:
+  architecture: resnet18
+  dropout: 0.4561890497444348
+  hidden_units: 256
+  pretrained: true
+  unfreeze_layers: 1
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    gamma: 0.3
+    step_size: 15
+  type: StepLR

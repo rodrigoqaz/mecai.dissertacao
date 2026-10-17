@@ -1,0 +1,31 @@
+\afterpage{%
+    \clearpage% Flush earlier floats (otherwise order might not be correct)
+    \thispagestyle{empty}% empty page style (?)
+    \begin{landscape}% Landscape page
+        \centering % Center table
+        \begin{table}
+            \centering
+            \caption{Códigos dos tipos de Cor, Classes de Cor ou Grau de Cor do Algodão Upland}
+            \begin{tblr}{
+                width = \linewidth,
+                colspec = {Q[l,m,400]Q[c,m,180]Q[c,m,220]Q[c,m,180]Q[c,m,220]Q[c,m,180]},
+                row{1} = {font=\bfseries},
+                vline{2-6} = {-}{},
+                hline{3-9} = {-}{},
+                hline{1-2,10} = {2pt}
+              }
+                                                                                  & Branco & Ligeiramente Creme & Creme & Avermelhado & Amarelado \\
+              Cor Boa Média - GM (Good Middling)                         & 11              & 12                          & 13             & -                    & -                  \\
+              Cor Estritamente Média-SM (Strict Middling)                & 21              & 22                          & 23             & 24                   & 25                 \\
+              Cor Média-M (Middling)                                     & 31              & 32                          & 33             & 34                   & 35                 \\
+              Cor Estritamente Abaixo da Média-SLM (Strict Low Middling) & 41              & 42                          & 43             & 44                   & -                  \\
+              Cor Abaixo da Média-LM (Low Middling)                      & 51              & 52                          & 53             & 54                   & -                  \\
+              Cor Estritamente Boa Comum-SGO (Strict Good Ordinary)      & 61              & 62                          & 63             & -                    & -                  \\
+              Cor Boa Comum-GO (Good Ordinary)                           & 71              & -                           & -              & -                    & -                  \\
+              Abaixo de Padrão                                           & 81              & 82                          & 83             & 84                   & 85                 
+              \end{tblr}
+        \label{tab_tipo_cor}
+        \end{table}
+    \end{landscape}
+    \clearpage
+}

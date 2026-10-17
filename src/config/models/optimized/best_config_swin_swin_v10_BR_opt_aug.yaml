@@ -1,0 +1,45 @@
+augmentation_config:
+  use_augmentation: false
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 15
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_swin.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v10/train_val
+  dataset_name: v10
+  device: auto
+  experiment_name: swin_v10_BR_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.03976506315305587
+  type: CrossEntropyLoss
+model_type: swin
+optimizer:
+  params:
+    lr: 8.710739793572553e-05
+    weight_decay: 0.027646367222900894
+  type: AdamW
+params:
+  architecture: swin_t
+  dropout: 0.1011103934236643
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 1
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.4995978865604302
+    min_lr: 1.0e-06
+    mode: min
+    patience: 6
+  type: ReduceLROnPlateau

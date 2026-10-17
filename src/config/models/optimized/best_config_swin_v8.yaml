@@ -1,0 +1,42 @@
+augmentation_config:
+  use_augmentation: false
+global_config:
+  batch_size: 32
+  dataset_name: v8
+  device: auto
+  experiment_name: ELITE_EVAL_v8_swin
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: swin
+params:
+  architecture: swin_t
+  augmentations: '{}'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 15, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_swin.pth'', ''monitor'': ''val_loss'', ''save_best_only'':
+    True}}]'
+  data_dir: data/gold/datasets/v8/train_val
+  device: auto
+  dropout: '0.03013624195776357'
+  experiment_name: SwinTransformer
+  global_config: '{''data_dir'': ''data/gold/datasets/v8/train_val'', ''experiment_name'':
+    ''SwinTransformer'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v8'',
+    ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'': ''auto'',
+    ''seed'': 42}'
+  hidden_units: '512'
+  input_channels: '15'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.0009343988027520796}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 5.52544593327346e-05, ''weight_decay'':
+    0.06745716184161302}}'
+  params: '{''architecture'': ''swin_t'', ''pretrained'': True, ''unfreeze_layers'':
+    2, ''hidden_units'': 512, ''dropout'': 0.03013624195776357, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''CosineAnnealingWarmRestarts'', ''params'': {''T_0'': 14,
+    ''T_mult'': 1, ''eta_min'': 1e-06}}'
+  unfreeze_layers: '2'
+  weights: IMAGENET1K_V1

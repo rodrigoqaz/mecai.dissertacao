@@ -1,0 +1,37 @@
+
+
+%Revisado
+\section{Fase 2: Impacto Fotométrico e Sinal Físico (QP2)}
+\label{sec:impacto_fotometrico}
+
+Nesta fase, o efeito das condições de captura física é isolado para responder à Questão de Pesquisa QP2. O objetivo é verificar se a otimização da temperatura de cor da iluminação atua como um catalisador de performance.
+
+A evolução do MCC através das diferentes fontes de luz (AB, AM, BR) é ilustrada na Figura \ref{fig:h2_lighting}. Observa-se um crescimento consistente na performance de praticamente todos os classificadores à medida que a iluminação é otimizada para a luz branca (\textit{Cool White}, 6000~K), culminando nos melhores resultados absolutos. Este fenômeno sugere que a qualidade do sinal físico de entrada é um fator relevante de desempenho, que se soma à escolha da arquitetura.
+
+\begin{figure}[h!]
+  \centering
+  \caption{Impacto da Iluminação (QP2): Evolução do MCC para cada arquitetura conforme a fonte de luz é otimizada fisicamente (AB para AM para BR).}
+  \label{fig:h2_lighting}
+  \includegraphics[width=0.8\textwidth]{images/h2_lighting_impact.pdf}
+  \legend{Fonte: Do autor (2026).}
+\end{figure}
+
+Para conferir rigor estatístico a esta observação, aplicou-se o teste de Friedman tomando cada fardo físico de algodão como bloco de medidas repetidas e mantendo fixa a arquitetura de referência (ConvNeXt-Tiny). Como cada fardo dá origem a vários \textit{patches} (em média, 6,15 por fardo em cada condição de iluminação), a medida de desempenho de cada bloco foi a probabilidade \textit{Softmax} média atribuída à classe verdadeira, calculada sobre os \textit{patches} daquele fardo em cada condição de luz. Como a janela de corte é a mesma nas três iluminações (Seção \ref{sec:lir}), os \textit{patches} de um fardo são espacialmente idênticos entre as condições, o que torna o pareamento exato. A agregação pela média resume em um único valor por bloco os \textit{patches} de um mesmo fardo, que não constituem observações independentes entre si. Dessa forma, os $N = 257$ fardos do conjunto de teste atuam como os blocos independentes exigidos pelo teste.
+
+Conforme apresentado na Tabela \ref{tab:friedman_detailed}, o teste rejeita a hipótese nula $H_{0}$ ($\chi^2 = 27{,}01$; $p = 1{,}36 \times 10^{-6}$), indicando que a temperatura de cor da luz afeta significativamente a confiança da rede na classe verdadeira. A luz BR obteve o maior posto médio ($2{,}26$), enquanto AM ($1{,}89$) e AB ($1{,}85$) apresentaram postos próximos, e por isso foi adotada como condição de referência para as fases seguintes.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Teste de Friedman por fardo pareado: postos médios por condição de iluminação.}
+    \label{tab:friedman_detailed}
+    \input{tables/friedman_test.tex}
+    \begin{tablenotes}
+        \small
+        \item[] Fonte: Do autor (2026).
+        \item[] Nota: Bloco = fardo físico ($N = 257$). Medida por bloco: probabilidade \textit{Softmax} média da classe verdadeira sobre os \textit{patches} do fardo (em média, 6,15 \textit{patches} por fardo em cada condição de luz).
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+A análise conjunta dos dados indica que a estabilização do cenário físico eleva o desempenho de forma consistente entre as arquiteturas, reforçando a necessidade de ambientes controlados em aplicações de \textit{Edge AI} para o agronegócio.

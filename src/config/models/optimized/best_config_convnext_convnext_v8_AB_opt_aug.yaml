@@ -1,0 +1,45 @@
+augmentation_config:
+  use_augmentation: false
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_convnext.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v8/train_val
+  dataset_name: v8
+  device: auto
+  experiment_name: convnext_v8_AB_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.16428695690013126
+  type: CrossEntropyLoss
+model_type: convnext
+optimizer:
+  params:
+    lr: 0.00042533691513845623
+    weight_decay: 0.04447187319738694
+  type: AdamW
+params:
+  architecture: convnext_tiny
+  dropout: 0.25284394316087355
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 5
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.11139131645598857
+    min_lr: 1.0e-06
+    mode: min
+    patience: 3
+  type: ReduceLROnPlateau

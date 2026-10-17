@@ -1,0 +1,53 @@
+augmentation_config:
+  basic_params:
+    brightness_range: 0.19520440085846574
+    contrast_range: 0.1856117292503126
+    horizontal_flip_prob: 0.21849033768115433
+    n_augments: 2
+    rotation_range: 13
+    width_shift_range: 0.06611202131087388
+  batch_level_aug_method: none
+  per_image_aug_method: basic
+  use_augmentation: true
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 15
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_convnext.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 32
+  data_dir: data/gold/datasets/v1/train_val
+  dataset_name: v1
+  device: auto
+  experiment_name: convnext_v1_AB_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.15070828686656296
+  type: CrossEntropyLoss
+model_type: convnext
+optimizer:
+  params:
+    lr: 0.0002845866437135916
+    weight_decay: 0.02425817896801186
+  type: AdamW
+params:
+  architecture: convnext_tiny
+  dropout: 0.25374101146979844
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 5
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    T_0: 12
+    T_mult: 2
+    eta_min: 1.0e-06
+  type: CosineAnnealingWarmRestarts

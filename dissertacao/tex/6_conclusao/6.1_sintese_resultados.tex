@@ -1,0 +1,25 @@
+\section{Síntese dos Resultados}
+\label{sec:sintese_resultados}
+
+% O estudo de impacto dos componentes morfológicos e arquiteturais levou às seguintes definições:
+
+% \begin{itemize}
+%     \item A Superioridade Estatística das CNNs (QP1): Confirmou-se que as arquiteturas CNNs modernas (como DenseNet e ConvNeXt) superam estatisticamente os modelos baseados em \textit{Transformers} (ViT e Swin) no domínio do algodão. Os dados sugerem que o viés indutivo de localidade das convoluções é estatisticamente superior à atenção global para o rastreamento de microtexturas e nós de fibra, refutando a tendência de adoção universal de \textit{Transformers} para tarefas visuais industriais estocásticas.
+
+%     \item O Imperativo Fotométrico (QP2): A temperatura de cor da iluminação afetou significativamente o desempenho preditivo, e a luz branca (6000~K) apresentou os melhores resultados na maioria das arquiteturas avaliadas. A interpretação proposta é que essa condição atenua o ruído de percepção do amarelamento ($+b$) associado aos saltos semânticos interclasses observados sob luz mista. Conclui-se que a padronização óptica, em consonância com a Instrução Normativa nº 24/2016, é um fator complementar à escolha da arquitetura e uma condição recomendada para a implantação do sistema.
+
+%     \item A Obsolescência da Engenharia Manual (QP3): A injeção de características morfológicas explícitas através de bancos de filtros de Gabor falhou em aumentar a capacidade discriminativa das redes. A degradação estatisticamente significante comprovou que, em topologias profundas, o aprendizado de representações \textit{end-to-end} a partir de sinais RGB puros é superior e menos ruidoso do que a \textit{feature engineering} estática.
+
+%     \item O Ponto de Operação Industrial (QP4): Ao transpor a avaliação abstrata para o chão de fábrica, o estudo consolidou a ConvNeXt como o estado da arte prático. Ao entregar o mesmo rigor estatístico preditivo da líder paramétrica (DenseNet), mas operando com uma latência de inferência quase três vezes menor ($6,44$ ms), atendeu-se à demanda corporativa por precisão aliada a baixo custo computacional e viabilidade para \textit{Edge Computing}.
+
+
+% \end{itemize}
+
+
+O estudo de impacto dos componentes morfológicos e arquiteturais estabeleceu definições cruciais para o domínio do algodão, começando pela comprovação da superioridade estatística das Redes Neurais Convolucionais (CNNs). Confirmou-se que arquiteturas modernas, como DenseNet e ConvNeXt, superam estatisticamente modelos baseados em \textit{Transformers} (ViT e Swin). Os dados sugerem que o viés indutivo de localidade das convoluções é mais eficaz para o rastreamento de microtexturas e nós de fibra, refutando a tendência de adoção universal de \textit{Transformers} em tarefas visuais industriais estocásticas.
+
+Além da escolha arquitetural, o estudo demonstrou um imperativo fotométrico: a temperatura de cor da iluminação afeta significativamente o desempenho preditivo. A luz branca (6000~K) apresentou os melhores resultados na maioria dos modelos, pois atenua o ruído de percepção do amarelamento (+b) associado aos saltos semânticos interclasses observados sob luz mista. Conclui-se que a padronização óptica, em consonância com a Instrução Normativa nº 24/2016, é um fator complementar essencial e uma condição recomendada para a implantação do sistema.
+
+No que tange ao processamento das imagens, evidenciou-se a obsolescência da engenharia manual de características. A tentativa de injeção explícita de atributos morfológicos por meio de bancos de filtros de Gabor falhou em aumentar a capacidade discriminativa das redes e causou uma degradação estatisticamente significante. Isso comprova que, em topologias profundas, o aprendizado de representações ponta a ponta (\textit{end-to-end}) a partir de sinais RGB puros é superior e menos ruidoso do que a \textit{feature engineering} estática.
+
+Por fim, ao transpor a avaliação abstrata para o chão de fábrica, definiu-se o ponto de operação industrial. A arquitetura ConvNeXt consolidou-se como o estado da arte prático ao entregar o mesmo rigor estatístico preditivo da líder paramétrica (DenseNet), mas operando com uma latência de inferência quase três vezes menor (6,44~ms). Dessa forma, a rede atendeu perfeitamente à demanda corporativa por precisão aliada a baixo custo computacional e viabilidade para \textit{Edge Computing}.

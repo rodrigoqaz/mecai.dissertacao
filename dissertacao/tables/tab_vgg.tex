@@ -1,0 +1,13 @@
+\begin{table}[ht]
+\centering
+\caption{Comparativo Técnico das Arquiteturas VGG Net}
+\label{tab:vgg_comparativo}
+\begin{tabular}{@{}lccc p{6cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Camadas} & \textbf{Parâmetros} & \textbf{Tamanho (MB)} & \textbf{Diferencial Técnico} \\ \midrule
+VGG-11 & 11 & 133M & ~507 & Configuração base; profundidade mínima para convergência. \\
+VGG-13 & 13 & 133M & ~508 & Adição de blocos convolucionais duplos no início da rede. \\
+VGG-16 & 16 & 138M & ~528 & Equilíbrio ideal entre profundidade e custo; arquitetura SOTA em 2014. \\
+VGG-19 & 19 & 144M & ~574 & Máxima capacidade de extração linear; maior custo computacional. \\ \bottomrule
+\end{tabular}
+\end{table}

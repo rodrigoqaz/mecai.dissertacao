@@ -1,0 +1,85 @@
+# Configuração completa do modelo Vision Transformer (ViT)
+model_type: "vit"
+
+# Configurações globais
+global_config:
+  data_dir: "data/gold/datasets/v12/train_val"
+  experiment_name: "ViT"
+  mlflow_uri: "file:///mlruns"
+  dataset_name: "v12"
+  max_epochs: 30
+  batch_size: 32
+  num_workers: 0
+  device: "auto"
+  seed: 42
+
+# Configurações específicas do modelo
+params:
+  architecture: "vit_b_16"
+  pretrained: true
+  unfreeze_layers: 2
+  hidden_units: 512
+  dropout: 0.3
+  weights: "IMAGENET1K_V1" # Ou None para treinar do zero, ou outros pesos específicos de ViT
+
+# Otimizador
+optimizer:
+  type: "AdamW"
+  params:
+    lr: 0.0001
+    weight_decay: 0.0005
+
+# Scheduler
+scheduler:
+  type: "ReduceLROnPlateau"
+  params:
+    mode: "min"
+    patience: 5
+    factor: 0.2
+    min_lr: 0.0000001
+
+# Função de perda
+loss:
+  type: "CrossEntropyLoss"
+  params:
+    label_smoothing: 0.1
+
+# Transformações para treinamento
+train_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [224, 224] # ViT espera 224x224
+    # Normalize será adicionado dinamicamente pelo data_loader
+    # - name: "Normalize"
+    #   params:
+    #     mean: [0.485, 0.456, 0.406]
+    #     std: [0.229, 0.224, 0.225]
+
+# Transformações para validação
+val_transform:
+  transforms:
+    - name: "Resize"
+      params:
+        size: [224, 224] # ViT espera 224x224
+    # Normalize será adicionado dinamicamente pelo data_loader
+    # - name: "Normalize"
+    #   params:
+    #     mean: [0.485, 0.456, 0.406]
+    #     std: [0.229, 0.224, 0.225]
+
+# Augmentações (aplicadas no DataLoader)
+augmentations:
+  {}
+
+# Callbacks
+callbacks:
+  - class_path: src.utils.callbacks.EarlyStopping
+    init_args:
+      patience: 7
+      verbose: true
+  - class_path: src.utils.callbacks.ModelCheckpoint
+    init_args:
+      filepath: "best_vit.pth"
+      monitor: val_loss
+      save_best_only: true

@@ -1,0 +1,44 @@
+augmentation_config:
+  use_augmentation: false
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_model_vggnet.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 16
+  data_dir: data/gold/datasets/v9/train_val
+  dataset_name: v9
+  device: auto
+  experiment_name: vgg_v9_AM_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.1
+  type: CrossEntropyLoss
+model_type: vgg
+optimizer:
+  params:
+    lr: 0.002570466482704098
+    weight_decay: 0.005200294032565659
+  type: SGD
+params:
+  architecture: vgg19_bn
+  dropout: 0.5887289187102933
+  hidden_units: 512
+  pretrained: true
+  unfreeze_layers: 6
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.1
+    mode: min
+    patience: 3
+  type: ReduceLROnPlateau

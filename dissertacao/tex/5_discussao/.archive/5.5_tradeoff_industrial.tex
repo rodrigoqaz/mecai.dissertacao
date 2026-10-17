@@ -1,0 +1,21 @@
+\section{Trade-off Industrial e Recomendações de Implantação}
+
+% A viabilidade industrial de um sistema de Visão Computacional depende da harmonia entre acurácia e latência. Embora a \textbf{DenseNet} tenha alcançado o maior MCC (0,6461), sua latência de 19,4 ms por amostra pode representar um gargalo em esteiras de alta velocidade se o hardware de inferência for limitado.
+
+% Em contrapartida, a \textbf{ConvNext} emergiu como o "ponto ideal" (\textit{sweet spot}) para implantação em tempo real, com latência de apenas 6,8 ms e performance estatisticamente competitiva. Para dispositivos de borda ou sensores portáteis, a \textbf{EfficientNet} mantém-se como a recomendação técnica devido ao baixíssimo consumo de GFLOPs. Conclui-se que a escolha da arquitetura não deve ser pautada exclusivamente pela métrica de acerto, mas pela capacidade do modelo em operar dentro da janela temporal de processamento exigida pelo fluxo logístico da algodoeira.
+
+
+
+A análise comparativa entre as arquiteturas revela uma dicotomia fundamental entre o rigor estatístico e a aplicabilidade em tempo real. Embora o teste de McNemar tenha ratificado a superioridade da \textbf{DenseNet-121} sobre a \textbf{ConvNeXt-T} com significância estatística ($p < 0,05$), a transposição desses resultados para o fluxo operacional da algodoeira exige uma interpretação pragmática das métricas.
+
+A DenseNet, apesar de sua capacidade superior de preservação de microtexturas devido à conectividade densa, apresentou uma latência de inferência de 19,44 ms. Em um cenário de automação industrial de alta velocidade, onde o sistema deve processar múltiplos patches por fardo para compor uma nota global, esse tempo de resposta pode comprometer o throughput total da linha.
+
+Por outro lado, a ConvNeXt emergiu como o ponto de operação ideal (sweet spot) para a indústria por três razões técnicas fundamentais:
+
+\begin{itemize}
+    \item Eficiência de Processamento: Com uma latência de apenas 6,82 ms, o modelo é aproximadamente 2,8 vezes mais rápido que a DenseNet, permitindo uma inspeção em tempo real sem gargalos logísticos.
+    \item Performance Competitiva: Mesmo sendo a segunda colocada no ranking de MCC ($0,615$ vs $0,646$), sua acurácia permanece em um patamar elevado e estável, superando significativamente os modelos baseados em atenção e as CNNs clássicas como ResNet e VGG.
+    \item Modernização Arquitetural: O uso de kernels de $7\times7$ e o design inspirado em Transformers conferem à ConvNeXt um campo receptivo ampliado, essencial para a análise morfológica das fibras, mantendo a simplicidade operacional das convoluções.
+\end{itemize}
+
+Dessa forma, conclui-se que a ConvNeXt representa a solução de maior viabilidade para implementação em sistemas de Edge Computing. A escolha prioriza a agilidade exigida pelo "emblocamento" industrial, aceitando um custo marginal de performance estatística em troca de uma robustez temporal inquestionável para o ambiente de produção

@@ -1,0 +1,11 @@
+version_name: "v3"
+type: "processing"
+input_version: "v1"
+description: "Dataset balanceado usando Undersample, copiando imagens das classes minoritárias"
+
+processing_steps:
+  - type: "augment"
+    params:
+      method: "basic"
+      args:
+        n_augments: 5

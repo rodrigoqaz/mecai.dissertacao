@@ -1,0 +1,48 @@
+augmentation_config:
+  batch_level_aug_method: mixup
+  mix_alpha: 0.8944789544245202
+  per_image_aug_method: none
+  use_augmentation: true
+callbacks:
+- class_path: src.utils.callbacks.EarlyStopping
+  init_args:
+    patience: 7
+    verbose: true
+- class_path: src.utils.callbacks.ModelCheckpoint
+  init_args:
+    filepath: best_vit.pth
+    monitor: val_loss
+    save_best_only: true
+global_config:
+  batch_size: 16
+  data_dir: data/gold/datasets/v10/train_val
+  dataset_name: v10
+  device: auto
+  experiment_name: vit_v10_BR_opt_aug
+  max_epochs: 30
+  mlflow_uri: file:///mlruns
+  num_workers: 0
+loss:
+  params:
+    label_smoothing: 0.028973256999139187
+  type: CrossEntropyLoss
+model_type: vit
+optimizer:
+  params:
+    lr: 2.6098334511215223e-05
+    weight_decay: 0.024398960693994522
+  type: AdamW
+params:
+  architecture: vit_b_16
+  dropout: 0.20832887599105007
+  hidden_units: 256
+  pretrained: true
+  unfreeze_layers: 4
+  weights: IMAGENET1K_V1
+scheduler:
+  params:
+    factor: 0.4937265154235414
+    min_lr: 1.0e-06
+    mode: min
+    patience: 3
+  type: ReduceLROnPlateau

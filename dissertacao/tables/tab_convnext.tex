@@ -1,0 +1,13 @@
+\begin{table}[ht]
+\centering
+\caption{Comparativo de Performance e Eficiência: ConvNeXt vs. Swin Transformer}
+\label{tab:convnext_vs_swin}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Arquitetura} & \textbf{Modelo} & \textbf{Parâmetros} & \textbf{FLOPs} & \textbf{Acurácia (IN-1K)} \\ \midrule
+Transformer & Swin-T & 28M & 4,5G & 81,3\% \\
+Convolucional & \textbf{ConvNeXt-T} & 28M & 4,5G & \textbf{82,1\%} \\ \midrule
+Transformer & Swin-B & 88M & 15,4G & 83,5\% \\
+Convolucional & \textbf{ConvNeXt-B} & 89M & 15,4G & \textbf{83,8\%} \\ \bottomrule
+\end{tabular}
+\end{table}

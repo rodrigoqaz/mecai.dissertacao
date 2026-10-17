@@ -1,0 +1,22 @@
+\section{Análise Comparativa Global e Benchmarking}
+
+Nesta seção, apresentamos os resultados consolidados da avaliação final dos modelos no conjunto de teste (\textit{hold-out}), que representa dados inéditos para as arquiteturas. O objetivo principal desta análise é identificar a arquitetura com maior capacidade de generalização e resiliência ao desbalanceamento de classes, utilizando o Coeficiente de Correlação de Matthews (MCC) como métrica primária de seleção, conforme estabelecido no protocolo experimental.
+
+Os resultados detalhados para as principais variações de datasets (V1, V9 e V10) e arquiteturas estão apresentados na Tabela \ref{tab:results_full_metrics}. Observa-se que o modelo \textbf{DenseNet} na versão de dataset V10 obteve o melhor desempenho global, alcançando um MCC de 0,6461 e uma acurácia de teste de 69,58\%. Este resultado é significativamente superior aos modelos de base inicial (V1), demonstrando que o ajuste fino de hiperparâmetros via otimização bayesiana e o tratamento de iluminação na V10 foram eficazes.
+
+\begin{table}[!h]
+    \centering
+    \begin{threeparttable}
+    \caption{Métricas consolidadas de desempenho e complexidade no conjunto de teste.}
+    \label{tab:results_full_metrics}
+    \input{tables/metrics_table.tex}
+    \begin{tablenotes}
+            \small 
+            \item[] Fonte: Do autor.
+        \end{tablenotes}
+        \end{threeparttable}
+\end{table}
+
+Um achado relevante é o desempenho das arquiteturas modernas baseadas em Transformers (\textit{Vision Transformers} - ViT e Swin Transformer). Apesar de possuírem uma complexidade paramétrica elevada (86,0M para o ViT), esses modelos apresentaram MCC inferior (máximo de 0,4328) em comparação com as CNNs tradicionais como DenseNet e ConvNext. Este comportamento corrobora a literatura de que, para conjuntos de dados de domínio específico e tamanho moderado, o viés indutivo (\textit{inductive bias}) de localidade e invariância de translação das CNNs ainda oferece uma vantagem competitiva sobre a flexibilidade global dos mecanismos de atenção dos Transformers.
+
+Outro ponto crítico identificado foi o fracasso da versão experimental V8, que utilizou uma expansão para 15 canais espectrais via filtros de Gabor. Conforme observado na Tabela \ref{tab:results_full_metrics}, todos os modelos apresentaram uma queda drástica de performance na V8, com MCCs próximos de zero. Este fenômeno sugere que a inserção de \textit{features} artesanais ruidosas ou a alta dimensionalidade sem o volume de dados correspondente prejudicou o aprendizado das representações latentes pelas redes, validando a abordagem de \textit{end-to-end learning} sobre os pixels RGB brutos.

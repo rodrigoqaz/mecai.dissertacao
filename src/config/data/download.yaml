@@ -1,0 +1,5 @@
+folder_id: "1Edfau7syP1vknKnASEDtu7lML2eGiAA0"
+output_dir: "data/bronze"
+zip_name: "amostras_coletadas.zip"
+credentials: "credentials.json"
+token: "token.pickle"

@@ -1,0 +1,43 @@
+augmentation_config:
+  use_augmentation: false
+global_config:
+  batch_size: 32
+  dataset_name: v12
+  device: auto
+  experiment_name: ELITE_EVAL_v12_efficientnet
+  max_epochs: 30
+  mlflow_uri: file:///Users/rodrigoqaz/Documents/projetos/mecai.dissertacao/mlruns
+  num_workers: 4
+  seed: 42
+model_type: efficientnet
+params:
+  architecture: efficientnet_b1
+  augmentations: '[{''type'': ''CutMix'', ''params'': {''alpha'': 1.0, ''prob'': 0.8}},
+    {''type'': ''MixUp'', ''params'': {''alpha'': 0.4, ''prob'': 0.8}}]'
+  callbacks: '[{''class_path'': ''src.utils.callbacks.EarlyStopping'', ''init_args'':
+    {''patience'': 7, ''verbose'': True}}, {''class_path'': ''src.utils.callbacks.ModelCheckpoint'',
+    ''init_args'': {''filepath'': ''best_model_efficientnet.pth'', ''monitor'': ''val_loss'',
+    ''save_best_only'': True}}]'
+  data_dir: data/gold/datasets/v12/train_val
+  device: auto
+  dropout: '0.46518191003943465'
+  experiment_name: EfficientNet
+  global_config: '{''data_dir'': ''data/gold/datasets/v12/train_val'', ''experiment_name'':
+    ''EfficientNet'', ''mlflow_uri'': ''file:///mlruns'', ''dataset_name'': ''v12'',
+    ''seed'': 42, ''max_epochs'': 30, ''batch_size'': 32, ''num_workers'': 0, ''device'':
+    ''auto''}'
+  hidden_units: '512'
+  input_channels: '15'
+  loss: '{''type'': ''CrossEntropyLoss'', ''params'': {''label_smoothing'': 0.1}}'
+  mlflow_uri: file:///mlruns
+  num_classes: '10'
+  num_workers: '0'
+  optimizer: '{''type'': ''AdamW'', ''params'': {''lr'': 0.0016490925875029816, ''weight_decay'':
+    0.00012201850715206898}}'
+  params: '{''architecture'': ''efficientnet_b1'', ''pretrained'': True, ''unfreeze_layers'':
+    6, ''hidden_units'': 512, ''dropout'': 0.46518191003943465, ''weights'': ''IMAGENET1K_V1''}'
+  pretrained: 'True'
+  scheduler: '{''type'': ''ReduceLROnPlateau'', ''params'': {''mode'': ''min'', ''patience'':
+    4, ''factor'': 0.2601659115189868, ''min_lr'': 1e-07}}'
+  unfreeze_layers: '6'
+  weights: IMAGENET1K_V1

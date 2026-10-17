@@ -1,0 +1,13 @@
+\begin{table}[H]
+\centering
+\caption{Variações da Arquitetura DenseNet-BC e Cenários de Aplicação}
+\label{tab:densenet_variacoes}
+\begin{tabular}{@{}lccc p{6.5cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Camadas} & \textbf{Parâmetros} & \textbf{GFLOPs} & \textbf{Cenário de Uso Sugerido} \\ \midrule
+DenseNet-121 & 121 & 8.0M & 2.8 & \textit{Baseline} para classificação de texturas; ideal para prototipagem rápida e \textit{transfer learning}. \\
+DenseNet-169 & 169 & 14.1M & 3.4 & Cenários de média complexidade; equilíbrio entre custo computacional e acurácia. \\
+DenseNet-201 & 201 & 20.0M & 4.3 & Padrão para imagens médicas e biológicas; alta capacidade de extração de microtexturas. \\
+DenseNet-264 & 264 & 33.3M & 5.8 & Pesquisas de alta precisão; cenários onde o volume de dados permite redes ultra-profundas. \\ \bottomrule
+\end{tabular}
+\end{table}
